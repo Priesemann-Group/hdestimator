@@ -1,0 +1,11 @@
+# Byte-compiled / optimized python files
+src/__pycache__/
+src/build/
+*.py[cod]
+
+# Annotations (python profiling)
+src/*.html
+
+# emacs
+*~
+\#*\#
