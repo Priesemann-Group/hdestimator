@@ -4,8 +4,9 @@ The history dependence estimator tool provides a set of
 routines that facilitate the estimation of history dependence in
 neural spiking data, using estimators based on information-theoretical
 measures, as presented in (Rudelt et al, in prep.).
+
 A guide for how to use the tool can be found under
-[docs/howto.pdf](https://github.com/Priesemann-Group/hdestimator/blob/master/docs/howto.pdf).
+[docs/howto.pdf](docs/howto.pdf).
 
 
 ## Dependencies
