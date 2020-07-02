@@ -13,7 +13,7 @@ def merge_csv_files(target_dir):
     analysis_dirs = [d for d in sorted(listdir(target_dir)) if d.startswith(analysis_dir_prefix)]
 
     if len(analysis_dirs) == 0:
-        print("OWIER")
+        print("No analysis dirs found in {}. Aborting.".format(target_dir))
         return
 
     if isfile("{}/{}".format(target_dir,
