@@ -4,8 +4,9 @@ The history dependence estimator tool provides a set of
 routines that facilitate the estimation of history dependence in
 neural spiking data, using estimators based on information-theoretical
 measures, as presented in (Rudelt et al, in prep.).
+
 A guide for how to use the tool can be found under
-[docs/howto.pdf](https://github.com/Priesemann-Group/hdestimator/blob/master/docs/howto.pdf).
+[docs/howto.pdf](docs/howto.pdf).
 
 
 ## Dependencies
@@ -61,3 +62,16 @@ There, compile the Cython modules:
 `python3 setup.py build_ext --inplace`
 
 If no errors occured (warnings are OK), you are all set.
+
+### Windows users
+
+Under Windows, you can use the tool eg through miniconda.
+
+Install [miniconda for python3, 32bit](https://docs.conda.io/en/latest/miniconda.html).
+
+To meet the dependencies to compile the Cython modules, download and install [Visual Studio](https://visualstudio.microsoft.com/downloads/).
+There, select Desktop development with C++ and install
+* MSVC v140 - VS 2015 C++ build tools (v14.00) (more recent versions probably work, too)
+* Windows 10 SDK (10.0.18362.0)
+
+Then compile the modules by running the commands as above.
