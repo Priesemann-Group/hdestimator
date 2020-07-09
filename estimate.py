@@ -192,7 +192,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
                            'embedding_bin_scaling_range', 'embedding_step_size',
                            'bbc_tolerance',
                            'number_of_bootstraps', 'number_of_bootstraps_nonessential',
-                           'bootstrap_CI_use_sd',
+                           'block_length_l',
                            'bootstrap_CI_percentile_lo',
                            'bootstrap_CI_percentile_hi',
                            # 'number_of_permutations',
@@ -201,6 +201,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     
     required_settings = ['estimation_method', 'plot_AIS',
                          'ANALYSIS_DIR', 'persistent_analysis',
+                         'bootstrap_CI_use_sd',
                          'verbose_output',
                          'plot_settings', 'plot_color'] + required_parameters
     
@@ -218,7 +219,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     # evaluate settings (turn strings into booleans etc if applicable)
     for setting_key in ['persistent_analysis',
                         'verbose_output',
-                        'block_length_l',
+                        'bootstrap_CI_use_sd',
                         'plot_AIS']:
         settings[setting_key] = ast.literal_eval(settings[setting_key])
     for plot_setting in settings['plot_settings']:
