@@ -25,7 +25,7 @@ def do_main_analysis(spike_times, analysis_file, settings):
     Determine the history dependence of a neuron's activity based on
     spike time data.
     """
-
+    
     utl.save_history_dependence_for_embeddings(analysis_file, spike_times, **settings)
 
 def compute_CIs(spike_times, analysis_file, settings):
@@ -201,6 +201,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     
     required_settings = ['estimation_method', 'plot_AIS',
                          'ANALYSIS_DIR', 'persistent_analysis',
+                         'cross_validated_optimization',
                          'bootstrap_CI_use_sd',
                          'verbose_output',
                          'plot_settings', 'plot_color'] + required_parameters
@@ -219,6 +220,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     # evaluate settings (turn strings into booleans etc if applicable)
     for setting_key in ['persistent_analysis',
                         'verbose_output',
+                        'cross_validated_optimization',
                         'bootstrap_CI_use_sd',
                         'plot_AIS']:
         settings[setting_key] = ast.literal_eval(settings[setting_key])
@@ -360,15 +362,36 @@ def main():
         
     # now perform tasks as specified by the parsed arguments
 
+    if settings['cross_validated_optimization']:
+        spike_times_half_time = (spike_times[-1] - spike_times[0]) / 2
+        spike_times_optimization = spike_times[spike_times < spike_times_half_time]
+        spike_times_validation = spike_times[spike_times >= spike_times_half_time] \
+            - spike_times_half_time
+    else:
+        spike_times_validation = spike_times
+    
     for estimation_method in estimation_methods:
         settings['estimation_method'] = estimation_method
 
         if task == "history-dependence" or task == "full-analysis":
-            do_main_analysis(spike_times, analysis_file, settings)
+            if settings['cross_validated_optimization']:
+                settings['cross_val'] = 'h1' # first half of the data
+                do_main_analysis(spike_times_optimization,
+                                 analysis_file, settings)
 
+                settings['cross_val'] = 'h2' # second half of the data
+                do_main_analysis(spike_times_validation,
+                                 analysis_file, settings)
+            else:
+                settings['cross_val'] = None
+                do_main_analysis(spike_times, analysis_file, settings)
 
         if task == "confidence-intervals" or task == "full-analysis":
-            compute_CIs(spike_times, analysis_file, settings)
+            if settings['cross_validated_optimization']:
+                settings['cross_val'] = 'h2' # second half of the data
+            else:
+                settings['cross_val'] = None
+            compute_CIs(spike_times_validation, analysis_file, settings)
 
         # if task == "permutation-test" or task == "full-analysis":
         #     perform_permutation_test(analysis_file, settings)
@@ -377,7 +400,11 @@ def main():
     if task == "auto-mi" or task == "full-analysis":
         analyse_auto_MI(spike_times, analysis_file, settings)
 
-
+    if settings['cross_validated_optimization']:
+        settings['cross_val'] = 'h2' # second half of the data
+    else:
+        settings['cross_val'] = None
+        
     if task == "csv-files" or task == "full-analysis":
         create_CSV_files(analysis_file,
                          csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file,

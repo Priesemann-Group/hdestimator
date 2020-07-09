@@ -64,10 +64,21 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
         save_to_analysis_file(f,
                               "H_uncond",
                               H_uncond=H_uncond)
-    
-    for embedding in emb.get_embeddings(embedding_length_range,
+
+    if kwargs['cross_val'] == None or kwargs['cross_val'] == 'h1':
+        embeddings = emb.get_embeddings(embedding_length_range,
                                         embedding_number_of_bins_range,
-                                        embedding_bin_scaling_range):
+                                        embedding_bin_scaling_range)
+    elif kwargs['cross_val'] == 'h2':
+        # here we set cross_val to h1, because we load the
+        # embeddings that maximise R from the optimisation step
+        embeddings = get_embeddings_that_maximise_R(f,
+                                                    estimation_method,
+                                                    embedding_step_size,
+                                                    get_as_list=True,
+                                                    cross_val='h1')
+        
+    for embedding in embeddings:
         embedding_length_Tp = embedding[0]
         number_of_bins_d = embedding[1]
         first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
@@ -75,21 +86,24 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
         symbol_counts = load_from_analysis_file(f,
                                                 "symbol_counts",
                                                 embedding_step_size=embedding_step_size,
-                                                embedding=embedding)
+                                                embedding=embedding,
+                                                cross_val=kwargs['cross_val'])
         if symbol_counts == None:
             symbol_counts = emb.get_symbol_counts(spike_times, embedding, embedding_step_size)
             save_to_analysis_file(f,
                                   "symbol_counts",
                                   embedding_step_size=embedding_step_size,
                                   embedding=embedding,
-                                  symbol_counts=symbol_counts)
+                                  symbol_counts=symbol_counts,
+                                  cross_val=kwargs['cross_val'])
 
         if estimation_method == 'bbc':
             history_dependence = load_from_analysis_file(f,
                                                          "history_dependence",
                                                          embedding_step_size=embedding_step_size,
                                                          embedding=embedding,
-                                                         estimation_method="bbc")
+                                                         estimation_method="bbc",
+                                                         cross_val=kwargs['cross_val'])
 
             if history_dependence == None:
                 history_dependence, bbc_term = hapi.get_history_dependence(estimation_method,
@@ -102,14 +116,16 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
                                       first_bin_size=first_bin_size,
                                       estimation_method="bbc",
                                       history_dependence=history_dependence,
-                                      bbc_term=bbc_term)
+                                      bbc_term=bbc_term,
+                                      cross_val=kwargs['cross_val'])
       
         elif estimation_method == 'shuffling':
             history_dependence = load_from_analysis_file(f,
                                                          "history_dependence",
                                                          embedding_step_size=embedding_step_size,
                                                          embedding=embedding,
-                                                         estimation_method="shuffling")
+                                                         estimation_method="shuffling",
+                                                         cross_val=kwargs['cross_val'])
             if history_dependence == None:
                 history_dependence = hapi.get_history_dependence(estimation_method,
                                                                  symbol_counts,
@@ -120,14 +136,16 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
                                       embedding=embedding,
                                       first_bin_size=first_bin_size,
                                       estimation_method="shuffling",
-                                      history_dependence=history_dependence)
-                
+                                      history_dependence=history_dependence,
+                                      cross_val=kwargs['cross_val'])
                 
 def get_embeddings_that_maximise_R(f,
                                    estimation_method,
                                    embedding_step_size,
                                    bbc_tolerance=None,
                                    dependent_var="Tp",
+                                   get_as_list=False,
+                                   cross_val=None,
                                    **kwargs):
     """
     For each Tp (or d), get the embedding for which R is maximised.
@@ -137,21 +155,29 @@ def get_embeddings_that_maximise_R(f,
     """
 
     assert dependent_var in ["Tp", "d"]
+    assert cross_val in [None, "h1", "h2"]
 
     if bbc_tolerance == None:
         bbc_tolerance = np.inf
-    
+
+    if cross_val == None:
+        root_dir = 'embeddings'
+    else:
+        root_dir = '{}_embeddings'.format(cross_val)
+        
     max_Rs = {}
     embeddings_that_maximise_R = {}
 
     embedding_step_size_label = get_parameter_label(embedding_step_size)
     
-    for embedding_length_Tp_label in f["embeddings/{}".format(embedding_step_size_label)].keys():
-        for number_of_bins_d_label in f["embeddings/{}/{}".format(embedding_step_size_label,
-                                                                  embedding_length_Tp_label)].keys():
-            for bin_scaling_k_label in f["embeddings/{}/{}/{}".format(embedding_step_size_label,
-                                                                      embedding_length_Tp_label,
-                                                                      number_of_bins_d_label)].keys():
+    for embedding_length_Tp_label in f["{}/{}".format(root_dir, embedding_step_size_label)].keys():
+        for number_of_bins_d_label in f["{}/{}/{}".format(root_dir,
+                                                          embedding_step_size_label,
+                                                          embedding_length_Tp_label)].keys():
+            for bin_scaling_k_label in f["{}/{}/{}/{}".format(root_dir,
+                                                              embedding_step_size_label,
+                                                              embedding_length_Tp_label,
+                                                              number_of_bins_d_label)].keys():
                 embedding_length_Tp = float(embedding_length_Tp_label)
                 number_of_bins_d = int(float(number_of_bins_d_label))
                 bin_scaling_k = float(bin_scaling_k_label)
@@ -162,13 +188,20 @@ def get_embeddings_that_maximise_R(f,
                                                              "history_dependence",
                                                              embedding_step_size=embedding_step_size,
                                                              embedding=embedding,
-                                                             estimation_method=estimation_method)
+                                                             estimation_method=estimation_method,
+                                                             cross_val=cross_val)
+                # if it has been estimated for one estimator, but not the other
+                # it might be None. skip if this is the case
+                if history_dependence == None:
+                    continue
+                
                 if estimation_method == "bbc":
                     bbc_term = load_from_analysis_file(f,
                                                        "bbc_term",
                                                        embedding_step_size=embedding_step_size,
                                                        embedding=embedding,
-                                                       estimation_method=estimation_method)
+                                                       estimation_method=estimation_method,
+                                                       cross_val=cross_val)
                     if bbc_term >= bbc_tolerance:
                         continue
 
@@ -184,7 +217,20 @@ def get_embeddings_that_maximise_R(f,
                         max_Rs[number_of_bins_d] = history_dependence
                         embeddings_that_maximise_R[number_of_bins_d] = (embedding_length_Tp,
                                                                         bin_scaling_k)
-    return embeddings_that_maximise_R, max_Rs
+
+    if get_as_list:
+        embeddings = []
+        if dependent_var == "Tp":
+            for embedding_length_Tp in embeddings_that_maximise_R:
+                number_of_bins_d, bin_scaling_k = embeddings_that_maximise_R[embedding_length_Tp]
+                embeddings += [(embedding_length_Tp, number_of_bins_d, bin_scaling_k)]
+        elif dependent_var == "d":
+            for number_of_bins_d in embeddings_that_maximise_R:
+                embedding_length_Tp, bin_scaling_k = embeddings_that_maximise_R[number_of_bins_d]
+                embeddings += [(embedding_length_Tp, number_of_bins_d, bin_scaling_k)]
+        return embeddings
+    else:
+        return embeddings_that_maximise_R, max_Rs
 
 def get_CI_bounds(bs_Rs,
                   bootstrap_CI_use_sd=True,
@@ -403,7 +449,8 @@ def compute_CIs(f,
                                                "bs_history_dependence",
                                                embedding_step_size=embedding_step_size,
                                                embedding=embedding,
-                                               estimation_method=estimation_method)
+                                               estimation_method=estimation_method,
+                                               cross_val=kwargs['cross_val'])
         if isinstance(stored_bs_Rs, np.ndarray):
             number_of_stored_bootstraps = len(stored_bs_Rs)
         else:
@@ -427,7 +474,8 @@ def compute_CIs(f,
                               embedding_step_size=embedding_step_size,
                               embedding=embedding,
                               estimation_method=estimation_method,
-                              bs_history_dependence=bs_history_dependence)
+                              bs_history_dependence=bs_history_dependence,
+                              cross_val=kwargs['cross_val'])
 
 
     # then bootstrap R for the max R, to get a good estimate for the standard deviation
@@ -442,7 +490,8 @@ def compute_CIs(f,
                                            "bs_history_dependence",
                                            embedding_step_size=embedding_step_size,
                                            embedding=embedding,
-                                           estimation_method=estimation_method)
+                                           estimation_method=estimation_method,
+                                           cross_val=kwargs['cross_val'])
     if isinstance(stored_bs_Rs, np.ndarray):
         number_of_stored_bootstraps = len(stored_bs_Rs)
     else:
@@ -464,7 +513,8 @@ def compute_CIs(f,
                               embedding_step_size=embedding_step_size,
                               embedding=embedding,
                               estimation_method=estimation_method,
-                              bs_history_dependence=bs_history_dependence)
+                              bs_history_dependence=bs_history_dependence,
+                              cross_val=kwargs['cross_val'])
 
     # then bootstrap opt R for a confidence interval, per default based on
     # the variance of the bootstrap replications
@@ -481,7 +531,8 @@ def compute_CIs(f,
                                            "bs_history_dependence",
                                            embedding_step_size=embedding_step_size,
                                            embedding=embedding,
-                                           estimation_method=estimation_method)
+                                           estimation_method=estimation_method,
+                                           cross_val=kwargs['cross_val'])
     if isinstance(stored_bs_Rs, np.ndarray):
         number_of_stored_bootstraps = len(stored_bs_Rs)
     else:
@@ -503,7 +554,8 @@ def compute_CIs(f,
                               embedding_step_size=embedding_step_size,
                               embedding=embedding,
                               estimation_method=estimation_method,
-                              bs_history_dependence=bs_history_dependence)
+                              bs_history_dependence=bs_history_dependence,
+                              cross_val=kwargs['cross_val'])
 
 
 def get_bootstrap_history_dependence(spike_times,
@@ -840,6 +892,7 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                                                  'min_step_for_scaling': 0.01},
                 'estimation_method' : "all",
                 'bbc_tolerance' : 0.05,
+                'cross_validated_optimization' : False,
                 'number_of_bootstraps' : 250,
                 'number_of_bootstraps_nonessential' : 0,
                 'block_length_l' : None,
@@ -964,11 +1017,13 @@ def get_analysis_stats(f,
         stats["opt_first_bin_size_{}".format(estimation_method)] \
             = get_parameter_label(load_from_analysis_file(f,
                                                           "first_bin_size",
-                                                          embedding_step_size=kwargs["embedding_step_size"],
+                                                          embedding_step_size\
+                                                          =kwargs["embedding_step_size"],
                                                           embedding=(opt_embedding_length_Tp,
                                                                      opt_number_of_bins_d,
                                                                      opt_bin_scaling_k),
-                                                          estimation_method=estimation_method))
+                                                          estimation_method=estimation_method,
+                                                          cross_val=kwargs['cross_val']))
         
         bs_Rs = load_from_analysis_file(f,
                                         "bs_history_dependence",
@@ -976,7 +1031,8 @@ def get_analysis_stats(f,
                                         embedding=(opt_embedding_length_Tp,
                                                    opt_number_of_bins_d,
                                                    opt_bin_scaling_k),
-                                        estimation_method=estimation_method)
+                                        estimation_method=estimation_method,
+                                        cross_val=kwargs['cross_val'])
         if isinstance(bs_Rs, np.ndarray):
             stats["number_of_bootstraps_{}".format(estimation_method)] \
                 = str(len(bs_Rs))
@@ -1103,7 +1159,8 @@ def get_histdep_data(f,
                                             "bs_history_dependence",
                                             embedding_step_size=kwargs["embedding_step_size"],
                                             embedding=embedding,
-                                            estimation_method=estimation_method)
+                                            estimation_method=estimation_method,
+                                            cross_val=kwargs['cross_val'])
 
             if isinstance(bs_Rs, np.ndarray):
                 max_R_CI_lo[embedding_length_Tp], max_R_CI_hi[embedding_length_Tp] \
@@ -1575,6 +1632,7 @@ def get_or_create_data_directory_in_file(f,
                                          estimation_method=None,
                                          auto_MI_bin_size=None,
                                          get_only=False,
+                                         cross_val=None,
                                          **kwargs):
     """
     Search for directory in hdf5, optionally create it if nonexistent 
@@ -1585,6 +1643,8 @@ def get_or_create_data_directory_in_file(f,
         root_dir = "other"
     elif data_label == "auto_MI":
         root_dir = "auto_MI"
+    elif not cross_val == None:
+        root_dir = "{}_embeddings".format(cross_val)
     else:
         root_dir = "embeddings"
 

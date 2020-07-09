@@ -54,6 +54,10 @@ estimation_method : all
 # discarded from the analysis.
 bbc_tolerance : 0.05
 
+# Use cross validation for the embedding optimization: optimize on the first
+# half of the data only, provide the estimate on the second one, to avoid overfitting.
+cross_validated_optimization : False
+
 # ------------------------------------------------------------------------------ #
 # Bootstrap parameters
 # ------------------------------------------------------------------------------ #
