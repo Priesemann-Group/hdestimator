@@ -998,12 +998,13 @@ def get_analysis_stats(f,
     stats["H_uncond"] = get_parameter_label(H_uncond)
 
     for estimation_method in ["bbc", "shuffling"]:
-        try:
-            embedding_maximising_R_at_Tp, max_Rs \
-                = get_embeddings_that_maximise_R(f,
-                                                 estimation_method=estimation_method,
-                                                 **kwargs)
-        except:
+
+        embedding_maximising_R_at_Tp, max_Rs \
+            = get_embeddings_that_maximise_R(f,
+                                             estimation_method=estimation_method,
+                                             **kwargs)
+
+        if len(embedding_maximising_R_at_Tp) == 0:
             continue
             
         opt_embedding_length_Tp = get_optimal_embedding_length_Tp(f,
@@ -1135,12 +1136,12 @@ def get_histdep_data(f,
     for estimation_method in ['bbc', 'shuffling']:
         # kwargs["estimation_method"] = estimation_method
         
-        try:
-            embedding_maximising_R_at_Tp, max_Rs \
-                = get_embeddings_that_maximise_R(f,
-                                                 estimation_method=estimation_method,
-                                                 **kwargs)
-        except:
+        embedding_maximising_R_at_Tp, max_Rs \
+            = get_embeddings_that_maximise_R(f,
+                                             estimation_method=estimation_method,
+                                             **kwargs)
+
+        if len(embedding_maximising_R_at_Tp) == 0:
             if estimation_method == 'bbc':
                 embedding_maximising_R_at_Tp_bbc = {}
                 max_Rs_bbc = []
