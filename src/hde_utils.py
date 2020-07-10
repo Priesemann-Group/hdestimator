@@ -164,7 +164,8 @@ def get_embeddings_that_maximise_R(f,
     assert dependent_var in ["Tp", "d"]
     assert cross_val in [None, "h1", "h2"]
 
-    if bbc_tolerance == None:
+    if bbc_tolerance == None \
+       or cross_val == "h2": # apply bbc only for optimization
         bbc_tolerance = np.inf
 
     if cross_val == None:
