@@ -893,14 +893,14 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
     """
     
     settings = {'embedding_step_size' : 0.005,
-                'embedding_length_range' : [float("{:.5f}".format(np.exp(x))) for x in np.arange(np.log(0.005), np.log(10), 0.05 * np.log(10))],
-                'embedding_number_of_bins_range' : [int(x) for x in np.linspace(1,10,10)],
+                'embedding_length_range' : [float("{:.5f}".format(np.exp(x))) for x in np.arange(np.log(0.005), np.log(5.001), 0.05 * np.log(10))],
+                'embedding_number_of_bins_range' : [int(x) for x in np.linspace(1,5,5)],
                 'embedding_bin_scaling_range' : {'number_of_bin_scalings': 10,
                                                  'min_first_bin_size' : 0.005,
                                                  'min_step_for_scaling': 0.01},
-                'estimation_method' : "all",
+                'estimation_method' : "shuffling",
                 'bbc_tolerance' : 0.05,
-                'cross_validated_optimization' : False,
+                'cross_validated_optimization' : True,
                 'number_of_bootstraps' : 250,
                 'number_of_bootstraps_nonessential' : 0,
                 'block_length_l' : None,
@@ -912,7 +912,7 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                 'auto_MI_max_delay' : 10,
                 'label' : '""',
                 'ANALYSIS_DIR' : "./analysis",
-                'persistent_analysis' : False,
+                'persistent_analysis' : True,
                 'verbose_output' : False,
                 'plot_AIS' : False,
                 'plot_settings' : {'figure.figsize' : [6.3, 5.5],
@@ -924,7 +924,7 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                                    'savefig.format': 'pdf'},
                 'plot_color' : "'#4da2e2'"}
     
-    with open('{}/settings/default_settings.yaml'.format(ESTIMATOR_DIR), 'w') as settings_file:
+    with open('{}/settings/default.yaml'.format(ESTIMATOR_DIR), 'w') as settings_file:
         for setting_name in settings:
             if isinstance(settings[setting_name], dict):
                 settings_file.write("{} :\n".format(setting_name))

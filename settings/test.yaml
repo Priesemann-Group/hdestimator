@@ -1,6 +1,6 @@
 embedding_length_range : [0.005, 0.00998, 0.01991, 0.03972, 0.07924, 0.15811, 0.31548, 0.62946, 1.25594, 2.50594, 5.0]
-embedding_number_of_bins_range : [1, 2, 3, 4, 5]
+estimation_method : shuffling
 number_of_bootstraps : 10
-# number_of_permutations : 20
 auto_MI_bin_size_range : [0.01, 0.025, 0.05, 0.25]
 auto_MI_max_delay : 1.1
+persistent_analysis: False

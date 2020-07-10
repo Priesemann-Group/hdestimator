@@ -117,11 +117,11 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     time data, as presented in (Rudelt et al, in prep.).  Parameters
     can be passed via the command line or through files, where command
     line options are prioritised over those passed by file.  (If none
-    are supplied, settings are read from the 'default_settings' file.)
+    are supplied, settings are read from the 'default.yaml' file.)
     A user new to this tool is encouraged to run
 
       python3 {} sample_data/spike_times.dat -o sample_output.pdf \\
-        -s settings/fast_run_settings.yaml
+        -s settings/test.yaml
 
     to test the functionality of this tool.  A more detailed
     description can be found in the guide shipped with the tool.
@@ -183,11 +183,11 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     #
         
     # create default settings file if it does not exist:
-    if not isfile('{}/settings/default_settings.yaml'.format(ESTIMATOR_DIR)):
+    if not isfile('{}/settings/default.yaml'.format(ESTIMATOR_DIR)):
         utl.create_default_settings_file(ESTIMATOR_DIR)
 
     # load default settings
-    with open('{}/settings/default_settings.yaml'.format(ESTIMATOR_DIR), 'r') as default_settings_file:
+    with open('{}/settings/default.yaml'.format(ESTIMATOR_DIR), 'r') as default_settings_file:
         settings = yaml.load(default_settings_file, Loader=yaml.BaseLoader)
 
     # overwrite default settings with custom ones
