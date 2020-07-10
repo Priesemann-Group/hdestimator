@@ -399,7 +399,6 @@ def main():
         estimation_methods = [settings['estimation_method']]
         
     # now perform tasks as specified by the parsed arguments
-    settings['cross_validated_optimization'] = True
     
     for estimation_method in estimation_methods:
         settings['estimation_method'] = estimation_method
