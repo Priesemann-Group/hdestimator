@@ -20,13 +20,29 @@ from _version import __version__
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
 
-def do_main_analysis(spike_times, analysis_file, settings):
+def do_main_analysis(spike_times, spike_times_optimization, spike_times_validation,
+                     analysis_file, settings):
     """
     Determine the history dependence of a neuron's activity based on
     spike time data.
     """
+
+    utl.save_spike_times_stats(analysis_file, spike_times, **settings)
     
-    utl.save_history_dependence_for_embeddings(analysis_file, spike_times, **settings)
+    if settings['cross_validated_optimization']:
+        settings['cross_val'] = 'h1' # first half of the data
+        utl.save_history_dependence_for_embeddings(analysis_file,
+                                                   spike_times_optimization,
+                                                   **settings)
+
+        settings['cross_val'] = 'h2' # second half of the data
+        utl.save_history_dependence_for_embeddings(analysis_file,
+                                                   spike_times_validation,
+                                                   **settings)
+    else:
+        settings['cross_val'] = None
+        utl.save_history_dependence_for_embeddings(analysis_file,
+                                                   spike_times, **settings)
 
 def compute_CIs(spike_times, analysis_file, settings):
     """
@@ -34,6 +50,11 @@ def compute_CIs(spike_times, analysis_file, settings):
     which can be used to obtain confidence intervals.
     """
 
+    if settings['cross_validated_optimization']:
+        settings['cross_val'] = 'h2' # second half of the data
+    else:
+        settings['cross_val'] = None
+    
     utl.compute_CIs(analysis_file, spike_times, **settings)
 
 # def perform_permutation_test(analysis_file, settings):
@@ -58,6 +79,11 @@ def create_CSV_files(analysis_file,
     """
     Export the data resulting from the analysis as csv files.
     """
+
+    if settings['cross_validated_optimization']:
+        settings['cross_val'] = 'h2' # second half of the data
+    else:
+        settings['cross_val'] = None
     
     utl.create_CSV_files(analysis_file,
                          csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file,
@@ -329,7 +355,19 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         print("Warning: Invalid label '{}'. It may not contain any commas, as this will conflict with the CSV files. The commas have been replaced by semicolons.".format(settings['label']),
               file=stderr, flush=True)
 
-    return task, spike_times, \
+
+    # for cross-validation
+    # split up data in two halves
+    if settings['cross_validated_optimization']:
+        spike_times_half_time = (spike_times[-1] - spike_times[0]) / 2
+        spike_times_optimization = spike_times[spike_times < spike_times_half_time]
+        spike_times_validation = spike_times[spike_times >= spike_times_half_time] \
+            - spike_times_half_time
+    else:
+        spike_times_optimization = spike_times
+        spike_times_validation = spike_times
+
+    return task, spike_times, spike_times_optimization, spike_times_validation, \
         analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, analysis_num, \
         settings
             
@@ -350,7 +388,7 @@ def main():
     defined_estimation_methods = ['bbc', 'shuffling', 'all']
     
     # get task and target (parse arguments and check for validity)
-    task, spike_times, \
+    task, spike_times, spike_times_optimization, spike_times_validation, \
         analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, analysis_num, \
         settings = parse_arguments(defined_tasks,
                                    defined_estimation_methods)
@@ -361,36 +399,16 @@ def main():
         estimation_methods = [settings['estimation_method']]
         
     # now perform tasks as specified by the parsed arguments
-
-    if settings['cross_validated_optimization']:
-        spike_times_half_time = (spike_times[-1] - spike_times[0]) / 2
-        spike_times_optimization = spike_times[spike_times < spike_times_half_time]
-        spike_times_validation = spike_times[spike_times >= spike_times_half_time] \
-            - spike_times_half_time
-    else:
-        spike_times_validation = spike_times
+    settings['cross_validated_optimization'] = True
     
     for estimation_method in estimation_methods:
         settings['estimation_method'] = estimation_method
 
         if task == "history-dependence" or task == "full-analysis":
-            if settings['cross_validated_optimization']:
-                settings['cross_val'] = 'h1' # first half of the data
-                do_main_analysis(spike_times_optimization,
-                                 analysis_file, settings)
-
-                settings['cross_val'] = 'h2' # second half of the data
-                do_main_analysis(spike_times_validation,
-                                 analysis_file, settings)
-            else:
-                settings['cross_val'] = None
-                do_main_analysis(spike_times, analysis_file, settings)
+            do_main_analysis(spike_times, spike_times_optimization, spike_times_validation,
+                             analysis_file, settings)
 
         if task == "confidence-intervals" or task == "full-analysis":
-            if settings['cross_validated_optimization']:
-                settings['cross_val'] = 'h2' # second half of the data
-            else:
-                settings['cross_val'] = None
             compute_CIs(spike_times_validation, analysis_file, settings)
 
         # if task == "permutation-test" or task == "full-analysis":
@@ -399,11 +417,6 @@ def main():
 
     if task == "auto-mi" or task == "full-analysis":
         analyse_auto_MI(spike_times, analysis_file, settings)
-
-    if settings['cross_validated_optimization']:
-        settings['cross_val'] = 'h2' # second half of the data
-    else:
-        settings['cross_val'] = None
         
     if task == "csv-files" or task == "full-analysis":
         create_CSV_files(analysis_file,

@@ -37,34 +37,6 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
     the history dependence for each embedding.  Save results to file.
     """
 
-    recording_length = load_from_analysis_file(f,
-                                               "recording_length")
-    if recording_length == None:
-        recording_length = spike_times[-1] - spike_times[0]
-        save_to_analysis_file(f,
-                              "recording_length",
-                              recording_length=recording_length)
-
-    
-    firing_rate = load_from_analysis_file(f,
-                                          "firing_rate")
-    if firing_rate == None:
-        firing_rate = get_binned_firing_rate(spike_times, embedding_step_size)
-        save_to_analysis_file(f,
-                              "firing_rate",
-                              firing_rate=firing_rate)
-
-    H_uncond = load_from_analysis_file(f,
-                                       "H_uncond")
-    
-    if H_uncond == None:
-        H_uncond = get_shannon_entropy([firing_rate * embedding_step_size,
-                                        1 - firing_rate * embedding_step_size])
-        
-        save_to_analysis_file(f,
-                              "H_uncond",
-                              H_uncond=H_uncond)
-
     if kwargs['cross_val'] == None or kwargs['cross_val'] == 'h1':
         embeddings = emb.get_embeddings(embedding_length_range,
                                         embedding_number_of_bins_range,
@@ -138,6 +110,41 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
                                       estimation_method="shuffling",
                                       history_dependence=history_dependence,
                                       cross_val=kwargs['cross_val'])
+
+def save_spike_times_stats(f, spike_times,
+                           embedding_step_size,
+                           **kwargs):
+    """
+    Save some statistics about the spike times.
+    """
+
+    recording_length = load_from_analysis_file(f,
+                                               "recording_length")
+    if recording_length == None:
+        recording_length = spike_times[-1] - spike_times[0]
+        save_to_analysis_file(f,
+                              "recording_length",
+                              recording_length=recording_length)
+
+    
+    firing_rate = load_from_analysis_file(f,
+                                          "firing_rate")
+    if firing_rate == None:
+        firing_rate = get_binned_firing_rate(spike_times, embedding_step_size)
+        save_to_analysis_file(f,
+                              "firing_rate",
+                              firing_rate=firing_rate)
+
+    H_uncond = load_from_analysis_file(f,
+                                       "H_uncond")
+    
+    if H_uncond == None:
+        H_uncond = get_shannon_entropy([firing_rate * embedding_step_size,
+                                        1 - firing_rate * embedding_step_size])
+        
+        save_to_analysis_file(f,
+                              "H_uncond",
+                              H_uncond=H_uncond)
                 
 def get_embeddings_that_maximise_R(f,
                                    estimation_method,
