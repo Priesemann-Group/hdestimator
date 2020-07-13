@@ -268,7 +268,7 @@ def bayesian_bias_criterion(H_nsb, H_plugin, H_uncond, bbc_tolerance):
     
     :param H_NSB: NSB entropy
     :param H_plugin: Plugin entropy
-    :param H_uncond: (Unconditional) entropy of the spike train
+    :param H_uncond: (Unconditional) entropy of the spike train, aka H_spiking
     :param bbc_tolerance: tolerance for the Bayesian bias criterion
     """
 
@@ -285,7 +285,7 @@ def get_bbc_term(H_nsb, H_plugin, H_uncond):
     
     :param H_NSB: NSB entropy
     :param H_plugin: Plugin entropy
-    :param H_uncond: (Unconditional) entropy of the spike train
+    :param H_uncond: (Unconditional) entropy of the spike train, aka H_spiking
     """
     
     if H_uncond > 0:

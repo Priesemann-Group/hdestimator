@@ -112,19 +112,19 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         """
     History dependence estimator, v. {}
 
-    Estimate the history dependence and intrinsic timescale of a
-    single neuron, based on information-theoretical measures for spike
-    time data, as presented in (Rudelt et al, in prep.).  Parameters
-    can be passed via the command line or through files, where command
-    line options are prioritised over those passed by file.  (If none
-    are supplied, settings are read from the 'default.yaml' file.)
-    A user new to this tool is encouraged to run
+    Estimate the history dependence and temporal depth of a single
+    neuron, based on information-theoretical measures for spike time
+    data, as presented in (Rudelt et al, in prep.).  Parameters can be
+    passed via the command line or through files, where command line
+    options are prioritised over those passed by file.  (If none are
+    supplied, settings are read from the 'default.yaml' file.)  A user
+    new to this tool is encouraged to run
 
       python3 {} sample_data/spike_times.dat -o sample_output.pdf \\
         -s settings/test.yaml
 
     to test the functionality of this tool.  A more detailed
-    description can be found in the guide shipped with the tool.
+    description can be found in the guide provided with the tool.
         """.format(__version__, argv[0]), formatter_class=argparse.RawDescriptionHelpFormatter)
     optional_arguments = parser._action_groups.pop()
     
@@ -214,15 +214,15 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         settings['block_length_l'] = "None"
 
     # check that required settings are defined
-    required_parameters = ['embedding_length_range', 'embedding_number_of_bins_range',
-                           'embedding_bin_scaling_range', 'embedding_step_size',
+    required_parameters = ['embedding_past_range_set', 'embedding_number_of_bins_set',
+                           'embedding_scaling_exponent_set', 'embedding_step_size',
                            'bbc_tolerance',
                            'number_of_bootstraps', 'number_of_bootstraps_nonessential',
                            'block_length_l',
                            'bootstrap_CI_percentile_lo',
                            'bootstrap_CI_percentile_hi',
                            # 'number_of_permutations',
-                           'auto_MI_bin_size_range',
+                           'auto_MI_bin_size_set',
                            'auto_MI_max_delay']
     
     required_settings = ['estimation_method', 'plot_AIS',
@@ -234,7 +234,8 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     
     for required_setting in required_settings:
         if not required_setting in settings:
-            print("Error in settings file: {} is not defined. Aborting.".format(required_setting), file=stderr, flush=True)
+            print("Error in settings file: {} is not defined. Aborting.".format(required_setting),
+                  file=stderr, flush=True)
             exit(EXIT_FAILURE)
 
     # sanity check for the settings
@@ -252,7 +253,8 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         settings[setting_key] = ast.literal_eval(settings[setting_key])
     for plot_setting in settings['plot_settings']:
         try:
-            settings['plot_settings'][plot_setting] = ast.literal_eval(settings['plot_settings'][plot_setting])
+            settings['plot_settings'][plot_setting] \
+                = ast.literal_eval(settings['plot_settings'][plot_setting])
         except:
             continue
 
@@ -260,19 +262,21 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         if isinstance(settings[parameter_key], list):
             settings[parameter_key] = [ast.literal_eval(element)
                                        for element in settings[parameter_key]]
-        elif parameter_key == 'embedding_bin_scaling_range' and isinstance(settings['embedding_bin_scaling_range'], dict):
-            # embedding_bin_scaling_range can be passed either as a
+        elif parameter_key == 'embedding_scaling_exponent_set' \
+             and isinstance(settings['embedding_scaling_exponent_set'], dict):
+            # embedding_scaling_exponent_set can be passed either as a
             # list, in which case it is evaluated as such or it can be
             # passed by specifying three parameters that determine how
-            # many bin scalings should be used.  in the latter case, the
+            # many scaling exponents should be used.  In the latter case, the
             # uniform embedding as well as the embedding for which
             # the first bin has a length of min_first_bin_size (in
             # seconds) are used, as well as linearly spaced scaling
             # factors in between, such that in total
-            # number_of_bin_scalings scalings are used
+            # number_of_scalings scalings are used
 
-            for key in settings['embedding_bin_scaling_range']:
-                settings['embedding_bin_scaling_range'][key] = ast.literal_eval(settings['embedding_bin_scaling_range'][key])
+            for key in settings['embedding_scaling_exponent_set']:
+                settings['embedding_scaling_exponent_set'][key] \
+                    = ast.literal_eval(settings['embedding_scaling_exponent_set'][key])
         else:
             settings[parameter_key] = ast.literal_eval(settings[parameter_key])
 
@@ -352,7 +356,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
             else:
                 new_label += ";"
         settings['label'] = new_label
-        print("Warning: Invalid label '{}'. It may not contain any commas, as this will conflict with the CSV files. The commas have been replaced by semicolons.".format(settings['label']),
+        print("Warning: Invalid label '{}'. It may not contain any commas, as this conflicts with the CSV file format.  The commas have been replaced by semicolons.".format(settings['label']),
               file=stderr, flush=True)
 
 

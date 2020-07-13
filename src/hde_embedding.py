@@ -12,87 +12,88 @@ except:
     This may take a long time.\n
     """, file=stderr, flush=True)
 
-def get_range_of_bin_scalings(embedding_length_Tp,
-                              number_of_bins_d,
-                              number_of_bin_scalings,
-                              min_first_bin_size,
-                              min_step_for_scaling):
+def get_set_of_scalings(past_range_T,
+                        number_of_bins_d,
+                        number_of_scalings,
+                        min_first_bin_size,
+                        min_step_for_scaling):
     """
-    Get bin scalings such that the uniform embedding as well as 
-    the embedding for which the first bin has a length of 
+    Get scaling exponents such that the uniform embedding as well as
+    the embedding for which the first bin has a length of
     min_first_bin_size (in seconds), as well as linearly spaced 
     scaling factors in between, such that in total
-    number_of_bin_scalings scalings are obtained.
+    number_of_scalings scalings are obtained.
     """
 
-    min_bin_scaling = 0
-    if embedding_length_Tp / number_of_bins_d <= min_first_bin_size or number_of_bins_d == 1:
-        max_bin_scaling = 0
+    min_scaling = 0
+    if past_range_T / number_of_bins_d <= min_first_bin_size or number_of_bins_d == 1:
+        max_scaling = 0
     else:
-        # for the initial guess assume the largest bin dominates, so k is approx. log(Tp) / d
+        # for the initial guess assume the largest bin dominates, so k is approx. log(T) / d
             
-        max_bin_scaling = newton(lambda bin_scaling: get_embedding_length(number_of_bins_d,
-                                                                          min_first_bin_size,
-                                                                          bin_scaling)
-                                 - embedding_length_Tp,
-                                 np.log10(embedding_length_Tp
-                                          / min_first_bin_size) / (number_of_bins_d - 1),
-                                 tol = 1e-04, maxiter = 500)
+        max_scaling = newton(lambda scaling: get_past_range(number_of_bins_d,
+                                                            min_first_bin_size,
+                                                            scaling)
+                             - past_range_T,
+                             np.log10(past_range_T
+                                      / min_first_bin_size) / (number_of_bins_d - 1),
+                             tol = 1e-04, maxiter = 500)
 
-    while np.linspace(min_bin_scaling, max_bin_scaling, number_of_bin_scalings, retstep = True)[1] < min_step_for_scaling:
-        number_of_bin_scalings -= 1
+    while np.linspace(min_scaling, max_scaling,
+                      number_of_scalings, retstep = True)[1] < min_step_for_scaling:
+        number_of_scalings -= 1
         
-    return np.linspace(min_bin_scaling, max_bin_scaling, number_of_bin_scalings)
+    return np.linspace(min_scaling, max_scaling, number_of_scalings)
 
 
-def get_embeddings(embedding_length_range,
-                   embedding_number_of_bins_range,
-                   embedding_bin_scaling_range):
+def get_embeddings(embedding_past_range_set,
+                   embedding_number_of_bins_set,
+                   embedding_scaling_exponent_set):
     """
-    Get all combinations of parameters Tp, d, k, based on the
+    Get all combinations of parameters T, d, k, based on the
     sets of selected parameters.
     """
 
     embeddings = []
-    for embedding_length_Tp in embedding_length_range:
-        for number_of_bins_d in embedding_number_of_bins_range:
+    for past_range_T in embedding_past_range_set:
+        for number_of_bins_d in embedding_number_of_bins_set:
             if not isinstance(number_of_bins_d, int) or number_of_bins_d < 1:
                 stderr.write("Error: numer of bins {} is not a positive integer. Skipping.\n".format(number_of_bins_d))
                 continue
                     
-            if type(embedding_bin_scaling_range) == dict:
-                bin_scaling_range_given_Tp_and_d = get_range_of_bin_scalings(embedding_length_Tp,
-                                                                             number_of_bins_d,
-                                                                             **embedding_bin_scaling_range)
+            if type(embedding_scaling_exponent_set) == dict:
+                scaling_set_given_T_and_d = get_set_of_scalings(past_range_T,
+                                                                number_of_bins_d,
+                                                                **embedding_scaling_exponent_set)
             else:
-                bin_scaling_range_given_Tp_and_d = embedding_bin_scaling_range
+                scaling_set_given_T_and_d = embedding_scaling_exponent_set
                     
-            for bin_scaling_k in bin_scaling_range_given_Tp_and_d:
-                embeddings += [(embedding_length_Tp, number_of_bins_d, bin_scaling_k)]
+            for scaling_k in scaling_set_given_T_and_d:
+                embeddings += [(past_range_T, number_of_bins_d, scaling_k)]
 
     return embeddings
 
 def get_fist_bin_size_for_embedding(embedding):
     """
     Get size of first bin for the embedding, based on the parameters
-    Tp, d and k.
+    T, d and k.
     """
 
-    embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
-    return newton(lambda first_bin_size: get_embedding_length(number_of_bins_d,
-                                                              first_bin_size,
-                                                              bin_scaling_k) - embedding_length_Tp,
+    past_range_T, number_of_bins_d, scaling_k = embedding
+    return newton(lambda first_bin_size: get_past_range(number_of_bins_d,
+                                                        first_bin_size,
+                                                        scaling_k) - past_range_T,
                   0.005, tol = 1e-03, maxiter = 100)
 
 
-def get_embedding_length(number_of_bins_d, first_bin_size, bin_scaling_k):
+def get_past_range(number_of_bins_d, first_bin_size, scaling_k):
     """
-    Get the length of the embedding Tp, based on the parameters d, t0 and k.
+    Get the past range T of the embedding, based on the parameters d, t0 and k.
     """
 
-    return np.sum([first_bin_size * 10**((number_of_bins_d - i) * bin_scaling_k) for i in range(1, number_of_bins_d + 1)])
+    return np.sum([first_bin_size * 10**((number_of_bins_d - i) * scaling_k) for i in range(1, number_of_bins_d + 1)])
 
-def get_window_delimiters(number_of_bins_d, bin_scaling_k, first_bin_size, embedding_step_size):
+def get_window_delimiters(number_of_bins_d, scaling_k, first_bin_size, embedding_step_size):
     """
     Get delimiters of the window, used to describe the embedding. The
     window includes both the past embedding and the response.
@@ -101,8 +102,10 @@ def get_window_delimiters(number_of_bins_d, bin_scaling_k, first_bin_size, embed
     two consequent bins.
     """
 
-    bin_sizes = [first_bin_size * 10**((number_of_bins_d - i) * bin_scaling_k) for i in range(1, number_of_bins_d + 1)]
-    window_delimiters = [sum([bin_sizes[j] for j in range(i)]) for i in range(1, number_of_bins_d + 1)]
+    bin_sizes = [first_bin_size * 10**((number_of_bins_d - i) * scaling_k)
+                 for i in range(1, number_of_bins_d + 1)]
+    window_delimiters = [sum([bin_sizes[j] for j in range(i)])
+                         for i in range(1, number_of_bins_d + 1)]
     window_delimiters.append(window_delimiters[number_of_bins_d - 1] + embedding_step_size)
     return window_delimiters
 
@@ -170,12 +173,12 @@ def get_raw_symbols(spike_times,
     embedding.
     """
     
-    embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+    past_range_T, number_of_bins_d, scaling_k = embedding
 
     # the window is the embedding plus the response,
     # ie the embedding and one additional bin of size embedding_step_size
     window_delimiters = get_window_delimiters(number_of_bins_d,
-                                              bin_scaling_k,
+                                              scaling_k,
                                               first_bin_size,
                                               embedding_step_size)
     window_length = window_delimiters[-1]
@@ -213,7 +216,7 @@ def get_symbol_counts(spike_times, embedding, embedding_step_size):
     if FAST_EMBEDDING_AVAILABLE:
         return fast_emb.get_symbol_counts(spike_times, embedding, embedding_step_size)
     
-    embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+    past_range_T, number_of_bins_d, scaling_k = embedding
     first_bin_size = get_fist_bin_size_for_embedding(embedding)
 
     raw_symbols = get_raw_symbols(spike_times,
@@ -226,7 +229,8 @@ def get_symbol_counts(spike_times, embedding, embedding_step_size):
     symbol_counts = {}
     
     for raw_symbol in raw_symbols:
-        symbol_array = [int(raw_symbol[i] > median_number_of_spikes_per_bin[i]) for i in range(number_of_bins_d + 1)]
+        symbol_array = [int(raw_symbol[i] > median_number_of_spikes_per_bin[i])
+                        for i in range(number_of_bins_d + 1)]
 
         symbol = symbol_array_to_binary(symbol_array, number_of_bins_d + 1)
 

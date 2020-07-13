@@ -18,13 +18,13 @@ cdef np.ndarray[DTYPE_t, ndim=2] get_raw_symbols(np.ndarray[np.double_t, ndim= 1
                                                  embedding,
                                                  first_bin_size,
                                                  embedding_step_size):
-    embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+    past_range_T, number_of_bins_d, scaling_k = embedding
 
     # the window is the embedding plus the response,
     # ie the embedding and one additional bin of size embedding_step_size
     cdef np.ndarray[np.double_t, ndim= 1] \
         window_delimiters = np.array(emb.get_window_delimiters(number_of_bins_d,
-                                                               bin_scaling_k,
+                                                               scaling_k,
                                                                first_bin_size,
                                                                embedding_step_size))
     cdef double window_length = window_delimiters[len(window_delimiters) - 1]
@@ -126,7 +126,7 @@ def count_symbols(DTYPE_t[:] symbols):
 
 
 def get_symbol_counts(spike_times, embedding, embedding_step_size):
-    embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+    past_range_T, number_of_bins_d, scaling_k = embedding
     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
 
     cdef np.ndarray[DTYPE_t, ndim=2] raw_symbols = get_raw_symbols(spike_times,

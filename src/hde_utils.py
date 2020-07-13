@@ -27,9 +27,9 @@ import hde_shuffling_estimator as sh
 #
     
 def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
-                                           embedding_length_range,
-                                           embedding_number_of_bins_range,
-                                           embedding_bin_scaling_range,
+                                           embedding_past_range_set,
+                                           embedding_number_of_bins_set,
+                                           embedding_scaling_exponent_set,
                                            embedding_step_size,
                                            **kwargs):
     """
@@ -38,9 +38,9 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
     """
 
     if kwargs['cross_val'] == None or kwargs['cross_val'] == 'h1':
-        embeddings = emb.get_embeddings(embedding_length_range,
-                                        embedding_number_of_bins_range,
-                                        embedding_bin_scaling_range)
+        embeddings = emb.get_embeddings(embedding_past_range_set,
+                                        embedding_number_of_bins_set,
+                                        embedding_scaling_exponent_set)
     elif kwargs['cross_val'] == 'h2':
         # here we set cross_val to h1, because we load the
         # embeddings that maximise R from the optimisation step
@@ -51,7 +51,7 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
                                                     cross_val='h1')
         
     for embedding in embeddings:
-        embedding_length_Tp = embedding[0]
+        past_range_T = embedding[0]
         number_of_bins_d = embedding[1]
         first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
 
@@ -135,33 +135,33 @@ def save_spike_times_stats(f, spike_times,
                               "firing_rate",
                               firing_rate=firing_rate)
 
-    H_uncond = load_from_analysis_file(f,
-                                       "H_uncond")
+    H_spiking = load_from_analysis_file(f,
+                                       "H_spiking")
     
-    if H_uncond == None:
-        H_uncond = get_shannon_entropy([firing_rate * embedding_step_size,
+    if H_spiking == None:
+        H_spiking = get_shannon_entropy([firing_rate * embedding_step_size,
                                         1 - firing_rate * embedding_step_size])
         
         save_to_analysis_file(f,
-                              "H_uncond",
-                              H_uncond=H_uncond)
+                              "H_spiking",
+                              H_spiking=H_spiking)
                 
 def get_embeddings_that_maximise_R(f,
                                    estimation_method,
                                    embedding_step_size,
                                    bbc_tolerance=None,
-                                   dependent_var="Tp",
+                                   dependent_var="T",
                                    get_as_list=False,
                                    cross_val=None,
                                    **kwargs):
     """
-    For each Tp (or d), get the embedding for which R is maximised.
+    For each T (or d), get the embedding for which R is maximised.
 
     For the bbc estimator, here the bbc_tolerance is applied, ie 
     get the unbiased embeddings that maximise R.
     """
 
-    assert dependent_var in ["Tp", "d"]
+    assert dependent_var in ["T", "d"]
     assert cross_val in [None, "h1", "h2"]
 
     if bbc_tolerance == None \
@@ -178,20 +178,20 @@ def get_embeddings_that_maximise_R(f,
 
     embedding_step_size_label = get_parameter_label(embedding_step_size)
     
-    for embedding_length_Tp_label in f["{}/{}".format(root_dir, embedding_step_size_label)].keys():
+    for past_range_T_label in f["{}/{}".format(root_dir, embedding_step_size_label)].keys():
         for number_of_bins_d_label in f["{}/{}/{}".format(root_dir,
                                                           embedding_step_size_label,
-                                                          embedding_length_Tp_label)].keys():
-            for bin_scaling_k_label in f["{}/{}/{}/{}".format(root_dir,
-                                                              embedding_step_size_label,
-                                                              embedding_length_Tp_label,
-                                                              number_of_bins_d_label)].keys():
-                embedding_length_Tp = float(embedding_length_Tp_label)
+                                                          past_range_T_label)].keys():
+            for scaling_k_label in f["{}/{}/{}/{}".format(root_dir,
+                                                          embedding_step_size_label,
+                                                          past_range_T_label,
+                                                          number_of_bins_d_label)].keys():
+                past_range_T = float(past_range_T_label)
                 number_of_bins_d = int(float(number_of_bins_d_label))
-                bin_scaling_k = float(bin_scaling_k_label)
-                embedding = (embedding_length_Tp,
+                scaling_k = float(scaling_k_label)
+                embedding = (past_range_T,
                              number_of_bins_d,
-                             bin_scaling_k)
+                             scaling_k)
                 history_dependence = load_from_analysis_file(f,
                                                              "history_dependence",
                                                              embedding_step_size=embedding_step_size,
@@ -213,29 +213,29 @@ def get_embeddings_that_maximise_R(f,
                     if bbc_term >= bbc_tolerance:
                         continue
 
-                if dependent_var == "Tp":
-                    if not embedding_length_Tp in embeddings_that_maximise_R \
-                       or history_dependence > max_Rs[embedding_length_Tp]:
-                        max_Rs[embedding_length_Tp] = history_dependence
-                        embeddings_that_maximise_R[embedding_length_Tp] = (number_of_bins_d,
-                                                                           bin_scaling_k)
+                if dependent_var == "T":
+                    if not past_range_T in embeddings_that_maximise_R \
+                       or history_dependence > max_Rs[past_range_T]:
+                        max_Rs[past_range_T] = history_dependence
+                        embeddings_that_maximise_R[past_range_T] = (number_of_bins_d,
+                                                                    scaling_k)
                 elif dependent_var == "d":
                     if not number_of_bins_d in embeddings_that_maximise_R \
                        or history_dependence > max_Rs[number_of_bins_d]:
                         max_Rs[number_of_bins_d] = history_dependence
-                        embeddings_that_maximise_R[number_of_bins_d] = (embedding_length_Tp,
-                                                                        bin_scaling_k)
+                        embeddings_that_maximise_R[number_of_bins_d] = (past_range_T,
+                                                                        scaling_k)
 
     if get_as_list:
         embeddings = []
-        if dependent_var == "Tp":
-            for embedding_length_Tp in embeddings_that_maximise_R:
-                number_of_bins_d, bin_scaling_k = embeddings_that_maximise_R[embedding_length_Tp]
-                embeddings += [(embedding_length_Tp, number_of_bins_d, bin_scaling_k)]
+        if dependent_var == "T":
+            for past_range_T in embeddings_that_maximise_R:
+                number_of_bins_d, scaling_k = embeddings_that_maximise_R[past_range_T]
+                embeddings += [(past_range_T, number_of_bins_d, scaling_k)]
         elif dependent_var == "d":
             for number_of_bins_d in embeddings_that_maximise_R:
-                embedding_length_Tp, bin_scaling_k = embeddings_that_maximise_R[number_of_bins_d]
-                embeddings += [(embedding_length_Tp, number_of_bins_d, bin_scaling_k)]
+                past_range_T, scaling_k = embeddings_that_maximise_R[number_of_bins_d]
+                embeddings += [(past_range_T, number_of_bins_d, scaling_k)]
         return embeddings
     else:
         return embeddings_that_maximise_R, max_Rs
@@ -275,58 +275,59 @@ def get_min_key_for_max_value(d):
         if value == max_value:
             return key 
         
-def get_max_R_Tp(max_Rs):
+def get_max_R_T(max_Rs):
     """
-    Get R and Tp for which R is maximised. 
+    Get R and T for which R is maximised. 
 
-    If R is maximised at several Tp, get the 
-    smallest respective Tp.
+    If R is maximised at several T, get the 
+    smallest respective T.
     """
 
-    max_R_Tp = get_min_key_for_max_value(max_Rs)
-    max_R = max_Rs[max_R_Tp]
-    return max_R, max_R_Tp
+    max_R_T = get_min_key_for_max_value(max_Rs)
+    max_R = max_Rs[max_R_T]
+    return max_R, max_R_T
 
-def get_optimal_embedding_length_Tp(f,
-                                    estimation_method,
-                                    bootstrap_CI_use_sd=True,
-                                    bootstrap_CI_percentile_lo=2.5,
-                                    bootstrap_CI_percentile_hi=97.5,
-                                    **kwargs):
+def get_temporal_depth_T_D(f,
+                           estimation_method,
+                           bootstrap_CI_use_sd=True,
+                           bootstrap_CI_percentile_lo=2.5,
+                           bootstrap_CI_percentile_hi=97.5,
+                           **kwargs):
     """
-    Get the 'optimal' embedding length.
+    Get the temporal depth T_D, the past range for the 
+    'optimal' embedding parameters.
 
-    Given the maximal history dependence R at each embedding length Tp,
-    (cf get_embeddings_that_maximise_R), first find the smallest Tp at 
-    which R is maximised (cf get_max_R_Tp).  If bootstrap replications
-    for this R are available, get the smallest Tp at which this R minus
+    Given the maximal history dependence R at each past range T,
+    (cf get_embeddings_that_maximise_R), first find the smallest T at 
+    which R is maximised (cf get_max_R_T).  If bootstrap replications
+    for this R are available, get the smallest T at which this R minus
     one standard deviation of the bootstrap estimates is attained.
     """
 
     # load data
-    embedding_maximising_R_at_Tp, max_Rs \
+    embedding_maximising_R_at_T, max_Rs \
         = get_embeddings_that_maximise_R(f,
                                          estimation_method=estimation_method,
                                          **kwargs)
 
-    Tps = sorted([key for key in max_Rs.keys()])
-    Rs = [max_Rs[Tp] for Tp in Tps]
+    Ts = sorted([key for key in max_Rs.keys()])
+    Rs = [max_Rs[T] for T in Ts]
 
     # first get the max history dependence, and if available its bootstrap replications
     max_R = max(Rs)
-    max_R_Tp = 0 # smallest Tp for which max_R is attained
-    for R, Tp in zip(Rs, Tps):
+    max_R_T = 0 # smallest T for which max_R is attained
+    for R, T in zip(Rs, Ts):
         if R == max_R:
-            max_R_Tp = Tp
+            max_R_T = T
             break
 
-    number_of_bins_d, bin_scaling_k = embedding_maximising_R_at_Tp[max_R_Tp]
+    number_of_bins_d, scaling_k = embedding_maximising_R_at_T[max_R_T]
     bs_Rs = load_from_analysis_file(f,
                                     "bs_history_dependence",
                                     embedding_step_size=kwargs["embedding_step_size"],
-                                    embedding=(max_R_Tp,
+                                    embedding=(max_R_T,
                                                number_of_bins_d,
-                                               bin_scaling_k),
+                                               scaling_k),
                                     estimation_method=estimation_method)
 
     if isinstance(bs_Rs, np.ndarray):
@@ -334,15 +335,15 @@ def get_optimal_embedding_length_Tp(f,
     else:
         max_R_sd = 0
 
-    opt_R_thresh = max_R - max_R_sd
+    R_tot_thresh = max_R - max_R_sd
 
-    opt_Tp = min(Tps)
-    for R, Tp in zip(Rs, Tps):
-        if R >= opt_R_thresh:
-            opt_Tp = Tp
+    T_D = min(Ts)
+    for R, T in zip(Rs, Ts):
+        if R >= R_tot_thresh:
+            T_D = T
             break
 
-    return opt_Tp
+    return T_D
 
 
 # # FIXME make this more general, pass embedding and do not
@@ -352,19 +353,19 @@ def get_optimal_embedding_length_Tp(f,
 #                             embedding_step_size,
 #                             estimation_method,
 #                             **kwargs):
-#     embedding_maximising_R_at_Tp, max_Rs \
+#     embedding_maximising_R_at_T, max_Rs \
 #         = get_embeddings_that_maximise_R(f,
 #                                          embedding_step_size=embedding_step_size,
 #                                          estimation_method=estimation_method,
 #                                          **kwargs)
 
-#     opt_Tp = get_optimal_embedding_length_Tp(f,
-#                                              estimation_method,
-#                                              embedding_step_size=embedding_step_size,
-#                                              **kwargs)
+#     T_D = get_temporal_depth_T_D(f,
+#                                  estimation_method,
+#                                  embedding_step_size=embedding_step_size,
+#                                  **kwargs)
 
-#     number_of_bins_d, bin_scaling_k = embedding_maximising_R_at_Tp[opt_Tp]
-#     embedding = (opt_Tp, number_of_bins_d, bin_scaling_k)
+#     number_of_bins_d, scaling_k = embedding_maximising_R_at_T[T_D]
+#     embedding = (T_D, number_of_bins_d, scaling_k)
 
 
 #     # first get the bootstrapped Rs
@@ -394,10 +395,10 @@ def get_optimal_embedding_length_Tp(f,
 #     H_plugin_joint = bbc.plugin_entropy(mk, N)
 #     H_plugin_past = bbc.plugin_entropy(mk_past, N)
 #     H_plugin_cond = H_plugin_joint - H_plugin_past
-#     H_uncond = load_from_analysis_file(f,
-#                                        "H_uncond")
-#     I_plugin = H_uncond - H_plugin_cond
-#     history_dependence_plugin = I_plugin / H_uncond
+#     H_spiking = load_from_analysis_file(f,
+#                                        "H_spiking")
+#     I_plugin = H_spiking - H_plugin_cond
+#     history_dependence_plugin = I_plugin / H_spiking
 
 #     return np.average(bs_Rs) - history_dependence_plugin
 
@@ -418,17 +419,17 @@ def compute_CIs(f,
     and save to file.
 
     :param number_of_bootstraps: Number of bootstrap replications of R
-    that are produced for the Tp at which R is maximised, and for the
-    'optimal' Tp (cf get_optimal_embedding_length_Tp).  
+    that are produced for the T at which R is maximised, and for the
+    temporal depth T_D (cf get_temporal_depth_T_D).  
     :param number_of_bootstraps_nonessential: Number of bootstrap
-    replications of R that are produced for each Tp (one embedding per
-    Tp, cf get_embeddings_that_maximise_R).  These are not otherwise
+    replications of R that are produced for each T (one embedding per
+    T, cf get_embeddings_that_maximise_R).  These are not otherwise
     used in the analysis and are probably only useful if the resulting
     plot is visually inspected, so in most cases it can be set to
     zero.
     """
     
-    embedding_maximising_R_at_Tp, max_Rs \
+    embedding_maximising_R_at_T, max_Rs \
         = get_embeddings_that_maximise_R(f,
                                          embedding_step_size=embedding_step_size,
                                          estimation_method=estimation_method,
@@ -447,11 +448,11 @@ def compute_CIs(f,
         # (in the reponse, ignoring the past activity)
         block_length_l = max(1, int(1 / (firing_rate * embedding_step_size)))
 
-    # first bootstrap R for unessential Tps (no bootstraps required for the main analysis)
+    # first bootstrap R for unessential Ts (no bootstraps required for the main analysis)
 
-    for embedding_length_Tp in embedding_maximising_R_at_Tp:
-        number_of_bins_d, bin_scaling_k = embedding_maximising_R_at_Tp[embedding_length_Tp]
-        embedding = (embedding_length_Tp, number_of_bins_d, bin_scaling_k)
+    for past_range_T in embedding_maximising_R_at_T:
+        number_of_bins_d, scaling_k = embedding_maximising_R_at_T[past_range_T]
+        embedding = (past_range_T, number_of_bins_d, scaling_k)
 
         stored_bs_Rs = load_from_analysis_file(f,
                                                "bs_history_dependence",
@@ -487,12 +488,12 @@ def compute_CIs(f,
 
 
     # then bootstrap R for the max R, to get a good estimate for the standard deviation
-    # which is used to determine opt R
+    # which is used to determine R_tot
 
-    max_R, max_R_Tp = get_max_R_Tp(max_Rs)
+    max_R, max_R_T = get_max_R_T(max_Rs)
         
-    number_of_bins_d, bin_scaling_k = embedding_maximising_R_at_Tp[max_R_Tp]
-    embedding = (max_R_Tp, number_of_bins_d, bin_scaling_k)
+    number_of_bins_d, scaling_k = embedding_maximising_R_at_T[max_R_T]
+    embedding = (max_R_T, number_of_bins_d, scaling_k)
 
     stored_bs_Rs = load_from_analysis_file(f,
                                            "bs_history_dependence",
@@ -524,16 +525,16 @@ def compute_CIs(f,
                               bs_history_dependence=bs_history_dependence,
                               cross_val=kwargs['cross_val'])
 
-    # then bootstrap opt R for a confidence interval, per default based on
+    # then bootstrap R_tot for a confidence interval, per default based on
     # the variance of the bootstrap replications
 
-    opt_Tp = get_optimal_embedding_length_Tp(f,
-                                             estimation_method,
-                                             embedding_step_size=embedding_step_size,
-                                             **kwargs)
+    T_D = get_temporal_depth_T_D(f,
+                                 estimation_method,
+                                 embedding_step_size=embedding_step_size,
+                                 **kwargs)
 
-    number_of_bins_d, bin_scaling_k = embedding_maximising_R_at_Tp[opt_Tp]
-    embedding = (opt_Tp, number_of_bins_d, bin_scaling_k)
+    number_of_bins_d, scaling_k = embedding_maximising_R_at_T[T_D]
+    embedding = (T_D, number_of_bins_d, scaling_k)
 
     stored_bs_Rs = load_from_analysis_file(f,
                                            "bs_history_dependence",
@@ -576,11 +577,11 @@ def get_bootstrap_history_dependence(spike_times,
     """
     For a given embedding, return bootstrap replications for R.
     """
-    embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+    past_range_T, number_of_bins_d, scaling_k = embedding
 
     # compute total number of symbols in original data:
     # this is the amount of symbols we want to replicate
-    num_symbols = 1 + int((recording_length - (embedding_length_Tp + embedding_step_size))
+    num_symbols = 1 + int((recording_length - (past_range_T + embedding_step_size))
                           / embedding_step_size)
     
     symbol_block_length = int(block_length_l)
@@ -615,7 +616,7 @@ def get_symbols_array(spike_times, embedding, embedding_step_size):
     Apply an embedding to a spike train and get the resulting symbols.
     """
     
-    embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+    past_range_T, number_of_bins_d, scaling_k = embedding
     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
 
     raw_symbols = emb.get_raw_symbols(spike_times,
@@ -682,25 +683,25 @@ def get_bootstrap_symbol_counts_from_symbols_array(symbols_array,
 #     Perform a permutation test to check whether th history dependece 
 #     in the target neuron is significantly different from zero.
     
-#     This is performed for the R at the 'optimal' Tp (cf 
-#     get_optimal_embedding_length_Tp).
+#     This is performed for R_tot, the R for which T = T_D (cf 
+#     get_temporal_depth_T_D).
 #     """
     
-#     embedding_maximising_R_at_Tp, max_Rs = get_embeddings_that_maximise_R(f,
+#     embedding_maximising_R_at_T, max_Rs = get_embeddings_that_maximise_R(f,
 #                                                                           embedding_step_size=embedding_step_size,
 #                                                                           estimation_method=estimation_method,
 #                                                                           **kwargs)
 
-#     opt_embedding_length_Tp = get_optimal_embedding_length_Tp(f,
-#                                                               estimation_method=estimation_method,
-#                                                               embedding_step_size=embedding_step_size,
-#                                                               **kwargs)
+#     temporal_depth_T_D = get_temporal_depth_T_D(f,
+#                                                 estimation_method=estimation_method,
+#                                                 embedding_step_size=embedding_step_size,
+#                                                 **kwargs)
 
-#     opt_R = max_Rs[opt_embedding_length_Tp]
-#     opt_number_of_bins_d, opt_bin_scaling_k \
-#         = embedding_maximising_R_at_Tp[opt_embedding_length_Tp]
+#     R_tot = max_Rs[temporal_depth_T_D]
+#     opt_number_of_bins_d, opt_scaling_k \
+#         = embedding_maximising_R_at_T[temporal_depth_T_D]
     
-#     opt_embedding = (opt_embedding_length_Tp, opt_number_of_bins_d, opt_bin_scaling_k)
+#     opt_embedding = (temporal_depth_T_D, opt_number_of_bins_d, opt_scaling_k)
 
 #     symbol_counts = load_from_analysis_file(f,
 #                                             "symbol_counts",
@@ -806,7 +807,7 @@ def get_shannon_entropy(probabilities):
 
     return - sum((p * np.log(p) for p in probabilities if not p == 0))
 
-def get_H_uncond(symbol_counts):
+def get_H_spiking(symbol_counts):
     """
     Get the (unconditional) entropy of a spike train, based
     on its outcomes, as stored in the symbol_counts dictionary.
@@ -893,11 +894,11 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
     """
     
     settings = {'embedding_step_size' : 0.005,
-                'embedding_length_range' : [float("{:.5f}".format(np.exp(x))) for x in np.arange(np.log(0.005), np.log(5.001), 0.05 * np.log(10))],
-                'embedding_number_of_bins_range' : [int(x) for x in np.linspace(1,5,5)],
-                'embedding_bin_scaling_range' : {'number_of_bin_scalings': 10,
-                                                 'min_first_bin_size' : 0.005,
-                                                 'min_step_for_scaling': 0.01},
+                'embedding_past_range_set' : [float("{:.5f}".format(np.exp(x))) for x in np.arange(np.log(0.005), np.log(5.001), 0.05 * np.log(10))],
+                'embedding_number_of_bins_set' : [int(x) for x in np.linspace(1,5,5)],
+                'embedding_scaling_exponent_set' : {'number_of_scalings': 10,
+                                                    'min_first_bin_size' : 0.005,
+                                                    'min_step_for_scaling': 0.01},
                 'estimation_method' : "shuffling",
                 'bbc_tolerance' : 0.05,
                 'cross_validated_optimization' : True,
@@ -908,7 +909,7 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                 'bootstrap_CI_percentile_lo' : 2.5,
                 'bootstrap_CI_percentile_hi' : 97.5,
                 # 'number_of_permutations' : 100,
-                'auto_MI_bin_size_range' : [0.005, 0.01, 0.025, 0.05, 0.25, 0.5],
+                'auto_MI_bin_size_set' : [0.005, 0.01, 0.025, 0.05, 0.25, 0.5],
                 'auto_MI_max_delay' : 10,
                 'label' : '""',
                 'ANALYSIS_DIR' : "./analysis",
@@ -948,32 +949,32 @@ def get_analysis_stats(f,
     stats = {
         "analysis_num" : str(analysis_num),
         "label" : kwargs["label"],
-        "opt_Tp_bbc" : "-",
-        "opt_R_bbc" : "-",
-        "opt_R_bbc_CI_lo" : "-",
-        "opt_R_bbc_CI_hi" : "-",
-        # "opt_R_bbc_RMSE" : "-",
-        # "opt_R_bbc_bias" : "-",
-        "opt_AIS_bbc" : "-",
-        "opt_AIS_bbc_CI_lo" : "-",
-        "opt_AIS_bbc_CI_hi" : "-",
-        # "opt_AIS_bbc_RMSE" : "-",
-        # "opt_AIS_bbc_bias" : "-",
+        "T_D_bbc" : "-",
+        "R_tot_bbc" : "-",
+        "R_tot_bbc_CI_lo" : "-",
+        "R_tot_bbc_CI_hi" : "-",
+        # "R_tot_bbc_RMSE" : "-",
+        # "R_tot_bbc_bias" : "-",
+        "AIS_tot_bbc" : "-",
+        "AIS_tot_bbc_CI_lo" : "-",
+        "AIS_tot_bbc_CI_hi" : "-",
+        # "AIS_tot_bbc_RMSE" : "-",
+        # "AIS_tot_bbc_bias" : "-",
         "opt_number_of_bins_d_bbc" : "-",
         "opt_scaling_k_bbc" : "-",
         "opt_first_bin_size_bbc" : "-",
         # "asl_permutation_test_bbc" : "-",
-        "opt_Tp_shuffling" : "-",
-        "opt_R_shuffling" : "-",
-        "opt_R_shuffling_CI_lo" : "-",
-        "opt_R_shuffling_CI_hi" : "-",
-        # "opt_R_shuffling_RMSE" : "-",
-        # "opt_R_shuffling_bias" : "-",
-        "opt_AIS_shuffling" : "-",
-        "opt_AIS_shuffling_CI_lo" : "-",
-        "opt_AIS_shuffling_CI_hi" : "-",
-        # "opt_AIS_shuffling_RMSE" : "-",
-        # "opt_AIS_shuffling_bias" : "-",
+        "T_D_shuffling" : "-",
+        "R_tot_shuffling" : "-",
+        "R_tot_shuffling_CI_lo" : "-",
+        "R_tot_shuffling_CI_hi" : "-",
+        # "R_tot_shuffling_RMSE" : "-",
+        # "R_tot_shuffling_bias" : "-",
+        "AIS_tot_shuffling" : "-",
+        "AIS_tot_shuffling_CI_lo" : "-",
+        "AIS_tot_shuffling_CI_hi" : "-",
+        # "AIS_tot_shuffling_RMSE" : "-",
+        # "AIS_tot_shuffling_bias" : "-",
         "opt_number_of_bins_d_shuffling" : "-",
         "opt_scaling_k_shuffling" : "-",
         "opt_first_bin_size_shuffling" : "-",
@@ -988,58 +989,58 @@ def get_analysis_stats(f,
         # "number_of_permutations_shuffling" : "-",
         "firing_rate" : get_parameter_label(load_from_analysis_file(f, "firing_rate")),
         "recording_length" : get_parameter_label(load_from_analysis_file(f, "recording_length")),
-        "H_uncond" : "-",
+        "H_spiking" : "-",
     }
     
     if stats["label"] == "":
         stats["label"] = "-"
 
-    H_uncond = load_from_analysis_file(f, "H_uncond")
-    stats["H_uncond"] = get_parameter_label(H_uncond)
+    H_spiking = load_from_analysis_file(f, "H_spiking")
+    stats["H_spiking"] = get_parameter_label(H_spiking)
 
     for estimation_method in ["bbc", "shuffling"]:
 
-        embedding_maximising_R_at_Tp, max_Rs \
+        embedding_maximising_R_at_T, max_Rs \
             = get_embeddings_that_maximise_R(f,
                                              estimation_method=estimation_method,
                                              **kwargs)
 
-        if len(embedding_maximising_R_at_Tp) == 0:
+        if len(embedding_maximising_R_at_T) == 0:
             continue
             
-        opt_embedding_length_Tp = get_optimal_embedding_length_Tp(f,
-                                                                  estimation_method=estimation_method,
-                                                                  **kwargs)
+        temporal_depth_T_D = get_temporal_depth_T_D(f,
+                                                    estimation_method=estimation_method,
+                                                    **kwargs)
         
-        opt_R = max_Rs[opt_embedding_length_Tp]
-        opt_number_of_bins_d, opt_bin_scaling_k \
-            = embedding_maximising_R_at_Tp[opt_embedding_length_Tp]
+        R_tot = max_Rs[temporal_depth_T_D]
+        opt_number_of_bins_d, opt_scaling_k \
+            = embedding_maximising_R_at_T[temporal_depth_T_D]
 
-        stats["opt_Tp_{}".format(estimation_method)] = get_parameter_label(opt_embedding_length_Tp)
-        stats["opt_R_{}".format(estimation_method)] = get_parameter_label(opt_R)
-        stats["opt_AIS_{}".format(estimation_method)] = get_parameter_label(opt_R * H_uncond)
+        stats["T_D_{}".format(estimation_method)] = get_parameter_label(temporal_depth_T_D)
+        stats["R_tot_{}".format(estimation_method)] = get_parameter_label(R_tot)
+        stats["AIS_tot_{}".format(estimation_method)] = get_parameter_label(R_tot * H_spiking)
         stats["opt_number_of_bins_d_{}".format(estimation_method)] \
             = get_parameter_label(opt_number_of_bins_d)
         stats["opt_scaling_k_{}".format(estimation_method)] \
-            = get_parameter_label(opt_bin_scaling_k)
+            = get_parameter_label(opt_scaling_k)
 
         stats["opt_first_bin_size_{}".format(estimation_method)] \
             = get_parameter_label(load_from_analysis_file(f,
                                                           "first_bin_size",
                                                           embedding_step_size\
                                                           =kwargs["embedding_step_size"],
-                                                          embedding=(opt_embedding_length_Tp,
+                                                          embedding=(temporal_depth_T_D,
                                                                      opt_number_of_bins_d,
-                                                                     opt_bin_scaling_k),
+                                                                     opt_scaling_k),
                                                           estimation_method=estimation_method,
                                                           cross_val=kwargs['cross_val']))
         
         bs_Rs = load_from_analysis_file(f,
                                         "bs_history_dependence",
                                         embedding_step_size=kwargs["embedding_step_size"],
-                                        embedding=(opt_embedding_length_Tp,
+                                        embedding=(temporal_depth_T_D,
                                                    opt_number_of_bins_d,
-                                                   opt_bin_scaling_k),
+                                                   opt_scaling_k),
                                         estimation_method=estimation_method,
                                         cross_val=kwargs['cross_val'])
         if isinstance(bs_Rs, np.ndarray):
@@ -1047,18 +1048,18 @@ def get_analysis_stats(f,
                 = str(len(bs_Rs))
 
         if not stats["number_of_bootstraps_{}".format(estimation_method)] == "-":
-            opt_R_CI_lo, opt_R_CI_hi = get_CI_bounds(bs_Rs,
+            R_tot_CI_lo, R_tot_CI_hi = get_CI_bounds(bs_Rs,
                                                      kwargs["bootstrap_CI_use_sd"],
                                                      kwargs["bootstrap_CI_percentile_lo"],
                                                      kwargs["bootstrap_CI_percentile_hi"])
-            stats["opt_R_{}_CI_lo".format(estimation_method)] \
-                = get_parameter_label(opt_R_CI_lo)
-            stats["opt_R_{}_CI_hi".format(estimation_method)] \
-                = get_parameter_label(opt_R_CI_hi)
-            stats["opt_AIS_{}_CI_lo".format(estimation_method)] \
-                = get_parameter_label(opt_R_CI_lo * H_uncond)
-            stats["opt_AIS_{}_CI_hi".format(estimation_method)] \
-                = get_parameter_label(opt_R_CI_hi * H_uncond)
+            stats["R_tot_{}_CI_lo".format(estimation_method)] \
+                = get_parameter_label(R_tot_CI_lo)
+            stats["R_tot_{}_CI_hi".format(estimation_method)] \
+                = get_parameter_label(R_tot_CI_hi)
+            stats["AIS_tot_{}_CI_lo".format(estimation_method)] \
+                = get_parameter_label(R_tot_CI_lo * H_spiking)
+            stats["AIS_tot_{}_CI_hi".format(estimation_method)] \
+                = get_parameter_label(R_tot_CI_hi * H_spiking)
 
             # bias = estimate_bootstrap_bias(f,
             #                                estimation_method=estimation_method,
@@ -1066,10 +1067,10 @@ def get_analysis_stats(f,
 
             # variance = np.var(bs_Rs)
 
-            # stats["opt_R_{}_RMSE".format(estimation_method)] \
+            # stats["R_tot_{}_RMSE".format(estimation_method)] \
             #     = get_parameter_label(np.sqrt(variance + bias**2))
 
-            # stats["opt_R_{}_bias".format(estimation_method)] \
+            # stats["R_tot_{}_bias".format(estimation_method)] \
             #     = get_parameter_label(bias)
 
             # TODO RMSE, bias for AIS
@@ -1084,14 +1085,14 @@ def get_analysis_stats(f,
         # pt_Rs = load_from_analysis_file(f,
         #                                 "pt_history_dependence",
         #                                 embedding_step_size=kwargs["embedding_step_size"],
-        #                                 embedding=(opt_embedding_length_Tp,
+        #                                 embedding=(temporal_depth_T_D,
         #                                            opt_number_of_bins_d,
-        #                                            opt_bin_scaling_k),
+        #                                            opt_scaling_k),
         #                                 estimation_method=estimation_method)
 
         # if isinstance(pt_Rs, np.ndarray):
         #     stats["asl_permutation_test_{}".format(estimation_method)] \
-        #         = get_parameter_label(get_asl_permutation_test(pt_Rs, opt_R))
+        #         = get_parameter_label(get_asl_permutation_test(pt_Rs, R_tot))
 
         #     stats["number_of_permutations_{}".format(estimation_method)] \
         #         = str(len(pt_Rs))
@@ -1103,12 +1104,12 @@ def get_histdep_data(f,
                      estimation_method,
                      **kwargs):
     """
-    Get R values for each Tp, as needed for the plots, to export them 
+    Get R values for each T, as needed for the plots, to export them 
     to a csv file.
     """
     
     histdep_data = {
-        "Tp" : [],
+        "T" : [],
         "max_R_bbc" : [],
         "max_R_bbc_CI_lo" : [],
         "max_R_bbc_CI_hi" : [],
@@ -1136,20 +1137,20 @@ def get_histdep_data(f,
     for estimation_method in ['bbc', 'shuffling']:
         # kwargs["estimation_method"] = estimation_method
         
-        embedding_maximising_R_at_Tp, max_Rs \
+        embedding_maximising_R_at_T, max_Rs \
             = get_embeddings_that_maximise_R(f,
                                              estimation_method=estimation_method,
                                              **kwargs)
 
-        if len(embedding_maximising_R_at_Tp) == 0:
+        if len(embedding_maximising_R_at_T) == 0:
             if estimation_method == 'bbc':
-                embedding_maximising_R_at_Tp_bbc = {}
+                embedding_maximising_R_at_T_bbc = {}
                 max_Rs_bbc = []
                 max_R_bbc_CI_lo = {}
                 max_R_bbc_CI_hi = {}
                 # max_R_bbc_CI_med = {}
             elif estimation_method == 'shuffling':
-                embedding_maximising_R_at_Tp_shuffling = {}
+                embedding_maximising_R_at_T_shuffling = {}
                 max_Rs_shuffling = []
                 max_R_shuffling_CI_lo = {}
                 max_R_shuffling_CI_hi = {}
@@ -1160,9 +1161,9 @@ def get_histdep_data(f,
         max_R_CI_hi = {}
         # max_R_CI_med = {}
         
-        for embedding_length_Tp in embedding_maximising_R_at_Tp:
-            number_of_bins_d, bin_scaling_k = embedding_maximising_R_at_Tp[embedding_length_Tp]
-            embedding = (embedding_length_Tp, number_of_bins_d, bin_scaling_k)
+        for past_range_T in embedding_maximising_R_at_T:
+            number_of_bins_d, scaling_k = embedding_maximising_R_at_T[past_range_T]
+            embedding = (past_range_T, number_of_bins_d, scaling_k)
 
             bs_Rs = load_from_analysis_file(f,
                                             "bs_history_dependence",
@@ -1172,67 +1173,67 @@ def get_histdep_data(f,
                                             cross_val=kwargs['cross_val'])
 
             if isinstance(bs_Rs, np.ndarray):
-                max_R_CI_lo[embedding_length_Tp], max_R_CI_hi[embedding_length_Tp] \
+                max_R_CI_lo[past_range_T], max_R_CI_hi[past_range_T] \
                     = get_CI_bounds(bs_Rs,
                                     kwargs["bootstrap_CI_use_sd"],
                                     kwargs["bootstrap_CI_percentile_lo"],
                                     kwargs["bootstrap_CI_percentile_hi"])
-                # max_R_CI_med[embedding_length_Tp] \
+                # max_R_CI_med[past_range_T] \
                 #     = np.median(bs_Rs)
             else:
-                max_R_CI_lo[embedding_length_Tp] \
-                    = max_Rs[embedding_length_Tp]
+                max_R_CI_lo[past_range_T] \
+                    = max_Rs[past_range_T]
 
-                max_R_CI_hi[embedding_length_Tp] \
-                    = max_Rs[embedding_length_Tp]
+                max_R_CI_hi[past_range_T] \
+                    = max_Rs[past_range_T]
 
-                # max_R_CI_med[embedding_length_Tp] \
-                #     = max_Rs[embedding_length_Tp]
+                # max_R_CI_med[past_range_T] \
+                #     = max_Rs[past_range_T]
                 
 
         if estimation_method == 'bbc':
-            embedding_maximising_R_at_Tp_bbc = embedding_maximising_R_at_Tp.copy()
+            embedding_maximising_R_at_T_bbc = embedding_maximising_R_at_T.copy()
             max_Rs_bbc = max_Rs.copy()
             max_R_bbc_CI_lo = max_R_CI_lo.copy()
             max_R_bbc_CI_hi = max_R_CI_hi.copy()
             # max_R_bbc_CI_med = max_R_CI_med.copy()
         elif estimation_method == 'shuffling':
-            embedding_maximising_R_at_Tp_shuffling = embedding_maximising_R_at_Tp.copy()
+            embedding_maximising_R_at_T_shuffling = embedding_maximising_R_at_T.copy()
             max_Rs_shuffling = max_Rs.copy()
             max_R_shuffling_CI_lo = max_R_CI_lo.copy()
             max_R_shuffling_CI_hi = max_R_CI_hi.copy()
             # max_R_shuffling_CI_med = max_R_CI_med.copy()
 
-    Tps = sorted(np.unique(np.hstack(([R for R in max_Rs_bbc],
+    Ts = sorted(np.unique(np.hstack(([R for R in max_Rs_bbc],
                                       [R for R in max_Rs_shuffling]))))
-    H_uncond = load_from_analysis_file(f,
-                                       "H_uncond")
+    H_spiking = load_from_analysis_file(f,
+                                       "H_spiking")
 
-    for Tp in Tps:
-        histdep_data["Tp"] += [get_parameter_label(Tp)]
-        if Tp in max_Rs_bbc:
-            number_of_bins_d = embedding_maximising_R_at_Tp_bbc[Tp][0]
-            scaling_k = embedding_maximising_R_at_Tp_bbc[Tp][1]
-            first_bin_size = emb.get_fist_bin_size_for_embedding((Tp,
+    for T in Ts:
+        histdep_data["T"] += [get_parameter_label(T)]
+        if T in max_Rs_bbc:
+            number_of_bins_d = embedding_maximising_R_at_T_bbc[T][0]
+            scaling_k = embedding_maximising_R_at_T_bbc[T][1]
+            first_bin_size = emb.get_fist_bin_size_for_embedding((T,
                                                                   number_of_bins_d,
                                                                   scaling_k))
             
             histdep_data["max_R_bbc"] \
-                += [get_parameter_label(max_Rs_bbc[Tp])]
+                += [get_parameter_label(max_Rs_bbc[T])]
             histdep_data["max_R_bbc_CI_lo"] \
-                += [get_parameter_label(max_R_bbc_CI_lo[Tp])]
+                += [get_parameter_label(max_R_bbc_CI_lo[T])]
             histdep_data["max_R_bbc_CI_hi"] \
-                += [get_parameter_label(max_R_bbc_CI_hi[Tp])]
+                += [get_parameter_label(max_R_bbc_CI_hi[T])]
             # histdep_data["max_R_bbc_CI_med"] \
-            #     += [get_parameter_label(max_R_bbc_CI_med[Tp])]
+            #     += [get_parameter_label(max_R_bbc_CI_med[T])]
             histdep_data["max_AIS_bbc"] \
-                += [get_parameter_label(max_Rs_bbc[Tp] * H_uncond)]
+                += [get_parameter_label(max_Rs_bbc[T] * H_spiking)]
             histdep_data["max_AIS_bbc_CI_lo"] \
-                += [get_parameter_label(max_R_bbc_CI_lo[Tp] * H_uncond)]
+                += [get_parameter_label(max_R_bbc_CI_lo[T] * H_spiking)]
             histdep_data["max_AIS_bbc_CI_hi"] \
-                += [get_parameter_label(max_R_bbc_CI_hi[Tp] * H_uncond)]
+                += [get_parameter_label(max_R_bbc_CI_hi[T] * H_spiking)]
             # histdep_data["max_AIS_bbc_CI_med"] \
-            #     += [get_parameter_label(max_R_bbc_CI_med[Tp] * H_uncond)]
+            #     += [get_parameter_label(max_R_bbc_CI_med[T] * H_spiking)]
             histdep_data["number_of_bins_d_bbc"] \
                 += [get_parameter_label(number_of_bins_d)]
             histdep_data["scaling_k_bbc"] \
@@ -1243,28 +1244,28 @@ def get_histdep_data(f,
             for key in histdep_data:
                 if 'bbc' in key:
                     histdep_data[key] += ['-']
-        if Tp in max_Rs_shuffling:
-            number_of_bins_d = embedding_maximising_R_at_Tp_shuffling[Tp][0]
-            scaling_k = embedding_maximising_R_at_Tp_shuffling[Tp][1]
-            first_bin_size = emb.get_fist_bin_size_for_embedding((Tp,
+        if T in max_Rs_shuffling:
+            number_of_bins_d = embedding_maximising_R_at_T_shuffling[T][0]
+            scaling_k = embedding_maximising_R_at_T_shuffling[T][1]
+            first_bin_size = emb.get_fist_bin_size_for_embedding((T,
                                                                   number_of_bins_d,
                                                                   scaling_k))
             histdep_data["max_R_shuffling"] \
-                += [get_parameter_label(max_Rs_shuffling[Tp])]
+                += [get_parameter_label(max_Rs_shuffling[T])]
             histdep_data["max_R_shuffling_CI_lo"] \
-                += [get_parameter_label(max_R_shuffling_CI_lo[Tp])]
+                += [get_parameter_label(max_R_shuffling_CI_lo[T])]
             histdep_data["max_R_shuffling_CI_hi"] \
-                += [get_parameter_label(max_R_shuffling_CI_hi[Tp])]
+                += [get_parameter_label(max_R_shuffling_CI_hi[T])]
             # histdep_data["max_R_shuffling_CI_med"] \
-            #     += [get_parameter_label(max_R_shuffling_CI_med[Tp])]
+            #     += [get_parameter_label(max_R_shuffling_CI_med[T])]
             histdep_data["max_AIS_shuffling"] \
-                += [get_parameter_label(max_Rs_shuffling[Tp] * H_uncond)]
+                += [get_parameter_label(max_Rs_shuffling[T] * H_spiking)]
             histdep_data["max_AIS_shuffling_CI_lo"] \
-                += [get_parameter_label(max_R_shuffling_CI_lo[Tp] * H_uncond)]
+                += [get_parameter_label(max_R_shuffling_CI_lo[T] * H_spiking)]
             histdep_data["max_AIS_shuffling_CI_hi"] \
-                += [get_parameter_label(max_R_shuffling_CI_hi[Tp] * H_uncond)]
+                += [get_parameter_label(max_R_shuffling_CI_hi[T] * H_spiking)]
             # histdep_data["max_AIS_shuffling_CI_med"] \
-            #     += [get_parameter_label(max_R_shuffling_CI_med[Tp] * H_uncond)]
+            #     += [get_parameter_label(max_R_shuffling_CI_med[T] * H_spiking)]
             histdep_data["number_of_bins_d_shuffling"] \
                 += [get_parameter_label(number_of_bins_d)]
             histdep_data["scaling_k_shuffling"] \
@@ -1351,7 +1352,7 @@ def load_auto_MI_data(f_csv_auto_MI_data):
 
 
 
-# def get_asl_permutation_test(pt_history_dependence, opt_history_dependence):
+# def get_asl_permutation_test(pt_history_dependence, R_tot):
 #     """
 #     Compute the permutation test statistic (the achieved significance
 #     level, ASL_perm, eg. eq. 15.18 in Efron and Tibshirani: An
@@ -1363,11 +1364,11 @@ def load_auto_MI_data(f_csv_auto_MI_data):
 #     in the data.
 #     """
 #     return sum([1 for R in pt_history_dependence
-#                 if R > opt_history_dependence]) / len(pt_history_dependence)
+#                 if R > R_tot]) / len(pt_history_dependence)
 
 def analyse_auto_MI(f,
                     spike_times,
-                    auto_MI_bin_size_range,
+                    auto_MI_bin_size_set,
                     auto_MI_max_delay,
                     **settings):
     """
@@ -1375,7 +1376,7 @@ def analyse_auto_MI(f,
     it, else compute it.
     """
     
-    for auto_MI_bin_size in auto_MI_bin_size_range:
+    for auto_MI_bin_size in auto_MI_bin_size_set:
         number_of_delays = int(auto_MI_max_delay / auto_MI_bin_size) + 1
         
         auto_MI = load_from_analysis_file(f,
@@ -1411,7 +1412,7 @@ def get_auto_MI(spike_times, bin_size, number_of_delays):
 
     # compute some stats
     p_spike = sum(binned_neuron_activity) / number_of_bins
-    H_uncond = get_shannon_entropy([p_spike,
+    H_spiking = get_shannon_entropy([p_spike,
                                     1 - p_spike])
 
     auto_MIs = []
@@ -1430,8 +1431,8 @@ def get_auto_MI(spike_times, bin_size, number_of_delays):
                                        for number_of_occurrences in symbol_counts.values()])
 
         # I(X : Y) = H(X) - H(X|Y) = H(X) - (H(X,Y) - H(Y)) = H(X) + H(Y) - H(X,Y)
-        # auto_MI = 2 * H_uncond - H_joint
-        auto_MI = 2 - H_joint/ H_uncond # normalized auto MI = auto MI / H_uncond
+        # auto_MI = 2 * H_spiking - H_joint
+        auto_MI = 2 - H_joint/ H_spiking # normalized auto MI = auto MI / H_spiking
 
         auto_MIs += [auto_MI]
 
@@ -1451,7 +1452,7 @@ def get_auto_MI_data(f_analysis,
         "auto_MI" : []
     }
 
-    for auto_MI_bin_size in kwargs["auto_MI_bin_size_range"]:
+    for auto_MI_bin_size in kwargs["auto_MI_bin_size_set"]:
         auto_MIs = load_from_analysis_file(f_analysis,
                                            "auto_MI",
                                            auto_MI_bin_size=auto_MI_bin_size)
@@ -1648,7 +1649,7 @@ def get_or_create_data_directory_in_file(f,
     and return it.
     """
     
-    if data_label in ["firing_rate", "H_uncond", "recording_length"]:
+    if data_label in ["firing_rate", "H_spiking", "recording_length"]:
         root_dir = "other"
     elif data_label == "auto_MI":
         root_dir = "auto_MI"
@@ -1665,7 +1666,7 @@ def get_or_create_data_directory_in_file(f,
 
     data_dir = f[root_dir]
     
-    if data_label in ["firing_rate", "H_uncond", "recording_length"]:
+    if data_label in ["firing_rate", "H_spiking", "recording_length"]:
         return data_dir
     elif data_label == "auto_MI":
         bin_size_label, found = find_existing_parameter(auto_MI_bin_size,
@@ -1679,13 +1680,13 @@ def get_or_create_data_directory_in_file(f,
                 data_dir = data_dir.create_group(bin_size_label)
         return data_dir
     else:
-        embedding_length_range_Tp = embedding[0]
+        past_range_T = embedding[0]
         number_of_bins_d = embedding[1]
-        bin_scaling_k = embedding[2]
+        scaling_k = embedding[2]
         for parameter in [embedding_step_size,
-                          embedding_length_range_Tp,
+                          past_range_T,
                           number_of_bins_d,
-                          bin_scaling_k]:
+                          scaling_k]:
             parameter_label, found = find_existing_parameter(parameter,
                                                              [key for key in data_dir.keys()])
 
@@ -1720,7 +1721,7 @@ def save_to_analysis_file(f,
                                                     estimation_method=estimation_method,
                                                     **data)
 
-    if data_label in ["firing_rate", "H_uncond", "recording_length"]:
+    if data_label in ["firing_rate", "H_spiking", "recording_length"]:
         if not data_label in data_dir:
             data_dir.create_dataset(data_label, data=data[data_label])
 

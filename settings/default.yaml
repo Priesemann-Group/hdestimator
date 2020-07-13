@@ -17,9 +17,9 @@
 # Step size delta t (in seconds) with which the window is slid through the data.
 embedding_step_size : 0.005
 
-# Values for Tp, the length of the embedding, (in seconds) to be used for embeddings.
+# Set of values for T, the past range (in seconds) to be used for embeddings.
 # Should be an array of floating-point values.
-embedding_length_range : [0.005, 0.00561, 0.00629, 0.00706, 0.00792,
+embedding_past_range_set : [0.005, 0.00561, 0.00629, 0.00706, 0.00792,
 0.00889, 0.00998, 0.01119, 0.01256, 0.01409, 0.01581, 0.01774,
 0.01991, 0.02233, 0.02506, 0.02812, 0.03155, 0.0354, 0.03972, 0.04456,
 0.05, 0.0561, 0.06295, 0.07063, 0.07924, 0.08891, 0.09976, 0.11194,
@@ -29,15 +29,16 @@ embedding_length_range : [0.005, 0.00561, 0.00629, 0.00706, 0.00792,
 1.58114, 1.77407, 1.99054, 2.23342, 2.50594, 2.81171, 3.15479,
 3.53973, 3.97164, 4.45625, 5.0]
 
-# Values for d, the number of bins in the embedding.
+# Set of values for d, the number of bins in the embedding.
 # Should be an array of integer values.
-embedding_number_of_bins_range : [1, 2, 3, 4, 5]
+embedding_number_of_bins_set : [1, 2, 3, 4, 5]
 
-# Values for kappa, the scaling factor for the bins in the embedding.
+# Set of values for kappa, the scaling exponent for the bins in the embedding.
 # Should be either an array of floating-point values or a python-dictionary with the
-# three entries below.
-embedding_bin_scaling_range :
-    'number_of_bin_scalings' : 10
+# three entries 'number_of_scalings', 'min_first_bin_size' and
+# 'min_step_for_scaling'.
+embedding_scaling_exponent_set :
+    'number_of_scalings' : 10
     'min_first_bin_size' : 0.005
     'min_step_for_scaling' : 0.01
 
@@ -96,9 +97,9 @@ bootstrap_CI_percentile_hi : 97.5
 # Auto mutual information parameters
 # ------------------------------------------------------------------------------ #
 
-# The values for the sizes of the bins (in seconds). Should be an array of
+# Set of values for the sizes of the bins (in seconds). Should be an array of
 # floating-point values.
-auto_MI_bin_size_range : [0.005, 0.01, 0.025, 0.05, 0.25, 0.5]
+auto_MI_bin_size_set : [0.005, 0.01, 0.025, 0.05, 0.25, 0.5]
 
 # The maximum delay (in seconds) between the past bin and the response.
 auto_MI_max_delay : 10

@@ -59,20 +59,21 @@ def plot_neuron_activity(ax, spike_times, recording_length, averaging_time,
             spike_index += 1
         spike_index_2 = 0
 
-        while spike_index + spike_index_2 < len(spike_times) and spike_times[spike_index + spike_index_2] < t + averaging_time:
+        while spike_index + spike_index_2 < len(spike_times) \
+              and spike_times[spike_index + spike_index_2] < t + averaging_time:
             spike_density[t] += 1
             spike_index_2 += 1        
 
     ax.plot(range(len(spike_density)), spike_density / averaging_time, color=color)
     
-    ax.set_xlabel(r"Time $t$ " + "[s]")
-    ax.set_ylabel("Fir. Rate ({}s avg.) [Hz]".format(averaging_time))
+    ax.set_xlabel(r"time $t$ " + "[s]")
+    ax.set_ylabel("fir. rate ({}s avg.) [Hz]".format(averaging_time))
 
     make_plot_pretty(ax)
 
 def plot_auto_mutual_information(ax, auto_MI_data, color):
     """
-    Visualize the auto mutual information for a range of delays and
+    Visualize the auto mutual information for a set of delays and
     bin sizes.
 
     As with the history dependence R, the auto MI is normalized to
@@ -92,7 +93,7 @@ def plot_auto_mutual_information(ax, auto_MI_data, color):
         ax.plot(delays, np.array(auto_MIs), ls=ls, marker=marker,
                 color=color, label='{:.0f}'.format(auto_MI_bin_size * 1000))
 
-    legend = ax.legend(title="Bin Size [ms]:",
+    legend = ax.legend(title="bin size [ms]:",
                        fancybox=False,
                        loc="center right", bbox_to_anchor=(1.62, 0.5))
     frame = legend.get_frame()
@@ -100,8 +101,8 @@ def plot_auto_mutual_information(ax, auto_MI_data, color):
     frame.set_edgecolor('0.9')
     ax.set_xscale('log')
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(format_x_label_in_ms))
-    ax.set_xlabel(r"Time $t$ " + "[ms]")
-    ax.set_ylabel("Normalized Auto MI")
+    ax.set_xlabel(r"time $t$ " + "[ms]")
+    ax.set_ylabel("normalized Auto MI")
 
     make_plot_pretty(ax)
 
@@ -121,8 +122,8 @@ def plot_history_dependence(ax,
     else:
         Y_label = 'R'
     
-    Tps = utl.load_from_CSV_file(csv_histdep_data_file,
-                                 "Tp")
+    Ts = utl.load_from_CSV_file(csv_histdep_data_file,
+                                 "T")
     Ys = utl.load_from_CSV_file(csv_histdep_data_file,
                                 "max_{}_{}".format(Y_label, estimation_method))
     Ys_CI_lo = utl.load_from_CSV_file(csv_histdep_data_file,
@@ -134,8 +135,8 @@ def plot_history_dependence(ax,
     # Ys_CI_med = utl.load_from_CSV_file(csv_histdep_data_file,
     #                                    "max_{}_{}_CI_med".format(Y_label,
     #                                                              estimation_method))
-    opt_Tp = utl.load_from_CSV_file(csv_stats_file,
-                                    "opt_Tp_{}".format(estimation_method))
+    T_D = utl.load_from_CSV_file(csv_stats_file,
+                                 "T_D_{}".format(estimation_method))
 
     bs_CI_percentile_lo = utl.load_from_CSV_file(csv_stats_file,
                                                  "bs_CI_percentile_lo")
@@ -143,14 +144,14 @@ def plot_history_dependence(ax,
                                                  "bs_CI_percentile_hi")
     CI = int(bs_CI_percentile_hi - bs_CI_percentile_lo)
 
-    # history dependence R (or AIS) as a function of the embedding length T_p
-    ax.plot(Tps, Ys, '-', color=color)
+    # history dependence R (or AIS) as a function of the past range T
+    ax.plot(Ts, Ys, '-', color=color)
 
-    # vertical line marking the optimal T_p
-    ax.axvline(x=opt_Tp, color='k', ls='--', label=r"opt. $T_p$")
+    # vertical line marking T_D
+    ax.axvline(x=T_D, color='k', ls='--', label=r"$T_D$")
 
     # bootstrap confidence intervals
-    ax.fill_between(Tps, Ys_CI_lo, Ys_CI_hi,
+    ax.fill_between(Ts, Ys_CI_lo, Ys_CI_hi,
                     alpha=0.25, linewidth=0, color=color, label='{}% CI'.format(CI))
     
     make_plot_pretty(ax)
@@ -159,7 +160,7 @@ def plot_history_dependence(ax,
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(format_x_label_in_ms))
     ax.yaxis.set_major_formatter(ticker.FuncFormatter(format_y_label))
 
-    ax.set_xlabel("Embedding length " + r"$T_p$ " + "[ms]")
+    ax.set_xlabel("past range " + r"$T$ " + "[ms]")
     if plot_AIS:
         ax.set_ylabel("Active Info. Storage (AIS)")
     else:
@@ -226,7 +227,7 @@ def produce_plots(spike_times,
                                       ['bbc', 'shuffling']):
         #
         # ax2
-        # plot history-dependence as fn of T_p with bootstrap confidence interval
+        # plot history-dependence as fn of T with bootstrap confidence interval
         #
 
         plot_history_dependence(ax2,
@@ -245,15 +246,15 @@ def produce_plots(spike_times,
     ax0r.axis('off')
     ax1r.axis('off')
 
-    ax0l.set_title("Neuron Activity")
+    ax0l.set_title("Neuron activity")
     ax1l.set_title("Auto Mutual Information")
 
     if plot_AIS:
-        ax2l.set_title("AIS: BBC Estimate")
-        ax2r.set_title("AIS: Shuffling Estimate")
+        ax2l.set_title("AIS: BBC estimate")
+        ax2r.set_title("AIS: Shuffling estimate")
     else:
-        ax2l.set_title("Hist. Dep.: BBC Estimate")
-        ax2r.set_title("Hist. Dep.: Shuffling Estimate")
+        ax2l.set_title("Hist. Dep.: BBC estimate")
+        ax2r.set_title("Hist. Dep.: Shuffling estimate")
 
     # shared x and y axis for easy comparison
 
@@ -283,14 +284,14 @@ def produce_plots(spike_times,
     recording_length = utl.load_from_CSV_file(csv_stats_file,
                                               "recording_length")
 
-    opt_Tp_bbc = utl.load_from_CSV_file(csv_stats_file,
-                                        "opt_Tp_bbc")
-    opt_Y_bbc = utl.load_from_CSV_file(csv_stats_file,
-                                       "opt_{}_bbc".format(Y_label))
-    opt_Y_bbc_CI_lo = utl.load_from_CSV_file(csv_stats_file,
-                                             "opt_{}_bbc_CI_lo".format(Y_label))
-    opt_Y_bbc_CI_hi = utl.load_from_CSV_file(csv_stats_file,
-                                             "opt_{}_bbc_CI_hi".format(Y_label))
+    T_D_bbc = utl.load_from_CSV_file(csv_stats_file,
+                                     "T_D_bbc")
+    Y_tot_bbc = utl.load_from_CSV_file(csv_stats_file,
+                                       "{}_tot_bbc".format(Y_label))
+    Y_tot_bbc_CI_lo = utl.load_from_CSV_file(csv_stats_file,
+                                             "{}_tot_bbc_CI_lo".format(Y_label))
+    Y_tot_bbc_CI_hi = utl.load_from_CSV_file(csv_stats_file,
+                                             "{}_tot_bbc_CI_hi".format(Y_label))
     opt_number_of_bins_d_bbc = utl.load_from_CSV_file(csv_stats_file,
                                                       "opt_number_of_bins_d_bbc")
     opt_scaling_k_bbc = utl.load_from_CSV_file(csv_stats_file,
@@ -300,14 +301,14 @@ def produce_plots(spike_times,
     # asl_permutation_test_bbc = utl.load_from_CSV_file(csv_stats_file,
     #                                                   "asl_permutation_test_bbc")
 
-    opt_Tp_shuffling = utl.load_from_CSV_file(csv_stats_file,
-                                              "opt_Tp_shuffling")
-    opt_Y_shuffling = utl.load_from_CSV_file(csv_stats_file,
-                                             "opt_{}_shuffling".format(Y_label))
-    opt_Y_shuffling_CI_lo = utl.load_from_CSV_file(csv_stats_file,
-                                                   "opt_{}_shuffling_CI_lo".format(Y_label))
-    opt_Y_shuffling_CI_hi = utl.load_from_CSV_file(csv_stats_file,
-                                                   "opt_{}_shuffling_CI_hi".format(Y_label))
+    T_D_shuffling = utl.load_from_CSV_file(csv_stats_file,
+                                           "T_D_shuffling")
+    Y_tot_shuffling = utl.load_from_CSV_file(csv_stats_file,
+                                             "{}_tot_shuffling".format(Y_label))
+    Y_tot_shuffling_CI_lo = utl.load_from_CSV_file(csv_stats_file,
+                                                   "{}_tot_shuffling_CI_lo".format(Y_label))
+    Y_tot_shuffling_CI_hi = utl.load_from_CSV_file(csv_stats_file,
+                                                   "{}_tot_shuffling_CI_hi".format(Y_label))
     opt_number_of_bins_d_shuffling = utl.load_from_CSV_file(csv_stats_file,
                                                             "opt_number_of_bins_d_shuffling")
     opt_scaling_k_shuffling = utl.load_from_CSV_file(csv_stats_file,
@@ -324,15 +325,15 @@ def produce_plots(spike_times,
     CI = int(bs_CI_percentile_hi - bs_CI_percentile_lo)
 
     
-    ax0r.text(-0.5, 0.975, "Analysis: {}".format(analysis_num),
+    ax0r.text(-0.5, 0.975, "analysis: {}".format(analysis_num),
               fontsize=stats_fontsize)
     ax0r.text(0.35, 0.975, "hde v. {}, {}".format(__version__, date.today()),
               fontsize=stats_fontsize)
     ax0r.text(-0.5, 0.775, analysis_label,
               fontsize=stats_fontsize)
-    ax0r.text(-0.3, 0.475, "Recording Length: {:.1f}s".format(recording_length),
+    ax0r.text(-0.3, 0.475, "recording length: {:.1f}s".format(recording_length),
               fontsize=stats_fontsize)
-    ax0r.text(-0.3, 0.275, "Firing Rate: {:.1f}Hz".format(firing_rate),
+    ax0r.text(-0.3, 0.275, "firing rate: {:.1f}Hz".format(firing_rate),
               fontsize=stats_fontsize)
 
     if plot_AIS:
@@ -341,7 +342,7 @@ def produce_plots(spike_times,
     else:
         ax0r.text(-0.3, -.025, "History Dependence:",
                   fontsize=stats_fontsize)
-    bbc_h_pos = 0.24
+    bbc_h_pos = 0.14
     shuffling_h_pos = 0.68
     ax0r.text(bbc_h_pos, -.225, "BBC",
               fontsize=stats_fontsize)
@@ -355,14 +356,14 @@ def produce_plots(spike_times,
     bbc_results = []
     shuffling_results = []
     
-    for label, bbc_value, shuffling_value in [("opt. $T_p\,$[s]:", opt_Tp_bbc, opt_Tp_shuffling),
-                                              ("opt. ${}$:".format(Y_label),
-                                               opt_Y_bbc, opt_Y_shuffling),
-                                              ("opt. ${}$, {}% CI:".format(Y_label, CI),
-                                               "[{:.3f}, {:.3f}]".format(opt_Y_bbc_CI_lo,
-                                                                         opt_Y_bbc_CI_hi),
-                                               "[{:.3f}, {:.3f}]".format(opt_Y_shuffling_CI_lo,
-                                                                         opt_Y_shuffling_CI_hi)),
+    for label, bbc_value, shuffling_value in [("$\hat{{T}}_D\,$[s]:", T_D_bbc, T_D_shuffling),
+                                              ("$\hat{{{}}}_{{tot}}$:".format(Y_label),
+                                               Y_tot_bbc, Y_tot_shuffling),
+                                              ("$\hat{{{}}}_{{tot}}$, {}% CI:".format(Y_label, CI),
+                                               "[{:.3f}, {:.3f}]".format(Y_tot_bbc_CI_lo,
+                                                                         Y_tot_bbc_CI_hi),
+                                               "[{:.3f}, {:.3f}]".format(Y_tot_shuffling_CI_lo,
+                                                                         Y_tot_shuffling_CI_hi)),
                                               ("opt. $d$:",
                                                "{:.0f}".format(opt_number_of_bins_d_bbc),
                                                "{:.0f}".format(opt_number_of_bins_d_shuffling)),
@@ -386,16 +387,18 @@ def produce_plots(spike_times,
 
         current_v_pos -= 0.2
 
-        bbc_results += ["{} {}".format(label.replace("$", "").replace("\\,", " "),
+        label = label.replace("$", "").replace("\\,", " ").replace("\\", "").replace("{", "").replace("}", "").replace("hat", "")
+        
+        bbc_results += ["{} {}".format(label,
                                        bbc_value)]
-        shuffling_results += ["{} {}".format(label.replace("$", "").replace("\\,", " "),
+        shuffling_results += ["{} {}".format(label,
                                              shuffling_value)]
 
     # also print results to terminal
-    print("Analysis: {}, hde v. {}, {}".format(analysis_num, __version__, date.today()))
+    print("analysis: {}, hde v. {}, {}".format(analysis_num, __version__, date.today()))
     print(analysis_label)
-    print("Recording Length: {:.1f}s".format(recording_length))
-    print("Firing Rate: {:.1f}Hz".format(firing_rate))
+    print("recording length: {:.1f}s".format(recording_length))
+    print("firing rate: {:.1f}Hz".format(firing_rate))
     print()
 
     print("BBC")

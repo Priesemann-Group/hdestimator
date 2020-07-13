@@ -28,9 +28,12 @@ def get_history_dependence(estimation_method,
     If no past_symbol_counts are provided, uses representation for 
     symbols as given by emb.symbol_array_to_binary to obtain them.
     """
-    
+
+    # if no (unconditional) entropy of the response is provided,
+    # assume it is a one-dimensional binary outcome (as in
+    # a spike train) and compute it based on that assumption
     if H_uncond == None:
-        H_uncond = utl.get_H_uncond(symbol_counts)
+        H_uncond = utl.get_H_spiking(symbol_counts)
 
     if past_symbol_counts == None:
         past_symbol_counts = utl.get_past_symbol_counts(symbol_counts)
@@ -69,7 +72,7 @@ def get_history_dependence_for_single_embedding(spike_times,
     Get history dependence from symbol counts.
     """
 
-    embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+    past_range_T, number_of_bins_d, scaling_k = embedding
 
     symbol_counts = emb.get_symbol_counts(spike_times, embedding, embedding_step_size)
 
@@ -94,23 +97,23 @@ def get_history_dependence_for_single_embedding(spike_times,
 
     return history_dependence
 
-def get_history_dependence_for_embedding_range(spike_times,
+def get_history_dependence_for_embedding_set(spike_times,
                                                recording_length,
                                                estimation_method,
-                                               embedding_length_range,
-                                               embedding_number_of_bins_range,
-                                               embedding_bin_scaling_range,
+                                               embedding_past_range_set,
+                                               embedding_number_of_bins_set,
+                                               embedding_scaling_exponent_set,
                                                embedding_step_size,
                                                bbc_tolerance=None,
-                                               dependent_var="Tp",
+                                               dependent_var="T",
                                                **kwargs):
     """
     Apply embeddings to spike_times to obtain symbol counts.
-    For each Tp (or d), get history dependence R for the embedding for which
+    For each T (or d), get history dependence R for the embedding for which
     R is maximised.
     """
 
-    assert dependent_var in ["Tp", "d"]
+    assert dependent_var in ["T", "d"]
     
     if bbc_tolerance == None:
         bbc_tolerance = np.inf
@@ -118,10 +121,10 @@ def get_history_dependence_for_embedding_range(spike_times,
     max_Rs = {}
     embeddings_that_maximise_R = {}
     
-    for embedding in emb.get_embeddings(embedding_length_range,
-                                        embedding_number_of_bins_range,
-                                        embedding_bin_scaling_range):
-        embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+    for embedding in emb.get_embeddings(embedding_past_range_set,
+                                        embedding_number_of_bins_set,
+                                        embedding_scaling_exponent_set):
+        past_range_T, number_of_bins_d, scaling_k = embedding
 
         history_dependence = get_history_dependence_for_single_embedding(spike_times,
                                                                          recording_length,
@@ -133,18 +136,18 @@ def get_history_dependence_for_embedding_range(spike_times,
         if history_dependence == None:
             continue
 
-        if dependent_var == "Tp":
-            if not embedding_length_Tp in embeddings_that_maximise_R \
-               or history_dependence > max_Rs[embedding_length_Tp]:
-                max_Rs[embedding_length_Tp] = history_dependence
-                embeddings_that_maximise_R[embedding_length_Tp] = (number_of_bins_d,
-                                                                    bin_scaling_k)
+        if dependent_var == "T":
+            if not past_range_T in embeddings_that_maximise_R \
+               or history_dependence > max_Rs[past_range_T]:
+                max_Rs[past_range_T] = history_dependence
+                embeddings_that_maximise_R[past_range_T] = (number_of_bins_d,
+                                                                    scaling_k)
         elif dependent_var == "d":
             if not number_of_bins_d in embeddings_that_maximise_R \
                or history_dependence > max_Rs[number_of_bins_d]:
                 max_Rs[number_of_bins_d] = history_dependence
-                embeddings_that_maximise_R[number_of_bins_d] = (embedding_length_Tp,
-                                                                        bin_scaling_k)
+                embeddings_that_maximise_R[number_of_bins_d] = (past_range_T,
+                                                                        scaling_k)
 
     return embeddings_that_maximise_R, max_Rs
 

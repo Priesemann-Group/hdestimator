@@ -23,7 +23,8 @@ def P_s_r(past_symbol_counts, number_of_symbols):
     P_cond = [{}, {}]
     for response in [0, 1]:
         for symbol in past_symbol_counts[response]:
-            P_cond[response][symbol] = past_symbol_counts[response][symbol] / number_of_symbols[response]
+            P_cond[response][symbol] \
+                = past_symbol_counts[response][symbol] / number_of_symbols[response]
     return P_cond
 
 def H0_s(marginal_probabilities, i, number_of_bins_d, sm, prd):
@@ -35,7 +36,8 @@ def H0_s(marginal_probabilities, i, number_of_bins_d, sm, prd):
        sm2 = np.log(1 - marginal_probabilities[i])
     
     if i == number_of_bins_d - 1:
-        return (sm - sm1) * (prd * marginal_probabilities[i]) + (sm - sm2) * (prd * (1 - marginal_probabilities[i]))
+        return (sm - sm1) * (prd * marginal_probabilities[i]) \
+            + (sm - sm2) * (prd * (1 - marginal_probabilities[i]))
     return H0_s(marginal_probabilities,
                 i + 1,
                 number_of_bins_d,
@@ -77,7 +79,11 @@ def get_shuffled_symbol_counts(symbol_counts, number_of_bins_d):
 
     for i in range(0, number_of_bins_d):
         for response in [0, 1]:
-            shuffled_past_symbols[response] += 2 ** (number_of_bins_d - i - 1) * np.random.permutation(np.hstack((np.ones(marginal_frequencies[response][i]), np.zeros(number_of_symbols[response] - marginal_frequencies[response][i]))))
+            shuffled_past_symbols[response] \
+                += 2 ** (number_of_bins_d - i - 1) \
+                * np.random.permutation(np.hstack((np.ones(marginal_frequencies[response][i]),
+                                                   np.zeros(number_of_symbols[response] \
+                                                            - marginal_frequencies[response][i]))))
 
     for response in [0, 1]:
         shuffled_past_symbols[response] = np.array(shuffled_past_symbols[response], dtype=int)
@@ -91,14 +97,16 @@ def get_shuffled_symbol_counts(symbol_counts, number_of_bins_d):
             else:
                 shuffled_past_symbol_counts[response][past_symbol] = 1
 
-    marginal_probabilities = [marginal_frequencies[response] / number_of_symbols[response] for response in [0, 1]]
+    marginal_probabilities = [marginal_frequencies[response] / number_of_symbols[response]
+                              for response in [0, 1]]
 
     return past_symbol_counts, number_of_symbols, shuffled_past_symbol_counts, marginal_probabilities
 
 
 
 def shuffling_MI(symbol_counts, number_of_bins_d):
-    past_symbol_counts, number_of_symbols, shuffled_past_symbol_counts, marginal_probabilities = get_shuffled_symbol_counts(symbol_counts, number_of_bins_d)
+    past_symbol_counts, number_of_symbols, shuffled_past_symbol_counts, marginal_probabilities \
+        = get_shuffled_symbol_counts(symbol_counts, number_of_bins_d)
     
     P_uncond = P_r(number_of_symbols)
     P_stimulus_uncond = P_s(past_symbol_counts, number_of_symbols)
