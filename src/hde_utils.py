@@ -47,6 +47,7 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
         embeddings = get_embeddings_that_maximise_R(f,
                                                     estimation_method,
                                                     embedding_step_size,
+                                                    bbc_tolerance=kwargs['bbc_tolerance'],
                                                     get_as_list=True,
                                                     cross_val='h1')
         
@@ -328,7 +329,8 @@ def get_temporal_depth_T_D(f,
                                     embedding=(max_R_T,
                                                number_of_bins_d,
                                                scaling_k),
-                                    estimation_method=estimation_method)
+                                    estimation_method=estimation_method,
+                                    cross_val=kwargs['cross_val'])
 
     if isinstance(bs_Rs, np.ndarray):
         max_R_sd = np.std(bs_Rs)
@@ -373,7 +375,8 @@ def get_temporal_depth_T_D(f,
 #                                     "bs_history_dependence",
 #                                     embedding_step_size=embedding_step_size,
 #                                     embedding=embedding,
-#                                     estimation_method=estimation_method)
+#                                     estimation_method=estimation_method,
+#                                     cross_val=kwargs['cross_val'])
 
 #     # then do the plugin estimate
 #     alphabet_size_past = 2 ** int(number_of_bins_d)
@@ -382,7 +385,8 @@ def get_temporal_depth_T_D(f,
 #     symbol_counts = load_from_analysis_file(f,
 #                                             "symbol_counts",
 #                                             embedding_step_size=embedding_step_size,
-#                                             embedding=embedding)
+#                                             embedding=embedding,
+#                                             cross_val=kwargs['cross_val'])
 #     past_symbol_counts = get_past_symbol_counts(symbol_counts)
 
 #     mk = bbc.get_multiplicities(symbol_counts,
@@ -706,13 +710,15 @@ def get_bootstrap_symbol_counts_from_symbols_array(symbols_array,
 #     symbol_counts = load_from_analysis_file(f,
 #                                             "symbol_counts",
 #                                             embedding_step_size=embedding_step_size,
-#                                             embedding=opt_embedding)
+#                                             embedding=opt_embedding,
+#                                             cross_val=kwargs['cross_val'])
 
 #     stored_pt_Rs = load_from_analysis_file(f,
 #                                            "pt_history_dependence",
 #                                            embedding_step_size=embedding_step_size,
 #                                            embedding=opt_embedding,
-#                                            estimation_method=estimation_method)
+#                                            estimation_method=estimation_method,
+#                                            cross_val=kwargs['cross_val'])
     
 #     if isinstance(stored_pt_Rs, np.ndarray):
 #         number_of_stored_permutations = len(stored_pt_Rs)
@@ -1088,7 +1094,8 @@ def get_analysis_stats(f,
         #                                 embedding=(temporal_depth_T_D,
         #                                            opt_number_of_bins_d,
         #                                            opt_scaling_k),
-        #                                 estimation_method=estimation_method)
+        #                                 estimation_method=estimation_method,
+        #                                 cross_val=kwargs['cross_val'])
 
         # if isinstance(pt_Rs, np.ndarray):
         #     stats["asl_permutation_test_{}".format(estimation_method)] \
