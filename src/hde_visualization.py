@@ -167,7 +167,7 @@ def plot_history_dependence(ax,
         ax.set_ylabel("History Dependence " + r"$R$")
 
     # shared legend between the subplots
-    if estimation_method == 'bbc':
+    if estimation_method == 'shuffling':
         legend = ax.legend(fancybox=False, loc="center right", bbox_to_anchor=(1.6, 0.5))
         frame = legend.get_frame()
         frame.set_facecolor('0.9')
