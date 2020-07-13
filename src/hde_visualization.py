@@ -196,9 +196,16 @@ def produce_plots(spike_times,
     #
 
     plt.rcParams.update(kwargs["plot_settings"])
-    fig0, ((ax0l, ax0r),
-           (ax1l, ax1r),
-           (ax2l, ax2r)) = plt.subplots(3, 2)
+    # fig0, ((ax0l, ax0r),
+    #        (ax1l, ax1r),
+    #        (ax2l, ax2r)) = plt.subplots(3, 2)
+    fig0 = plt.figure()
+    ax0l = plt.subplot(321)
+    ax0r = plt.subplot(322)
+    ax1l = plt.subplot(323)
+    ax1r = plt.subplot(324)
+    ax2l = plt.subplot(325)
+    ax2r = plt.subplot(326, sharex=ax2l, sharey=ax2l)
     fig0.subplots_adjust(right=0.98, left=0.1, bottom=0.1, wspace=1, hspace=0.8)
     
     #
@@ -224,7 +231,7 @@ def produce_plots(spike_times,
 
 
     for ax2, estimation_method in zip([ax2l, ax2r],
-                                      ['bbc', 'shuffling']):
+                                      ['shuffling', 'bbc']):
         #
         # ax2
         # plot history-dependence as fn of T with bootstrap confidence interval
@@ -237,7 +244,15 @@ def produce_plots(spike_times,
                                 plot_color,
                                 plot_AIS)
 
+    # shared x axis betw. auto MI and histdep for easy comparison
 
+    x_autoMI_lo, x_autoMI_hi = ax1l.get_xlim()
+    x_R_lo, x_R_hi = ax2l.get_xlim()
+
+    x_lo = min(x_autoMI_lo, x_R_lo)
+    x_hi = max(x_autoMI_hi, x_R_hi)
+    
+    ax1l.set_xlim(x_lo, x_hi)
 
     #
     # tweak the looks of the plots
@@ -250,16 +265,11 @@ def produce_plots(spike_times,
     ax1l.set_title("Auto Mutual Information")
 
     if plot_AIS:
-        ax2l.set_title("AIS: BBC estimate")
-        ax2r.set_title("AIS: Shuffling estimate")
+        ax2l.set_title("AIS: Shuffling estimate")
+        ax2r.set_title("AIS: BBC estimate")
     else:
-        ax2l.set_title("Hist. Dep.: BBC estimate")
-        ax2r.set_title("Hist. Dep.: Shuffling estimate")
-
-    # shared x and y axis for easy comparison
-
-    ax2l.get_shared_x_axes().join(ax2l, ax2r)
-    ax2l.get_shared_y_axes().join(ax2l, ax2r)
+        ax2l.set_title("Hist. Dep.: Shuffling estimate")
+        ax2r.set_title("Hist. Dep.: BBC estimate")
 
     #
     # add the stats of the analysis to the plot
@@ -342,11 +352,11 @@ def produce_plots(spike_times,
     else:
         ax0r.text(-0.3, -.025, "History Dependence:",
                   fontsize=stats_fontsize)
-    bbc_h_pos = 0.14
-    shuffling_h_pos = 0.68
-    ax0r.text(bbc_h_pos, -.225, "BBC",
-              fontsize=stats_fontsize)
+    shuffling_h_pos = 0.14
+    bbc_h_pos = 0.68
     ax0r.text(shuffling_h_pos, -.225, "Shuffling",
+              fontsize=stats_fontsize)
+    ax0r.text(bbc_h_pos, -.225, "BBC",
               fontsize=stats_fontsize)
     ax0r.text(-0.3, -.3, "---------------------------------------------------------------",
               fontsize=stats_fontsize)
@@ -356,43 +366,43 @@ def produce_plots(spike_times,
     bbc_results = []
     shuffling_results = []
     
-    for label, bbc_value, shuffling_value in [("$\hat{{T}}_D\,$[s]:", T_D_bbc, T_D_shuffling),
+    for label, shuffling_value, bbc_value in [("$\hat{{T}}_D\,$[s]:", T_D_shuffling, T_D_bbc),
                                               ("$\hat{{{}}}_{{tot}}$:".format(Y_label),
-                                               Y_tot_bbc, Y_tot_shuffling),
+                                               Y_tot_shuffling, Y_tot_bbc),
                                               ("$\hat{{{}}}_{{tot}}$, {}% CI:".format(Y_label, CI),
-                                               "[{:.3f}, {:.3f}]".format(Y_tot_bbc_CI_lo,
-                                                                         Y_tot_bbc_CI_hi),
                                                "[{:.3f}, {:.3f}]".format(Y_tot_shuffling_CI_lo,
-                                                                         Y_tot_shuffling_CI_hi)),
+                                                                         Y_tot_shuffling_CI_hi),
+                                              "[{:.3f}, {:.3f}]".format(Y_tot_bbc_CI_lo,
+                                                                        Y_tot_bbc_CI_hi)),
                                               ("opt. $d$:",
-                                               "{:.0f}".format(opt_number_of_bins_d_bbc),
-                                               "{:.0f}".format(opt_number_of_bins_d_shuffling)),
+                                               "{:.0f}".format(opt_number_of_bins_d_shuffling),
+                                               "{:.0f}".format(opt_number_of_bins_d_bbc)),
                                               ("opt. $\kappa$:",
-                                               opt_scaling_k_bbc,
-                                               opt_scaling_k_shuffling),
+                                               opt_scaling_k_shuffling,
+                                               opt_scaling_k_bbc),
                                               (r"opt. $\tau_0\,$[s]:",
-                                               opt_first_bin_size_bbc,
-                                               opt_first_bin_size_shuffling)]:
+                                               opt_first_bin_size_shuffling,
+                                               opt_first_bin_size_bbc)]:
                                               # ("ASL perm. test:",
-                                              #  asl_permutation_test_bbc,
-                                              #  asl_permutation_test_shuffling)]:
-        if not type(bbc_value) == str:
-            bbc_value = "{:.3f}".format(bbc_value)
+                                              #  asl_permutation_test_shuffling,
+                                              #  asl_permutation_test_bbc)]:
         if not type(shuffling_value) == str:
             shuffling_value = "{:.3f}".format(shuffling_value)
+        if not type(bbc_value) == str:
+            bbc_value = "{:.3f}".format(bbc_value)
                 
         ax0r.text(-0.3, current_v_pos, label, fontsize=stats_fontsize)
-        ax0r.text(bbc_h_pos, current_v_pos, bbc_value, fontsize=stats_fontsize)
         ax0r.text(shuffling_h_pos, current_v_pos, shuffling_value, fontsize=stats_fontsize)
+        ax0r.text(bbc_h_pos, current_v_pos, bbc_value, fontsize=stats_fontsize)
 
         current_v_pos -= 0.2
 
         label = label.replace("$", "").replace("\\,", " ").replace("\\", "").replace("{", "").replace("}", "").replace("hat", "")
         
-        bbc_results += ["{} {}".format(label,
-                                       bbc_value)]
         shuffling_results += ["{} {}".format(label,
                                              shuffling_value)]
+        bbc_results += ["{} {}".format(label,
+                                       bbc_value)]
 
     # also print results to terminal
     print("analysis: {}, hde v. {}, {}".format(analysis_num, __version__, date.today()))
@@ -401,13 +411,13 @@ def produce_plots(spike_times,
     print("firing rate: {:.1f}Hz".format(firing_rate))
     print()
 
-    print("BBC")
-    print("---------------------------------------------------------------")
-    print('\n'.join(bbc_results))
-    print()
     print("Shuffling")
     print("---------------------------------------------------------------")
     print('\n'.join(shuffling_results))
+    print()
+    print("BBC")
+    print("---------------------------------------------------------------")
+    print('\n'.join(bbc_results))
 
     if 'output_image' in kwargs:
         plt.savefig(kwargs['output_image'],

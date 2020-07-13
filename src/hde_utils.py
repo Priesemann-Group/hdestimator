@@ -910,7 +910,7 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                 'bootstrap_CI_percentile_hi' : 97.5,
                 # 'number_of_permutations' : 100,
                 'auto_MI_bin_size_set' : [0.005, 0.01, 0.025, 0.05, 0.25, 0.5],
-                'auto_MI_max_delay' : 10,
+                'auto_MI_max_delay' : 5,
                 'label' : '""',
                 'ANALYSIS_DIR' : "./analysis",
                 'persistent_analysis' : True,
