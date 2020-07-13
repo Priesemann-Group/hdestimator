@@ -2410,6 +2410,7 @@ static const char __pyx_k_embedding[] = "embedding";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
+static const char __pyx_k_scaling_k[] = "scaling_k";
 static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_pyx_result[] = "__pyx_result";
@@ -2423,10 +2424,10 @@ static const char __pyx_k_raw_symbols[] = "raw_symbols";
 static const char __pyx_k_spike_times[] = "spike_times";
 static const char __pyx_k_unq_symbols[] = "unq_symbols";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
+static const char __pyx_k_past_range_T[] = "past_range_T";
 static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
 static const char __pyx_k_stringsource[] = "stringsource";
 static const char __pyx_k_symbol_count[] = "symbol_count";
-static const char __pyx_k_bin_scaling_k[] = "bin_scaling_k";
 static const char __pyx_k_count_symbols[] = "count_symbols";
 static const char __pyx_k_hde_embedding[] = "hde_embedding";
 static const char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
@@ -2446,7 +2447,6 @@ static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_hde_fast_embedding[] = "hde_fast_embedding";
 static const char __pyx_k_strided_and_direct[] = "<strided and direct>";
-static const char __pyx_k_embedding_length_Tp[] = "embedding_length_Tp";
 static const char __pyx_k_embedding_step_size[] = "embedding_step_size";
 static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
@@ -2516,7 +2516,6 @@ static PyObject *__pyx_n_s_allocate_buffer;
 static PyObject *__pyx_n_s_array;
 static PyObject *__pyx_n_s_axis;
 static PyObject *__pyx_n_s_base;
-static PyObject *__pyx_n_s_bin_scaling_k;
 static PyObject *__pyx_n_s_c;
 static PyObject *__pyx_n_u_c;
 static PyObject *__pyx_n_s_class;
@@ -2529,7 +2528,6 @@ static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_dtype_is_object;
 static PyObject *__pyx_n_s_emb;
 static PyObject *__pyx_n_s_embedding;
-static PyObject *__pyx_n_s_embedding_length_Tp;
 static PyObject *__pyx_n_s_embedding_step_size;
 static PyObject *__pyx_n_s_encode;
 static PyObject *__pyx_n_s_enumerate;
@@ -2573,6 +2571,7 @@ static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_obj;
 static PyObject *__pyx_n_s_pack;
+static PyObject *__pyx_n_s_past_range_T;
 static PyObject *__pyx_n_s_pickle;
 static PyObject *__pyx_n_s_pyx_PickleError;
 static PyObject *__pyx_n_s_pyx_checksum;
@@ -2588,6 +2587,7 @@ static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
 static PyObject *__pyx_n_s_reshape;
+static PyObject *__pyx_n_s_scaling_k;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_shape;
@@ -2816,9 +2816,9 @@ static PyObject *__pyx_pf_18hde_fast_embedding_get_median_number_of_spikes_per_b
  */
 
 static PyArrayObject *__pyx_f_18hde_fast_embedding_get_raw_symbols(PyArrayObject *__pyx_v_spike_times, PyObject *__pyx_v_embedding, PyObject *__pyx_v_first_bin_size, PyObject *__pyx_v_embedding_step_size) {
-  CYTHON_UNUSED PyObject *__pyx_v_embedding_length_Tp = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_past_range_T = NULL;
   PyObject *__pyx_v_number_of_bins_d = NULL;
-  PyObject *__pyx_v_bin_scaling_k = NULL;
+  PyObject *__pyx_v_scaling_k = NULL;
   PyArrayObject *__pyx_v_window_delimiters = 0;
   double __pyx_v_window_length;
   long __pyx_v_num_spike_times;
@@ -2904,7 +2904,7 @@ static PyArrayObject *__pyx_f_18hde_fast_embedding_get_raw_symbols(PyArrayObject
   /* "hde_fast_embedding.pyx":21
  *                                                  first_bin_size,
  *                                                  embedding_step_size):
- *     embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding             # <<<<<<<<<<<<<<
+ *     past_range_T, number_of_bins_d, scaling_k = embedding             # <<<<<<<<<<<<<<
  * 
  *     # the window is the embedding plus the response,
  */
@@ -2959,18 +2959,18 @@ static PyArrayObject *__pyx_f_18hde_fast_embedding_get_raw_symbols(PyArrayObject
     __PYX_ERR(0, 21, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
-  __pyx_v_embedding_length_Tp = __pyx_t_1;
+  __pyx_v_past_range_T = __pyx_t_1;
   __pyx_t_1 = 0;
   __pyx_v_number_of_bins_d = __pyx_t_2;
   __pyx_t_2 = 0;
-  __pyx_v_bin_scaling_k = __pyx_t_3;
+  __pyx_v_scaling_k = __pyx_t_3;
   __pyx_t_3 = 0;
 
   /* "hde_fast_embedding.pyx":26
  *     # ie the embedding and one additional bin of size embedding_step_size
  *     cdef np.ndarray[np.double_t, ndim= 1] \
  *         window_delimiters = np.array(emb.get_window_delimiters(number_of_bins_d,             # <<<<<<<<<<<<<<
- *                                                                bin_scaling_k,
+ *                                                                scaling_k,
  *                                                                first_bin_size,
  */
   __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
@@ -2985,7 +2985,7 @@ static PyArrayObject *__pyx_f_18hde_fast_embedding_get_raw_symbols(PyArrayObject
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "hde_fast_embedding.pyx":29
- *                                                                bin_scaling_k,
+ *                                                                scaling_k,
  *                                                                first_bin_size,
  *                                                                embedding_step_size))             # <<<<<<<<<<<<<<
  *     cdef double window_length = window_delimiters[len(window_delimiters) - 1]
@@ -3005,7 +3005,7 @@ static PyArrayObject *__pyx_f_18hde_fast_embedding_get_raw_symbols(PyArrayObject
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_6)) {
-    PyObject *__pyx_temp[5] = {__pyx_t_4, __pyx_v_number_of_bins_d, __pyx_v_bin_scaling_k, __pyx_v_first_bin_size, __pyx_v_embedding_step_size};
+    PyObject *__pyx_temp[5] = {__pyx_t_4, __pyx_v_number_of_bins_d, __pyx_v_scaling_k, __pyx_v_first_bin_size, __pyx_v_embedding_step_size};
     __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_7, 4+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
@@ -3013,7 +3013,7 @@ static PyArrayObject *__pyx_f_18hde_fast_embedding_get_raw_symbols(PyArrayObject
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
-    PyObject *__pyx_temp[5] = {__pyx_t_4, __pyx_v_number_of_bins_d, __pyx_v_bin_scaling_k, __pyx_v_first_bin_size, __pyx_v_embedding_step_size};
+    PyObject *__pyx_temp[5] = {__pyx_t_4, __pyx_v_number_of_bins_d, __pyx_v_scaling_k, __pyx_v_first_bin_size, __pyx_v_embedding_step_size};
     __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_7, 4+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
@@ -3028,9 +3028,9 @@ static PyArrayObject *__pyx_f_18hde_fast_embedding_get_raw_symbols(PyArrayObject
     __Pyx_INCREF(__pyx_v_number_of_bins_d);
     __Pyx_GIVEREF(__pyx_v_number_of_bins_d);
     PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_v_number_of_bins_d);
-    __Pyx_INCREF(__pyx_v_bin_scaling_k);
-    __Pyx_GIVEREF(__pyx_v_bin_scaling_k);
-    PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_v_bin_scaling_k);
+    __Pyx_INCREF(__pyx_v_scaling_k);
+    __Pyx_GIVEREF(__pyx_v_scaling_k);
+    PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_v_scaling_k);
     __Pyx_INCREF(__pyx_v_first_bin_size);
     __Pyx_GIVEREF(__pyx_v_first_bin_size);
     PyTuple_SET_ITEM(__pyx_t_8, 2+__pyx_t_7, __pyx_v_first_bin_size);
@@ -3093,7 +3093,7 @@ static PyArrayObject *__pyx_f_18hde_fast_embedding_get_raw_symbols(PyArrayObject
  *     # ie the embedding and one additional bin of size embedding_step_size
  *     cdef np.ndarray[np.double_t, ndim= 1] \
  *         window_delimiters = np.array(emb.get_window_delimiters(number_of_bins_d,             # <<<<<<<<<<<<<<
- *                                                                bin_scaling_k,
+ *                                                                scaling_k,
  *                                                                first_bin_size,
  */
   if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 26, __pyx_L1_error)
@@ -3651,9 +3651,9 @@ static PyArrayObject *__pyx_f_18hde_fast_embedding_get_raw_symbols(PyArrayObject
   __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer);
   __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_window_delimiters.rcbuffer->pybuffer);
   __pyx_L2:;
-  __Pyx_XDECREF(__pyx_v_embedding_length_Tp);
+  __Pyx_XDECREF(__pyx_v_past_range_T);
   __Pyx_XDECREF(__pyx_v_number_of_bins_d);
-  __Pyx_XDECREF(__pyx_v_bin_scaling_k);
+  __Pyx_XDECREF(__pyx_v_scaling_k);
   __Pyx_XDECREF((PyObject *)__pyx_v_window_delimiters);
   __Pyx_XDECREF((PyObject *)__pyx_v_raw_symbols);
   __PYX_XDEC_MEMVIEW(&__pyx_v_raw_symbols_view, 1);
@@ -4617,7 +4617,7 @@ static PyObject *__pyx_pf_18hde_fast_embedding_2count_symbols(CYTHON_UNUSED PyOb
  * 
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):             # <<<<<<<<<<<<<<
- *     embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+ *     past_range_T, number_of_bins_d, scaling_k = embedding
  *     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
  */
 
@@ -4695,9 +4695,9 @@ static PyObject *__pyx_pw_18hde_fast_embedding_5get_symbol_counts(PyObject *__py
 }
 
 static PyObject *__pyx_pf_18hde_fast_embedding_4get_symbol_counts(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_spike_times, PyObject *__pyx_v_embedding, PyObject *__pyx_v_embedding_step_size) {
-  CYTHON_UNUSED PyObject *__pyx_v_embedding_length_Tp = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_past_range_T = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_number_of_bins_d = NULL;
-  CYTHON_UNUSED PyObject *__pyx_v_bin_scaling_k = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_scaling_k = NULL;
   PyObject *__pyx_v_first_bin_size = NULL;
   PyArrayObject *__pyx_v_raw_symbols = 0;
   PyArrayObject *__pyx_v_symbols = 0;
@@ -4731,7 +4731,7 @@ static PyObject *__pyx_pf_18hde_fast_embedding_4get_symbol_counts(CYTHON_UNUSED 
   /* "hde_fast_embedding.pyx":129
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):
- *     embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding             # <<<<<<<<<<<<<<
+ *     past_range_T, number_of_bins_d, scaling_k = embedding             # <<<<<<<<<<<<<<
  *     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
  * 
  */
@@ -4786,16 +4786,16 @@ static PyObject *__pyx_pf_18hde_fast_embedding_4get_symbol_counts(CYTHON_UNUSED 
     __PYX_ERR(0, 129, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
-  __pyx_v_embedding_length_Tp = __pyx_t_1;
+  __pyx_v_past_range_T = __pyx_t_1;
   __pyx_t_1 = 0;
   __pyx_v_number_of_bins_d = __pyx_t_2;
   __pyx_t_2 = 0;
-  __pyx_v_bin_scaling_k = __pyx_t_3;
+  __pyx_v_scaling_k = __pyx_t_3;
   __pyx_t_3 = 0;
 
   /* "hde_fast_embedding.pyx":130
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):
- *     embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+ *     past_range_T, number_of_bins_d, scaling_k = embedding
  *     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] raw_symbols = get_raw_symbols(spike_times,
@@ -4975,7 +4975,7 @@ static PyObject *__pyx_pf_18hde_fast_embedding_4get_symbol_counts(CYTHON_UNUSED 
  * 
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):             # <<<<<<<<<<<<<<
- *     embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+ *     past_range_T, number_of_bins_d, scaling_k = embedding
  *     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
  */
 
@@ -5000,9 +5000,9 @@ static PyObject *__pyx_pf_18hde_fast_embedding_4get_symbol_counts(CYTHON_UNUSED 
   __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer);
   __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_symbols.rcbuffer->pybuffer);
   __pyx_L2:;
-  __Pyx_XDECREF(__pyx_v_embedding_length_Tp);
+  __Pyx_XDECREF(__pyx_v_past_range_T);
   __Pyx_XDECREF(__pyx_v_number_of_bins_d);
-  __Pyx_XDECREF(__pyx_v_bin_scaling_k);
+  __Pyx_XDECREF(__pyx_v_scaling_k);
   __Pyx_XDECREF(__pyx_v_first_bin_size);
   __Pyx_XDECREF((PyObject *)__pyx_v_raw_symbols);
   __Pyx_XDECREF((PyObject *)__pyx_v_symbols);
@@ -21523,7 +21523,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
   {&__pyx_n_s_axis, __pyx_k_axis, sizeof(__pyx_k_axis), 0, 0, 1, 1},
   {&__pyx_n_s_base, __pyx_k_base, sizeof(__pyx_k_base), 0, 0, 1, 1},
-  {&__pyx_n_s_bin_scaling_k, __pyx_k_bin_scaling_k, sizeof(__pyx_k_bin_scaling_k), 0, 0, 1, 1},
   {&__pyx_n_s_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 0, 1, 1},
   {&__pyx_n_u_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 1, 0, 1},
   {&__pyx_n_s_class, __pyx_k_class, sizeof(__pyx_k_class), 0, 0, 1, 1},
@@ -21536,7 +21535,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_dtype_is_object, __pyx_k_dtype_is_object, sizeof(__pyx_k_dtype_is_object), 0, 0, 1, 1},
   {&__pyx_n_s_emb, __pyx_k_emb, sizeof(__pyx_k_emb), 0, 0, 1, 1},
   {&__pyx_n_s_embedding, __pyx_k_embedding, sizeof(__pyx_k_embedding), 0, 0, 1, 1},
-  {&__pyx_n_s_embedding_length_Tp, __pyx_k_embedding_length_Tp, sizeof(__pyx_k_embedding_length_Tp), 0, 0, 1, 1},
   {&__pyx_n_s_embedding_step_size, __pyx_k_embedding_step_size, sizeof(__pyx_k_embedding_step_size), 0, 0, 1, 1},
   {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
@@ -21580,6 +21578,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
+  {&__pyx_n_s_past_range_T, __pyx_k_past_range_T, sizeof(__pyx_k_past_range_T), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
@@ -21595,6 +21594,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
   {&__pyx_n_s_reshape, __pyx_k_reshape, sizeof(__pyx_k_reshape), 0, 0, 1, 1},
+  {&__pyx_n_s_scaling_k, __pyx_k_scaling_k, sizeof(__pyx_k_scaling_k), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_shape, __pyx_k_shape, sizeof(__pyx_k_shape), 0, 0, 1, 1},
@@ -21999,10 +21999,10 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):             # <<<<<<<<<<<<<<
- *     embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+ *     past_range_T, number_of_bins_d, scaling_k = embedding
  *     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
  */
-  __pyx_tuple__37 = PyTuple_Pack(10, __pyx_n_s_spike_times, __pyx_n_s_embedding, __pyx_n_s_embedding_step_size, __pyx_n_s_embedding_length_Tp, __pyx_n_s_number_of_bins_d, __pyx_n_s_bin_scaling_k, __pyx_n_s_first_bin_size, __pyx_n_s_raw_symbols, __pyx_n_s_symbols, __pyx_n_s_symbol_counts); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_tuple__37 = PyTuple_Pack(10, __pyx_n_s_spike_times, __pyx_n_s_embedding, __pyx_n_s_embedding_step_size, __pyx_n_s_past_range_T, __pyx_n_s_number_of_bins_d, __pyx_n_s_scaling_k, __pyx_n_s_first_bin_size, __pyx_n_s_raw_symbols, __pyx_n_s_symbols, __pyx_n_s_symbol_counts); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__37);
   __Pyx_GIVEREF(__pyx_tuple__37);
   __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(3, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hde_fast_embedding_pyx, __pyx_n_s_get_symbol_counts, 128, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 128, __pyx_L1_error)
@@ -22491,7 +22491,7 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):             # <<<<<<<<<<<<<<
- *     embedding_length_Tp, number_of_bins_d, bin_scaling_k = embedding
+ *     past_range_T, number_of_bins_d, scaling_k = embedding
  *     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_18hde_fast_embedding_5get_symbol_counts, NULL, __pyx_n_s_hde_fast_embedding); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
