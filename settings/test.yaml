@@ -1,5 +1,5 @@
 embedding_past_range_set : [0.005, 0.00998, 0.01991, 0.03972, 0.07924, 0.15811, 0.31548, 0.62946, 1.25594, 2.50594, 5.0]
-estimation_method : shuffling
+estimation_method : all
 number_of_bootstraps : 10
 auto_MI_bin_size_set : [0.01, 0.025, 0.05, 0.25]
 persistent_analysis: False
