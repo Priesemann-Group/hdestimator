@@ -88,10 +88,11 @@ def get_fist_bin_size_for_embedding(embedding):
 
 def get_past_range(number_of_bins_d, first_bin_size, scaling_k):
     """
-    Get the past range T of the embedding, based on the parameters d, t0 and k.
+    Get the past range T of the embedding, based on the parameters d, tau_1 and k.
     """
 
-    return np.sum([first_bin_size * 10**((number_of_bins_d - i) * scaling_k) for i in range(1, number_of_bins_d + 1)])
+    return np.sum([first_bin_size * 10**((number_of_bins_d - i) * scaling_k)
+                   for i in range(1, number_of_bins_d + 1)])
 
 def get_window_delimiters(number_of_bins_d, scaling_k, first_bin_size, embedding_step_size):
     """

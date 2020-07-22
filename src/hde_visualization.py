@@ -380,7 +380,7 @@ def produce_plots(spike_times,
                                               ("opt. $\kappa$:",
                                                opt_scaling_k_shuffling,
                                                opt_scaling_k_bbc),
-                                              (r"opt. $\tau_0\,$[s]:",
+                                              (r"opt. $\tau_1\,$[s]:",
                                                opt_first_bin_size_shuffling,
                                                opt_first_bin_size_bbc)]:
                                               # ("ASL perm. test:",
