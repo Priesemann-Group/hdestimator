@@ -1,8 +1,6 @@
 from sys import exit, stderr
 import numpy as np
 import mpmath as mp
-from scipy.io import loadmat
-from scipy.integrate import quad, simps, dblquad
 from scipy.optimize import newton, minimize
 import hde_utils as utl
 

@@ -3,7 +3,7 @@ import h5py
 import ast
 import tempfile
 from os import listdir, mkdir, replace
-from os.path import isfile, isdir, abspath
+from os.path import isfile, abspath
 import io
 from sys import stderr
 import hashlib

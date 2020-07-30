@@ -1,7 +1,6 @@
 import argparse
 from sys import exit, stderr, argv, path
 from os.path import isfile, isdir, realpath, dirname, exists
-import h5py
 import ast
 import yaml
 import numpy as np
@@ -10,8 +9,6 @@ ESTIMATOR_DIR = dirname(realpath(__file__))
 path.insert(1, '{}/src'.format(ESTIMATOR_DIR))
 
 import hde_utils as utl
-import hde_bbc_estimator as bbc
-import hde_shuffling_estimator as sh
 import hde_visualization as vsl
 
 __version__ = "unknown"
