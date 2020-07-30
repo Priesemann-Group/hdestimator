@@ -58,7 +58,8 @@ def get_embeddings(embedding_past_range_set,
     for past_range_T in embedding_past_range_set:
         for number_of_bins_d in embedding_number_of_bins_set:
             if not isinstance(number_of_bins_d, int) or number_of_bins_d < 1:
-                stderr.write("Error: numer of bins {} is not a positive integer. Skipping.\n".format(number_of_bins_d))
+                print("Error: numer of bins {} is not a positive integer. Skipping.".format(number_of_bins_d),
+                      file=stderr, flush=True)
                 continue
                     
             if type(embedding_scaling_exponent_set) == dict:
