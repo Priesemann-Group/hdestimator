@@ -151,6 +151,7 @@ def get_CI_for_embedding(spike_times,
                          embedding_step_size,
                          number_of_bootstraps,
                          block_length_l=None,
+                         bootstrap_CI_use_sd=True,
                          bootstrap_CI_percentile_lo=2.5,
                          bootstrap_CI_percentile_hi=97.5):
     """
@@ -176,5 +177,13 @@ def get_CI_for_embedding(spike_times,
                                                    number_of_bootstraps,
                                                    block_length_l)
 
-    return np.percentile(bs_history_dependence, bootstrap_CI_percentile_lo), \
-        np.percentile(bs_history_dependence, bootstrap_CI_percentile_hi)
+    if bootstrap_CI_use_sd:
+        mu = np.average(bs_history_dependence)
+        sigma = np.std(bs_history_dependence)
+        CI_lo = mu - 2 * sigma
+        CI_hi = mu + 2 * sigma
+    else:
+        CI_lo = np.percentile(bs_history_dependence, bootstrap_CI_percentile_lo)
+        CI_hi = np.percentile(bs_history_dependence, bootstrap_CI_percentile_hi)
+
+    return (CI_lo, CI_hi)
