@@ -321,7 +321,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     if task in ["confidence-intervals",
                 # "permutation-test",
                 "csv-files"]:
-        if not "embeddings" in analysis_file.keys():
+        if not "embeddings" in analysis_file.keys() and not "h2_embeddings" in analysis_file.keys():
             print("Error.  No existing analysis found.  Please run the 'history-dependence' task first.  Aborting.", file=stderr, flush=True)
             exit(EXIT_FAILURE)
 
