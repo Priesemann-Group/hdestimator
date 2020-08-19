@@ -174,6 +174,10 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         print("Error loading spike times. Aborting.",
               file=stderr, flush=True)
         exit(EXIT_FAILURE)
+    elif not len(spike_times) > 0:
+        print("Spike times are empty. Aborting.",
+              file=stderr, flush=True)
+        exit(EXIT_FAILURE)
     
     #
     # PARSE SETTINGS

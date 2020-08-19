@@ -1610,8 +1610,11 @@ def get_spike_times_from_file(file_name,
                     continue
         f.close()
         spike_times = sorted(spike_times)
-        
-    return np.array(spike_times) - spike_times[0]
+
+    if len(spike_times) > 0:
+        return np.array(spike_times) - spike_times[0]
+    else:
+        return np.array([])
 
 
 #
