@@ -46,26 +46,35 @@ def make_twin_plot_pretty(axv):
     axv.get_yaxis().tick_right()
     axv.tick_params(axis = 'y', length = 0)
 
-def plot_neuron_activity(ax, spike_times, recording_length, averaging_time,
+def plot_neuron_activity(ax, spike_times, averaging_time,
                          color):
     """
     Visualize the moving average of some neural spiking activity.
     """
-    
-    spike_density = np.zeros(int(recording_length) - averaging_time)
-    spike_index = 0
-    for t in range(len(spike_density)):
-        while spike_index < len(spike_times) and spike_times[spike_index] < t:
-            spike_index += 1
-        spike_index_2 = 0
 
-        while spike_index + spike_index_2 < len(spike_times) \
-              and spike_times[spike_index + spike_index_2] < t + averaging_time:
-            spike_density[t] += 1
-            spike_index_2 += 1        
+    offset = 0
+    for i, spt in enumerate(spike_times):
+        recording_length = spt[-1] - spt[0]
+        spike_density = np.zeros(int(recording_length) - averaging_time)
+        spike_index = 0
+        for t in range(len(spike_density)):
+            while spike_index < len(spt) and spt[spike_index] < t:
+                spike_index += 1
+            spike_index_2 = 0
 
-    ax.plot(range(len(spike_density)), spike_density / averaging_time, color=color)
-    
+            while spike_index + spike_index_2 < len(spt) \
+                  and spt[spike_index + spike_index_2] < t + averaging_time:
+                spike_density[t] += 1
+                spike_index_2 += 1
+
+        ax.plot(np.arange(len(spike_density)) + offset, spike_density / averaging_time,
+                color=color)
+
+        if not i == len(spike_times) - 1:
+            offset += len(spike_density)
+            ax.axvline(x=offset, color='0.8', ls='-')
+
+
     ax.set_xlabel(r"time $t$ " + "[s]")
     ax.set_ylabel("fir. rate ({}s avg.) [Hz]".format(averaging_time))
 
@@ -216,7 +225,7 @@ def produce_plots(spike_times,
     recording_length = utl.load_from_CSV_file(csv_stats_file,
                                               "recording_length")
     averaging_time = 5
-    plot_neuron_activity(ax0l, spike_times, recording_length, averaging_time,
+    plot_neuron_activity(ax0l, spike_times, averaging_time,
                          plot_color)
 
     #
@@ -291,8 +300,12 @@ def produce_plots(spike_times,
                                             "label")
     firing_rate = utl.load_from_CSV_file(csv_stats_file,
                                          "firing_rate")
+    firing_rate_sd = utl.load_from_CSV_file(csv_stats_file,
+                                            "firing_rate_sd")
     recording_length = utl.load_from_CSV_file(csv_stats_file,
                                               "recording_length")
+    recording_length_sd = utl.load_from_CSV_file(csv_stats_file,
+                                                 "recording_length_sd")
 
     T_D_bbc = utl.load_from_CSV_file(csv_stats_file,
                                      "T_D_bbc")
@@ -341,9 +354,20 @@ def produce_plots(spike_times,
               fontsize=stats_fontsize)
     ax0r.text(-0.5, 0.775, analysis_label,
               fontsize=stats_fontsize)
-    ax0r.text(-0.3, 0.475, "recording length: {:.1f}s".format(recording_length),
+
+    rl_suffix = ""
+    fr_suffix = ""
+    if len(spike_times) > 1:
+        rl_suffix = r" ({}x {:.1f}$\pm$ {:.1f}s)".format(len(spike_times),
+                                                         recording_length / len(spike_times),
+                                                         recording_length_sd)
+        fr_suffix = r" $\pm$ {:.1f}".format(firing_rate_sd)
+    
+    ax0r.text(-0.3, 0.475, "recording length: {:.1f} s{}".format(recording_length,
+                                                                 rl_suffix),
               fontsize=stats_fontsize)
-    ax0r.text(-0.3, 0.275, "firing rate: {:.1f}Hz".format(firing_rate),
+    ax0r.text(-0.3, 0.275, "firing rate: {:.1f}{} Hz".format(firing_rate,
+                                                             fr_suffix),
               fontsize=stats_fontsize)
 
     if plot_AIS:
@@ -408,7 +432,9 @@ def produce_plots(spike_times,
     print("analysis: {}, hde v. {}, {}".format(analysis_num, __version__, date.today()))
     print(analysis_label)
     print("recording length: {:.1f}s".format(recording_length))
+    print("recording length sd: {:.1f}s".format(recording_length_sd))
     print("firing rate: {:.1f}Hz".format(firing_rate))
+    print("firing rate sd: {:.1f}Hz".format(firing_rate_sd))
     print()
 
     print("Shuffling")

@@ -1,4 +1,5 @@
 import numpy as np
+from collections import Counter
 import hde_utils as utl
 import hde_embedding as emb
 
@@ -88,14 +89,11 @@ def get_shuffled_symbol_counts(symbol_counts, number_of_bins_d):
     for response in [0, 1]:
         shuffled_past_symbols[response] = np.array(shuffled_past_symbols[response], dtype=int)
 
-    shuffled_past_symbol_counts = [{}, {}]
+    shuffled_past_symbol_counts = [Counter(), Counter()]
 
     for response in [0, 1]:
         for past_symbol in shuffled_past_symbols[response]:
-            if past_symbol in shuffled_past_symbol_counts[response]:
-                shuffled_past_symbol_counts[response][past_symbol] += 1
-            else:
-                shuffled_past_symbol_counts[response][past_symbol] = 1
+            shuffled_past_symbol_counts[response][past_symbol] += 1
 
     marginal_probabilities = [marginal_frequencies[response] / number_of_symbols[response]
                               for response in [0, 1]]

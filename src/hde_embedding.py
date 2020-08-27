@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import newton
+from collections import Counter
 from sys import stderr, exit
 
 FAST_EMBEDDING_AVAILABLE = True
@@ -216,7 +217,7 @@ def get_symbol_counts(spike_times, embedding, embedding_step_size):
     """
 
     if FAST_EMBEDDING_AVAILABLE:
-        return fast_emb.get_symbol_counts(spike_times, embedding, embedding_step_size)
+        return Counter(fast_emb.get_symbol_counts(spike_times, embedding, embedding_step_size))
     
     past_range_T, number_of_bins_d, scaling_k = embedding
     first_bin_size = get_fist_bin_size_for_embedding(embedding)
@@ -228,7 +229,7 @@ def get_symbol_counts(spike_times, embedding, embedding_step_size):
 
     median_number_of_spikes_per_bin = get_median_number_of_spikes_per_bin(raw_symbols)
 
-    symbol_counts = {}
+    symbol_counts = Counter()
     
     for raw_symbol in raw_symbols:
         symbol_array = [int(raw_symbol[i] > median_number_of_spikes_per_bin[i])
@@ -236,9 +237,6 @@ def get_symbol_counts(spike_times, embedding, embedding_step_size):
 
         symbol = symbol_array_to_binary(symbol_array, number_of_bins_d + 1)
 
-        if symbol in symbol_counts:
-            symbol_counts[symbol] += 1
-        else:
-            symbol_counts[symbol] = 1
+        symbol_counts[symbol] += 1
 
     return symbol_counts

@@ -7,6 +7,7 @@ from os.path import isfile, abspath
 import io
 from sys import stderr
 import hashlib
+from collections import Counter
 import hde_api as hapi
 import hde_embedding as emb
 import hde_bbc_estimator as bbc
@@ -62,7 +63,10 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
                                                 embedding=embedding,
                                                 cross_val=kwargs['cross_val'])
         if symbol_counts == None:
-            symbol_counts = emb.get_symbol_counts(spike_times, embedding, embedding_step_size)
+            symbol_counts = add_up_dicts([emb.get_symbol_counts(spt,
+                                                                embedding,
+                                                                embedding_step_size)
+                                          for spt in spike_times])
             save_to_analysis_file(f,
                                   "symbol_counts",
                                   embedding_step_size=embedding_step_size,
@@ -122,19 +126,36 @@ def save_spike_times_stats(f, spike_times,
     recording_length = load_from_analysis_file(f,
                                                "recording_length")
     if recording_length == None:
-        recording_length = spike_times[-1] - spike_times[0]
+        recording_lengths = [spt[-1] - spt[0] for spt in spike_times]
+        recording_length = sum(recording_lengths)
+        recording_length_sd = np.std(recording_lengths)
+
         save_to_analysis_file(f,
                               "recording_length",
                               recording_length=recording_length)
+        save_to_analysis_file(f,
+                              "recording_length_sd",
+                              recording_length_sd=recording_length_sd)
 
     
     firing_rate = load_from_analysis_file(f,
                                           "firing_rate")
     if firing_rate == None:
-        firing_rate = get_binned_firing_rate(spike_times, embedding_step_size)
+        firing_rates = [get_binned_firing_rate(spt, embedding_step_size)
+                        for spt in spike_times]
+        recording_lengths = [spt[-1] - spt[0] for spt in spike_times]
+        recording_length = sum(recording_lengths)
+
+        firing_rate = np.average(firing_rates, weights=recording_lengths)
+        firing_rate_sd = np.sqrt(np.average((firing_rates - firing_rate) ** 2,
+                                            weights=recording_lengths))
+
         save_to_analysis_file(f,
                               "firing_rate",
                               firing_rate=firing_rate)
+        save_to_analysis_file(f,
+                              "firing_rate_sd",
+                              firing_rate_sd=firing_rate_sd)
 
     H_spiking = load_from_analysis_file(f,
                                        "H_spiking")
@@ -146,6 +167,7 @@ def save_spike_times_stats(f, spike_times,
         save_to_analysis_file(f,
                               "H_spiking",
                               H_spiking=H_spiking)
+
                 
 def get_embeddings_that_maximise_R(f,
                                    estimation_method,
@@ -261,6 +283,10 @@ def get_CI_bounds(bs_Rs,
         CI_lo = np.percentile(bs_Rs, bootstrap_CI_percentile_lo)
         CI_hi = np.percentile(bs_Rs, bootstrap_CI_percentile_hi)
     return (CI_lo, CI_hi)
+
+def add_up_dicts(dicts):
+    return sum((Counter(dict(d)) for d in dicts),
+               Counter())
 
 def get_min_key_for_max_value(d):
     """
@@ -474,7 +500,6 @@ def compute_CIs(f,
 
         bs_history_dependence \
             = get_bootstrap_history_dependence(spike_times,
-                                               recording_length,
                                                embedding,
                                                embedding_step_size,
                                                estimation_method,
@@ -513,7 +538,6 @@ def compute_CIs(f,
     if number_of_stored_bootstraps < number_of_bootstraps:
         bs_history_dependence \
             = get_bootstrap_history_dependence(spike_times,
-                                               recording_length,
                                                embedding,
                                                embedding_step_size,
                                                estimation_method,
@@ -554,7 +578,6 @@ def compute_CIs(f,
     if number_of_stored_bootstraps < number_of_bootstraps:
         bs_history_dependence \
             = get_bootstrap_history_dependence(spike_times,
-                                               recording_length,
                                                embedding,
                                                embedding_step_size,
                                                estimation_method,
@@ -572,7 +595,6 @@ def compute_CIs(f,
 
 
 def get_bootstrap_history_dependence(spike_times,
-                                     recording_length,
                                      embedding,
                                      embedding_step_size,
                                      estimation_method,
@@ -585,12 +607,13 @@ def get_bootstrap_history_dependence(spike_times,
 
     # compute total number of symbols in original data:
     # this is the amount of symbols we want to replicate
-    num_symbols = 1 + int((recording_length - (past_range_T + embedding_step_size))
-                          / embedding_step_size)
+    min_num_symbols = 1 + int((min([spt[-1] - spt[0] for spt in spike_times])
+                               - (past_range_T + embedding_step_size))
+                              / embedding_step_size)
     
     symbol_block_length = int(block_length_l)
     
-    if symbol_block_length >= num_symbols:
+    if symbol_block_length >= min_num_symbols:
         print("Warning. Block length too large given number of symbols. Skipping.")
         return []
 
@@ -599,12 +622,14 @@ def get_bootstrap_history_dependence(spike_times,
     bs_Rs = np.zeros(number_of_bootstraps)
 
     symbols_array \
-        = get_symbols_array(spike_times, embedding, embedding_step_size)
+        = [get_symbols_array(spt, embedding, embedding_step_size)
+           for spt in spike_times]
 
     for rep in range(number_of_bootstraps):
         bs_symbol_counts \
-            = get_bootstrap_symbol_counts_from_symbols_array(symbols_array,
-                                                             symbol_block_length)
+            = add_up_dicts([get_bootstrap_symbol_counts_from_symbols_array(symbols_array[i],
+                                                                           symbol_block_length)
+                            for i in range(len(symbols_array))])
 
         bs_history_dependence = hapi.get_history_dependence(estimation_method,
                                                             bs_symbol_counts,
@@ -656,14 +681,11 @@ def get_bootstrap_symbol_counts_from_symbols_array(symbols_array,
     rand_indices = np.random.randint(0, num_symbols - (symbol_block_length - 1),
                                      size=int(num_symbols/ symbol_block_length))
 
-    symbol_counts = {}
+    symbol_counts = Counter()
     
     for rand_index in rand_indices:
         for symbol in symbols_array[rand_index:rand_index + symbol_block_length]:
-            if symbol in symbol_counts:
-                symbol_counts[symbol] += 1
-            else:
-                symbol_counts[symbol] = 1
+            symbol_counts[symbol] += 1
 
     residual_block_length = num_symbols - sum(symbol_counts.values())
 
@@ -671,10 +693,7 @@ def get_bootstrap_symbol_counts_from_symbols_array(symbols_array,
         rand_index_residual = np.random.randint(0, num_symbols - (residual_block_length - 1))
 
         for symbol in symbols_array[rand_index_residual:rand_index_residual + residual_block_length]:
-            if symbol in symbol_counts:
-                symbol_counts[symbol] += 1
-            else:
-                symbol_counts[symbol] = 1
+            symbol_counts[symbol] += 1
 
     return symbol_counts
 
@@ -865,7 +884,7 @@ def remove_key(d, key):
     Remove an entry from a dictionary .
     """
 
-    r = dict(d)
+    r = d.copy()
     del r[key]
     return r
 
@@ -874,20 +893,17 @@ def get_past_symbol_counts(symbol_counts, merge=True):
     Get symbol_counts for the symbols excluding the response.
     """
 
-    past_symbol_counts = [{}, {}]
+    past_symbol_counts = [Counter(), Counter()]
     for symbol in symbol_counts:
-        response   = int(symbol % 2)
+        response = int(symbol % 2)
         past_symbol = symbol // 2
         past_symbol_counts[response][past_symbol] = symbol_counts[symbol]
 
     if merge:
-        merged_past_symbol_counts = {}
+        merged_past_symbol_counts = Counter()
         for response in [0, 1]:
             for symbol in past_symbol_counts[response]:
-                if symbol not in merged_past_symbol_counts:
-                    merged_past_symbol_counts[symbol] = past_symbol_counts[response][symbol]
-                else:
-                    merged_past_symbol_counts[symbol] += past_symbol_counts[response][symbol]
+                merged_past_symbol_counts[symbol] += past_symbol_counts[response][symbol]
         return merged_past_symbol_counts
     else:
         return past_symbol_counts
@@ -994,7 +1010,9 @@ def get_analysis_stats(f,
         # "number_of_permutations_bbc" : "-",
         # "number_of_permutations_shuffling" : "-",
         "firing_rate" : get_parameter_label(load_from_analysis_file(f, "firing_rate")),
+        "firing_rate_sd" : get_parameter_label(load_from_analysis_file(f, "firing_rate_sd")),
         "recording_length" : get_parameter_label(load_from_analysis_file(f, "recording_length")),
+        "recording_length_sd" : get_parameter_label(load_from_analysis_file(f, "recording_length_sd")),
         "H_spiking" : "-",
     }
     
@@ -1410,15 +1428,17 @@ def get_auto_MI(spike_times, bin_size, number_of_delays):
     measure closely related to history dependence.
     """
 
-    # represent the neural activity as an array of 0s (no spike) and 1s (spike)
-    binned_neuron_activity = get_binned_neuron_activity(spike_times,
-                                                        bin_size,
-                                                        relative_to_median_activity=True)
-    
-    number_of_bins = int(spike_times[-1] / bin_size) + 1
+    binned_neuron_activity = []
 
-    # compute some stats
-    p_spike = sum(binned_neuron_activity) / number_of_bins
+    for spt in spike_times:
+        # represent the neural activity as an array of 0s (no spike) and 1s (spike)
+        binned_neuron_activity += [get_binned_neuron_activity(spt,
+                                                              bin_size,
+                                                              relative_to_median_activity=True)]
+
+    p_spike = sum([sum(bna)
+                  for bna in binned_neuron_activity]) / sum([len(bna)
+                                                             for bna in binned_neuron_activity])
     H_spiking = get_shannon_entropy([p_spike,
                                     1 - p_spike])
 
@@ -1426,13 +1446,20 @@ def get_auto_MI(spike_times, bin_size, number_of_delays):
     
     # compute auto MI
     for delay in range(number_of_delays):
-        number_of_symbols = number_of_bins - delay - 1
-        
-        symbols = np.array([2 * binned_neuron_activity[i] + binned_neuron_activity[i + delay + 1]
-                            for i in range(number_of_symbols)])
 
-        symbol_counts = dict([(unq_symbol, len(np.where(symbols==unq_symbol)[0]))
-                              for unq_symbol in np.unique(symbols)])
+        symbol_counts = []
+        for bna in binned_neuron_activity:
+            number_of_symbols = len(bna) - delay - 1
+            
+            symbols = np.array([2 * bna[i] + bna[i + delay + 1]
+                                for i in range(number_of_symbols)])
+
+            symbol_counts += [dict([(unq_symbol, len(np.where(symbols==unq_symbol)[0]))
+                                    for unq_symbol in np.unique(symbols)])]
+
+        symbol_counts = add_up_dicts(symbol_counts)
+        number_of_symbols = sum(symbol_counts.values())
+        # number_of_symbols = sum([len(bna) - delay - 1 for bna in binned_neuron_activity])
 
         H_joint = get_shannon_entropy([number_of_occurrences / number_of_symbols
                                        for number_of_occurrences in symbol_counts.values()])
@@ -1577,8 +1604,8 @@ def get_CSV_files(task,
 # read the spike times from file
 #
 
-def get_spike_times_from_file(file_name,
-                              hdf5_dataset=None):
+def get_spike_times_from_file(file_names,
+                              hdf5_datasets=None):
     """
     Get spike times from a file (either one spike time per line, or
     a dataset in a hdf5 file.).
@@ -1586,36 +1613,80 @@ def get_spike_times_from_file(file_name,
     Ignore lines that don't represent times, sort the spikes 
     chronologically, shift spike times to start at 0 (remove any silent
     time at the beginning..).
+
+    It is also possible to import spike times from several non-contiguous
+    parts.  These can be located either from many file names or many
+    hdf5 datasets within one file.  It is also possible to provide them
+    from one file only by using '----------' as a delimiter.
     """
 
-    if not hdf5_dataset == None:
-        f = h5py.File(file_name, 'r')
+    parts_delimiter = '----------'
+    spike_times_raw = []
 
-        if not hdf5_dataset in f:
-            print("Error: Dataset {} not found in file {}.".format(hdf5_dataset,
-                                                                   file_name),
-                  file=stderr, flush=True)
-            return None
-        
-        spike_times = sorted(f[hdf5_dataset][()])
-        f.close()
+    if not hdf5_datasets == None:
+        if type(file_names) == list or type(hdf5_datasets) == list:
+            if not type(file_names) == list:
+                file_names = [file_names] * len(hdf5_datasets)
+            if not type(hdf5_datasets) == list:
+                hdf5_datasets = [hdf5_datasets] * len(file_names)
+            if not len(file_names) == len(hdf5_datasets):
+                print('Error. Number of hdf filenames and datasets do not match. Please provide them in a 1:n, n:1 or n:n relation.',
+                      file=stderr, flush=True)
+                return None
+        else:
+            file_names = [file_names]
+            hdf5_datasets = [hdf5_datasets]
+
+        for file_name, hdf5_dataset in zip(file_names, hdf5_datasets):
+            f = h5py.File(file_name, 'r')
+
+            if not hdf5_dataset in f:
+                print("Error: Dataset {} not found in file {}.".format(hdf5_dataset,
+                                                                       file_name),
+                      file=stderr, flush=True)
+                return None
+
+            spike_times_part = f[hdf5_dataset][()]
+            if len(spike_times_part) > 0:
+                spike_times_raw += [spike_times_part]
+
+            f.close()
+
     else:
-        spike_times = []
+        if not type(file_names) == list:
+            file_names = [file_names]
 
-        with open(file_name, 'r') as f:
-            for line in f.readlines():
-                try:
-                    spike_times += [float(line)]
-                except:
-                    continue
-        f.close()
-        spike_times = sorted(spike_times)
+        for file_name in file_names:
+            spike_times_part = []
 
-    if len(spike_times) > 0:
-        return np.array(spike_times) - spike_times[0]
+            with open(file_name, 'r') as f:
+                for line in f.readlines():
+                    try:
+                        spike_times_part += [float(line)]
+                    except:
+                        if line == parts_delimiter:
+                            if len(spike_times_part) > 0:
+                                spike_times_raw += [spike_times_part]
+                                spike_times_part = []
+                        continue
+            
+            if len(spike_times_part) > 0:
+                spike_times_raw += [spike_times_part]
+                spike_times_part = []
+
+            f.close()
+
+    spike_times = []
+    if len(spike_times_raw) > 0:
+        for spike_times_part in spike_times_raw:
+            spike_times += [np.array(sorted(spike_times_part)) - min(spike_times_part)]
+
+        # if len(spike_times) == 1:
+        #     return spike_times[0]
+        # else:
+        return np.array(spike_times)
     else:
         return np.array([])
-
 
 #
 # functions related to the storage and retrival to/ from
@@ -1659,7 +1730,11 @@ def get_or_create_data_directory_in_file(f,
     and return it.
     """
     
-    if data_label in ["firing_rate", "H_spiking", "recording_length"]:
+    if data_label in ["firing_rate",
+                      "firing_rate_sd",
+                      "H_spiking",
+                      "recording_length",
+                      "recording_length_sd"]:
         root_dir = "other"
     elif data_label == "auto_MI":
         root_dir = "auto_MI"
@@ -1676,7 +1751,11 @@ def get_or_create_data_directory_in_file(f,
 
     data_dir = f[root_dir]
     
-    if data_label in ["firing_rate", "H_spiking", "recording_length"]:
+    if data_label in ["firing_rate",
+                      "firing_rate_sd",
+                      "H_spiking",
+                      "recording_length",
+                      "recording_length_sd"]:
         return data_dir
     elif data_label == "auto_MI":
         bin_size_label, found = find_existing_parameter(auto_MI_bin_size,
@@ -1731,7 +1810,11 @@ def save_to_analysis_file(f,
                                                     estimation_method=estimation_method,
                                                     **data)
 
-    if data_label in ["firing_rate", "H_spiking", "recording_length"]:
+    if data_label in ["firing_rate",
+                      "firing_rate_sd",
+                      "H_spiking",
+                      "recording_length",
+                      "recording_length_sd"]:
         if not data_label in data_dir:
             data_dir.create_dataset(data_label, data=data[data_label])
 
@@ -1746,7 +1829,7 @@ def save_to_analysis_file(f,
                 
     elif data_label == "symbol_counts":
         if not data_label in data_dir:
-            data_dir.create_dataset(data_label, data=str(data[data_label]))
+            data_dir.create_dataset(data_label, data=str(dict(data[data_label])))
             
     elif data_label == "history_dependence":
         if not data_label in data_dir:
@@ -1785,7 +1868,7 @@ def load_from_analysis_file(f,
     if data_dir == None or data_label not in data_dir:
         return None
     elif data_label == "symbol_counts":
-        return ast.literal_eval(data_dir[data_label][()])
+        return Counter(ast.literal_eval(data_dir[data_label][()]))
     else:
         return data_dir[data_label][()]
 
@@ -1818,9 +1901,20 @@ def get_hash(spike_times):
     Get hash representing the spike times, for bookkeeping.
     """
 
-    m = hashlib.sha256()
-    m.update(str(spike_times).encode('utf-8'))
-    return m.hexdigest()
+    if len(spike_times) == 1:
+        m = hashlib.sha256()
+        m.update(str(spike_times[0]).encode('utf-8'))
+        return m.hexdigest()
+    else:
+        ms = []
+        for spt in spike_times:
+            m = hashlib.sha256()
+            m.update(str(spt).encode('utf-8'))
+            ms += [m.hexdigest()]
+        m = hashlib.sha256()
+        m.update(str(sorted(ms)).encode('utf-8'))
+        return m.hexdigest()
+
 
 def get_analysis_file(persistent_analysis, analysis_dir):
     """
@@ -1843,7 +1937,7 @@ def get_analysis_file(persistent_analysis, analysis_dir):
     return analysis_file
 
 def get_or_create_analysis_dir(spike_times,
-                               spike_times_file_name,
+                               spike_times_file_names,
                                root_analysis_dir):
     """
     Search for existing folder containing associated analysis.
@@ -1853,7 +1947,9 @@ def get_or_create_analysis_dir(spike_times,
     analysis_dir_prefix = 'ANALYSIS'
     prefix_len = len(analysis_dir_prefix)
     analysis_id_file_name = '.associated_spike_times_file'
-    analysis_id = {'path': abspath(spike_times_file_name).strip(),
+    analysis_id = {'path': '\n'.join([abspath(spike_times_file_name).strip()
+                                      for spike_times_file_name in
+                                      spike_times_file_names]),
                    'hash': get_hash(spike_times)}
     existing_analysis_found = False
     

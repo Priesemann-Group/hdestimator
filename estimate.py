@@ -126,12 +126,14 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     optional_arguments = parser._action_groups.pop()
     
     required_arguments = parser.add_argument_group("required arguments")
-    required_arguments.add_argument('spike_times_file', action="store", help="Define file from which to read spike times and on which to perform the analysis.  The file should contain one spike time per line.")
+    required_arguments.add_argument('spike_times_file', action="store", help="Define file from which to read spike times and on which to perform the analysis.  The file should contain one spike time per line.",
+                                    nargs='+')
 
     optional_arguments.add_argument("-t", "--task", metavar="TASK", action="store", help="Define task to be performed.  One of {}.  Per default, the full analysis is performed.".format(defined_tasks),
                                     default="full-analysis")
     optional_arguments.add_argument("-e", "--estimation-method", metavar="EST_METHOD", action="store", help="Specify estimation method for the analysis, one of {}.".format(defined_estimation_methods))
-    optional_arguments.add_argument("-h5", "--hdf5-dataset", action="store", help="Load data stored in a dataset in a hdf5 file.")
+    optional_arguments.add_argument("-h5", "--hdf5-dataset", action="store", help="Load data stored in a dataset in a hdf5 file.",
+                                    nargs='+')
     optional_arguments.add_argument("-o", "--output", metavar="IMAGE_FILE", action="store", help="Save the output image to file.")
     optional_arguments.add_argument("-p", "--persistent", action="store_true", help="Save the analysis to file.  If an existing analysis is found, read it from file.")
     optional_arguments.add_argument("-s", "--settings-file", metavar="SETTINGS_FILE", action="store", help="Specify yaml file from which to load custom settings.")
@@ -143,7 +145,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     # check that parsed arguments are valid
 
     task = args.task.lower()
-    spike_times_file_name = args.spike_times_file
+    spike_times_file_names = args.spike_times_file
 
     task_found = False
     task_full_name = ""
@@ -162,12 +164,13 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         print("Task must be one of {}.  Aborting.".format(defined_tasks), file=stderr, flush=True)
         exit(EXIT_FAILURE)
 
-    if not exists(spike_times_file_name):
-        print("Spike times file {} not found.  Aborting.".format(spike_times_file_name),
-              file=stderr, flush=True)
-        exit(EXIT_FAILURE)
+    for spike_times_file_name in spike_times_file_names:
+        if not exists(spike_times_file_name):
+            print("Spike times file {} not found.  Aborting.".format(spike_times_file_name),
+                  file=stderr, flush=True)
+            exit(EXIT_FAILURE)
 
-    spike_times = utl.get_spike_times_from_file(spike_times_file_name,
+    spike_times = utl.get_spike_times_from_file(spike_times_file_names,
                                                 args.hdf5_dataset)
 
     if not isinstance(spike_times, np.ndarray):
@@ -305,14 +308,14 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
 
         analysis_dir, analysis_num, existing_analysis_found \
             = utl.get_or_create_analysis_dir(spike_times,
-                                             spike_times_file_name,
+                                             spike_times_file_names,
                                              settings['ANALYSIS_DIR'])
 
     
         settings['ANALYSIS_DIR'] = analysis_dir
     else:
         analysis_num = "temp"
-            
+
     analysis_file = utl.get_analysis_file(settings['persistent_analysis'],
                                           settings['ANALYSIS_DIR'])
 
@@ -367,14 +370,23 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
 
     # for cross-validation
     # split up data in two halves
+    spike_times_optimization = []
+    spike_times_validation = []
     if settings['cross_validated_optimization']:
-        spike_times_half_time = (spike_times[-1] - spike_times[0]) / 2
-        spike_times_optimization = spike_times[spike_times < spike_times_half_time]
-        spike_times_validation = spike_times[spike_times >= spike_times_half_time] \
-            - spike_times_half_time
+        for spt in spike_times:
+            spt_half_time = (spt[-1] - spt[0]) / 2
+            spt_optimization = spt[spt < spt_half_time]
+            spt_validation = spt[spt >= spt_half_time] \
+                - spt_half_time
+            spike_times_optimization += [spt_optimization]
+            spike_times_validation += [spt_validation]
     else:
-        spike_times_optimization = spike_times
-        spike_times_validation = spike_times
+        for spt in spike_times:
+            spike_times_optimization += [spt]
+            spike_times_validation += [spt]
+
+    spike_times_optimization = np.array(spike_times_optimization)
+    spike_times_validation = np.array(spike_times_validation)
 
     return task, spike_times, spike_times_optimization, spike_times_validation, \
         analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, analysis_num, \

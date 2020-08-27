@@ -90,15 +90,15 @@ def get_history_dependence_for_single_embedding(spike_times,
     return history_dependence
 
 def get_history_dependence_for_embedding_set(spike_times,
-                                               recording_length,
-                                               estimation_method,
-                                               embedding_past_range_set,
-                                               embedding_number_of_bins_set,
-                                               embedding_scaling_exponent_set,
-                                               embedding_step_size,
-                                               bbc_tolerance=None,
-                                               dependent_var="T",
-                                               **kwargs):
+                                             recording_length,
+                                             estimation_method,
+                                             embedding_past_range_set,
+                                             embedding_number_of_bins_set,
+                                             embedding_scaling_exponent_set,
+                                             embedding_step_size,
+                                             bbc_tolerance=None,
+                                             dependent_var="T",
+                                             **kwargs):
     """
     Apply embeddings to spike_times to obtain symbol counts.
     For each T (or d), get history dependence R for the embedding for which
@@ -143,9 +143,7 @@ def get_history_dependence_for_embedding_set(spike_times,
 
     return embeddings_that_maximise_R, max_Rs
 
-# FIXME don't use percentiles, use std per default
 def get_CI_for_embedding(spike_times,
-                         recording_length,
                          estimation_method,
                          embedding,
                          embedding_step_size,
@@ -170,7 +168,6 @@ def get_CI_for_embedding(spike_times,
     
     bs_history_dependence \
             = utl.get_bootstrap_history_dependence(spike_times,
-                                                   recording_length,
                                                    embedding,
                                                    embedding_step_size,
                                                    estimation_method,
