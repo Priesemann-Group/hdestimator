@@ -263,7 +263,8 @@ def get_embeddings_that_maximise_R(f,
     else:
         return embeddings_that_maximise_R, max_Rs
 
-def get_CI_bounds(bs_Rs,
+def get_CI_bounds(R,
+                  bs_Rs,
                   bootstrap_CI_use_sd=True,
                   bootstrap_CI_percentile_lo=2.5,
                   bootstrap_CI_percentile_hi=97.5):
@@ -275,10 +276,9 @@ def get_CI_bounds(bs_Rs,
     """
     
     if bootstrap_CI_use_sd:
-        mu = np.average(bs_Rs)
-        sigma = np.std(bs_Rs)
-        CI_lo = mu - 2 * sigma
-        CI_hi = mu + 2 * sigma
+        sigma_R = np.std(bs_Rs)
+        CI_lo = R - 2 * sigma_R
+        CI_hi = R + 2 * sigma_R
     else:
         CI_lo = np.percentile(bs_Rs, bootstrap_CI_percentile_lo)
         CI_hi = np.percentile(bs_Rs, bootstrap_CI_percentile_hi)
@@ -1072,7 +1072,8 @@ def get_analysis_stats(f,
                 = str(len(bs_Rs))
 
         if not stats["number_of_bootstraps_{}".format(estimation_method)] == "-":
-            R_tot_CI_lo, R_tot_CI_hi = get_CI_bounds(bs_Rs,
+            R_tot_CI_lo, R_tot_CI_hi = get_CI_bounds(R_tot,
+                                                     bs_Rs,
                                                      kwargs["bootstrap_CI_use_sd"],
                                                      kwargs["bootstrap_CI_percentile_lo"],
                                                      kwargs["bootstrap_CI_percentile_hi"])
@@ -1199,7 +1200,8 @@ def get_histdep_data(f,
 
             if isinstance(bs_Rs, np.ndarray):
                 max_R_CI_lo[past_range_T], max_R_CI_hi[past_range_T] \
-                    = get_CI_bounds(bs_Rs,
+                    = get_CI_bounds(max_Rs[past_range_T],
+                                    bs_Rs,
                                     kwargs["bootstrap_CI_use_sd"],
                                     kwargs["bootstrap_CI_percentile_lo"],
                                     kwargs["bootstrap_CI_percentile_hi"])

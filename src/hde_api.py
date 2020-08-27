@@ -143,7 +143,8 @@ def get_history_dependence_for_embedding_set(spike_times,
 
     return embeddings_that_maximise_R, max_Rs
 
-def get_CI_for_embedding(spike_times,
+def get_CI_for_embedding(history_dependence,
+                         spike_times,
                          estimation_method,
                          embedding,
                          embedding_step_size,
@@ -174,13 +175,8 @@ def get_CI_for_embedding(spike_times,
                                                    number_of_bootstraps,
                                                    block_length_l)
 
-    if bootstrap_CI_use_sd:
-        mu = np.average(bs_history_dependence)
-        sigma = np.std(bs_history_dependence)
-        CI_lo = mu - 2 * sigma
-        CI_hi = mu + 2 * sigma
-    else:
-        CI_lo = np.percentile(bs_history_dependence, bootstrap_CI_percentile_lo)
-        CI_hi = np.percentile(bs_history_dependence, bootstrap_CI_percentile_hi)
-
-    return (CI_lo, CI_hi)
+    return utl.get_CI_bounds(history_dependence,
+                             bs_history_dependence,
+                             bootstrap_CI_use_sd=bootstrap_CI_use_sd,
+                             bootstrap_CI_percentile_lo=bootstrap_CI_percentile_lo,
+                             bootstrap_CI_percentile_hi=bootstrap_CI_percentile_hi)
