@@ -36,10 +36,12 @@ def do_main_analysis(spike_times, spike_times_optimization, spike_times_validati
         utl.save_history_dependence_for_embeddings(analysis_file,
                                                    spike_times_validation,
                                                    **settings)
+        utl.compute_CIs(analysis_file, spike_times, target_R='R_max', **settings)
     else:
         settings['cross_val'] = None
         utl.save_history_dependence_for_embeddings(analysis_file,
                                                    spike_times, **settings)
+        utl.compute_CIs(analysis_file, spike_times, target_R='R_max', **settings)
 
 def compute_CIs(spike_times, analysis_file, settings):
     """
@@ -52,7 +54,8 @@ def compute_CIs(spike_times, analysis_file, settings):
     else:
         settings['cross_val'] = None
     
-    utl.compute_CIs(analysis_file, spike_times, **settings)
+    utl.compute_CIs(analysis_file, spike_times, target_R='R_tot', **settings)
+    utl.compute_CIs(analysis_file, spike_times, target_R='nonessential', **settings)
 
 # def perform_permutation_test(analysis_file, settings):
 #     """
@@ -221,7 +224,8 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     required_parameters = ['embedding_past_range_set', 'embedding_number_of_bins_set',
                            'embedding_scaling_exponent_set', 'embedding_step_size',
                            'bbc_tolerance',
-                           'number_of_bootstraps', 'number_of_bootstraps_nonessential',
+                           'number_of_bootstraps_R_max', 'number_of_bootstraps_R_tot',
+                           'number_of_bootstraps_nonessential',
                            'block_length_l',
                            'bootstrap_CI_percentile_lo',
                            'bootstrap_CI_percentile_hi',

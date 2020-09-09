@@ -437,9 +437,8 @@ def compute_CIs(f,
                 spike_times,
                 estimation_method,
                 embedding_step_size,
-                number_of_bootstraps,
-                number_of_bootstraps_nonessential=0,
                 block_length_l=None,
+                target_R='R_max',
                 **kwargs):
     """ 
     Compute bootstrap replications of the history dependence estimate
@@ -448,16 +447,21 @@ def compute_CIs(f,
     Load symbol counts, resample, then estimate entropy for each sample
     and save to file.
 
-    :param number_of_bootstraps: Number of bootstrap replications of R
-    that are produced for the T at which R is maximised, and for the
-    temporal depth T_D (cf get_temporal_depth_T_D).  
-    :param number_of_bootstraps_nonessential: Number of bootstrap
-    replications of R that are produced for each T (one embedding per
-    T, cf get_embeddings_that_maximise_R).  These are not otherwise
-    used in the analysis and are probably only useful if the resulting
-    plot is visually inspected, so in most cases it can be set to
-    zero.
+    :param target_R: One of 'R_max', 'R_tot' or 'nonessential'.
+    If set to R_max, replications of R are produced for the T at which
+    R is maximised.
+    If set to R_tot, replications of R are produced for T = T_D (cf 
+    get_temporal_depth_T_D).  
+    If set to nonessential, replications of R are produced for each T
+    (one embedding per T, cf get_embeddings_that_maximise_R).  These 
+    are not otherwise used in the analysis and are probably only useful
+    if the resulting plot is visually inspected, so in most cases it can
+    be set to zero.
     """
+
+    assert target_R in ['nonessential', 'R_max', 'R_tot']
+
+    number_of_bootstraps = kwargs['number_of_bootstraps_{}'.format(target_R)]
     
     embedding_maximising_R_at_T, max_Rs \
         = get_embeddings_that_maximise_R(f,
@@ -478,12 +482,31 @@ def compute_CIs(f,
         # (in the reponse, ignoring the past activity)
         block_length_l = max(1, int(1 / (firing_rate * embedding_step_size)))
 
-    # first bootstrap R for unessential Ts (no bootstraps required for the main analysis)
+    if target_R == 'nonessential':
+        # bootstrap R for unessential Ts (not required for the main analysis)
+        embeddings = []
 
-    for past_range_T in embedding_maximising_R_at_T:
-        number_of_bins_d, scaling_k = embedding_maximising_R_at_T[past_range_T]
-        embedding = (past_range_T, number_of_bins_d, scaling_k)
+        for past_range_T in embedding_maximising_R_at_T:
+            number_of_bins_d, scaling_k = embedding_maximising_R_at_T[past_range_T]
+            embeddings += [(past_range_T, number_of_bins_d, scaling_k)]
 
+    elif target_R == 'R_max':
+        # bootstrap R for the max R, to get a good estimate for the standard deviation
+        # which is used to determine R_tot
+        max_R, max_R_T = get_max_R_T(max_Rs)        
+        number_of_bins_d, scaling_k = embedding_maximising_R_at_T[max_R_T]
+        
+        embeddings = [(max_R_T, number_of_bins_d, scaling_k)]
+    elif target_R == 'R_tot':
+        T_D = get_temporal_depth_T_D(f,
+                                     estimation_method,
+                                     embedding_step_size=embedding_step_size,
+                                     **kwargs)
+        number_of_bins_d, scaling_k = embedding_maximising_R_at_T[T_D]
+        
+        embeddings = [(T_D, number_of_bins_d, scaling_k)]
+
+    for embedding in embeddings:
         stored_bs_Rs = load_from_analysis_file(f,
                                                "bs_history_dependence",
                                                embedding_step_size=embedding_step_size,
@@ -495,7 +518,7 @@ def compute_CIs(f,
         else:
             number_of_stored_bootstraps = 0
 
-        if not number_of_bootstraps_nonessential - number_of_stored_bootstraps > 0:
+        if not number_of_bootstraps > number_of_stored_bootstraps:
             continue
 
         bs_history_dependence \
@@ -503,86 +526,7 @@ def compute_CIs(f,
                                                embedding,
                                                embedding_step_size,
                                                estimation_method,
-                                               number_of_bootstraps_nonessential \
-                                               - number_of_stored_bootstraps,
-                                               block_length_l)
-
-        save_to_analysis_file(f,
-                              "bs_history_dependence",
-                              embedding_step_size=embedding_step_size,
-                              embedding=embedding,
-                              estimation_method=estimation_method,
-                              bs_history_dependence=bs_history_dependence,
-                              cross_val=kwargs['cross_val'])
-
-
-    # then bootstrap R for the max R, to get a good estimate for the standard deviation
-    # which is used to determine R_tot
-
-    max_R, max_R_T = get_max_R_T(max_Rs)
-        
-    number_of_bins_d, scaling_k = embedding_maximising_R_at_T[max_R_T]
-    embedding = (max_R_T, number_of_bins_d, scaling_k)
-
-    stored_bs_Rs = load_from_analysis_file(f,
-                                           "bs_history_dependence",
-                                           embedding_step_size=embedding_step_size,
-                                           embedding=embedding,
-                                           estimation_method=estimation_method,
-                                           cross_val=kwargs['cross_val'])
-    if isinstance(stored_bs_Rs, np.ndarray):
-        number_of_stored_bootstraps = len(stored_bs_Rs)
-    else:
-        number_of_stored_bootstraps = 0
-
-    if number_of_stored_bootstraps < number_of_bootstraps:
-        bs_history_dependence \
-            = get_bootstrap_history_dependence(spike_times,
-                                               embedding,
-                                               embedding_step_size,
-                                               estimation_method,
-                                               number_of_bootstraps \
-                                               - number_of_stored_bootstraps,
-                                               block_length_l)
-
-        save_to_analysis_file(f,
-                              "bs_history_dependence",
-                              embedding_step_size=embedding_step_size,
-                              embedding=embedding,
-                              estimation_method=estimation_method,
-                              bs_history_dependence=bs_history_dependence,
-                              cross_val=kwargs['cross_val'])
-
-    # then bootstrap R_tot for a confidence interval, per default based on
-    # the variance of the bootstrap replications
-
-    T_D = get_temporal_depth_T_D(f,
-                                 estimation_method,
-                                 embedding_step_size=embedding_step_size,
-                                 **kwargs)
-
-    number_of_bins_d, scaling_k = embedding_maximising_R_at_T[T_D]
-    embedding = (T_D, number_of_bins_d, scaling_k)
-
-    stored_bs_Rs = load_from_analysis_file(f,
-                                           "bs_history_dependence",
-                                           embedding_step_size=embedding_step_size,
-                                           embedding=embedding,
-                                           estimation_method=estimation_method,
-                                           cross_val=kwargs['cross_val'])
-    if isinstance(stored_bs_Rs, np.ndarray):
-        number_of_stored_bootstraps = len(stored_bs_Rs)
-    else:
-        number_of_stored_bootstraps = 0
-
-    if number_of_stored_bootstraps < number_of_bootstraps:
-        bs_history_dependence \
-            = get_bootstrap_history_dependence(spike_times,
-                                               embedding,
-                                               embedding_step_size,
-                                               estimation_method,
-                                               number_of_bootstraps \
-                                               - number_of_stored_bootstraps,
+                                               number_of_bootstraps - number_of_stored_bootstraps,
                                                block_length_l)
 
         save_to_analysis_file(f,
@@ -924,7 +868,8 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                 'estimation_method' : "shuffling",
                 'bbc_tolerance' : 0.05,
                 'cross_validated_optimization' : True,
-                'number_of_bootstraps' : 250,
+                'number_of_bootstraps_R_max' : 250,
+                'number_of_bootstraps_R_tot' : 250,
                 'number_of_bootstraps_nonessential' : 0,
                 'block_length_l' : None,
                 'bootstrap_CI_use_sd' : True,

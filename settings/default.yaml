@@ -62,13 +62,22 @@ cross_validated_optimization : True
 # Bootstrap parameters
 # ------------------------------------------------------------------------------ #
 
-# The number of bootstrap re-shuffles that should be used to estimate the confidence
-# interval of the optimal embedding (this should be rather high).
-number_of_bootstraps : 250
+# The number of bootstrap re-shuffles that should be used to determine the optimal
+# embedding. (Bootstrap the estimates of R_max to determine R_tot.)
+# These are computed during the 'history-dependence' task because they are essential
+# to obtain R_tot.
+number_of_bootstraps_R_max : 250
 
 # The number of bootstrap re-shuffles that should be used to estimate the confidence
-# intervals for embeddings other than the optimal one
-# (these are not necessary for the main analysis and therefore default to 0).
+# interval of the optimal embedding. (Bootstrap the estimates of R_tot = R(T_D) to
+# obtain a confidence interval for R_tot.).
+# These are computed during the 'confidence-intervals' task .
+number_of_bootstraps_R_tot : 250
+
+# The number of bootstrap re-shuffles that should be used to estimate the confidence
+# intervals for embeddings other than the optimal one. (Bootstrap the estimates of
+# R(T) for all other T.)
+# (These are not necessary for the main analysis and therefore default to 0.)
 number_of_bootstraps_nonessential : 0
 
 # The number of symbols that should be drawn in each block for bootstrap resampling
