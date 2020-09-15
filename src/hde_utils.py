@@ -1611,7 +1611,7 @@ def get_spike_times_from_file(file_names,
                     try:
                         spike_times_part += [float(line)]
                     except:
-                        if line == parts_delimiter:
+                        if line.strip() == parts_delimiter:
                             if len(spike_times_part) > 0:
                                 spike_times_raw += [spike_times_part]
                                 spike_times_part = []
