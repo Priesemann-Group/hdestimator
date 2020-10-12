@@ -236,6 +236,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     required_settings = ['estimation_method', 'plot_AIS',
                          'ANALYSIS_DIR', 'persistent_analysis',
                          'cross_validated_optimization',
+                         'return_averaged_R',
                          'bootstrap_CI_use_sd',
                          'verbose_output',
                          'plot_settings', 'plot_color'] + required_parameters
@@ -256,6 +257,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     for setting_key in ['persistent_analysis',
                         'verbose_output',
                         'cross_validated_optimization',
+                        'return_averaged_R',
                         'bootstrap_CI_use_sd',
                         'plot_AIS']:
         settings[setting_key] = ast.literal_eval(settings[setting_key])
@@ -288,6 +290,10 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         else:
             settings[parameter_key] = ast.literal_eval(settings[parameter_key])
 
+    # If R_tot is computed as an average over Rs, no confidence interval can be estimated
+    if settings['return_averaged_R']:
+        settings['number_of_bootstraps_R_tot'] = 0
+            
     # if the user specifies a file in which to store output image:
     # store this in settings
     if not args.output is None:

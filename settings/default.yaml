@@ -58,6 +58,11 @@ bbc_tolerance : 0.05
 # half of the data only, provide the estimate on the second one, to avoid overfitting.
 cross_validated_optimization : True
 
+# Return R_tot as the average over R(T) for T in [T_D, T_max],
+# instead of R_tot = R(T_D). If set to True, the setting for
+# number_of_bootstraps_R_tot (see below) is ignored and set to 0.
+return_averaged_R : True
+
 # ------------------------------------------------------------------------------ #
 # Bootstrap parameters
 # ------------------------------------------------------------------------------ #
@@ -71,7 +76,9 @@ number_of_bootstraps_R_max : 250
 # The number of bootstrap re-shuffles that should be used to estimate the confidence
 # interval of the optimal embedding. (Bootstrap the estimates of R_tot = R(T_D) to
 # obtain a confidence interval for R_tot.).
-# These are computed during the 'confidence-intervals' task .
+# These are computed during the 'confidence-intervals' task.
+# The setting return_averaged_R (see above) needs to be set to False for this setting
+# to take effect.
 number_of_bootstraps_R_tot : 250
 
 # The number of bootstrap re-shuffles that should be used to estimate the confidence

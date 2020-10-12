@@ -319,6 +319,7 @@ def get_temporal_depth_T_D(f,
                            bootstrap_CI_use_sd=True,
                            bootstrap_CI_percentile_lo=2.5,
                            bootstrap_CI_percentile_hi=97.5,
+                           get_R_thresh=False,
                            **kwargs):
     """
     Get the temporal depth T_D, the past range for the 
@@ -341,12 +342,7 @@ def get_temporal_depth_T_D(f,
     Rs = [max_Rs[T] for T in Ts]
 
     # first get the max history dependence, and if available its bootstrap replications
-    max_R = max(Rs)
-    max_R_T = 0 # smallest T for which max_R is attained
-    for R, T in zip(Rs, Ts):
-        if R == max_R:
-            max_R_T = T
-            break
+    max_R, max_R_T = get_max_R_T(max_Rs)
 
     number_of_bins_d, scaling_k = embedding_maximising_R_at_T[max_R_T]
     bs_Rs = load_from_analysis_file(f,
@@ -371,7 +367,45 @@ def get_temporal_depth_T_D(f,
             T_D = T
             break
 
-    return T_D
+    if not get_R_thresh:
+        return T_D
+    else:
+        return T_D, R_tot_thresh
+
+def get_R_tot(f,
+              estimation_method,
+              return_averaged_R=False,
+              **kwargs):
+    embedding_maximising_R_at_T, max_Rs \
+        = get_embeddings_that_maximise_R(f,
+                                         estimation_method=estimation_method,
+                                         **kwargs)
+    
+    if return_averaged_R:
+        T_D, R_tot_thresh = get_temporal_depth_T_D(f,
+                                                   estimation_method=estimation_method,
+                                                   get_R_thresh=True,
+                                                   **kwargs)
+
+        Ts = sorted([key for key in max_Rs.keys()])
+        Rs = [max_Rs[T] for T in Ts]
+
+        T_max = T_D
+        for R, T in zip(Rs, Ts):
+            if T < T_D:
+                continue
+            T_max = T
+            if R < R_tot_thresh:
+                break
+            
+        return np.average([R for R, T in zip(Rs, Ts) if T >= T_D and T < T_max])
+
+    else:
+        temporal_depth_T_D = get_temporal_depth_T_D(f,
+                                                    estimation_method=estimation_method,
+                                                    **kwargs)
+        
+        return max_Rs[temporal_depth_T_D]
 
 
 # # FIXME make this more general, pass embedding and do not
@@ -462,6 +496,9 @@ def compute_CIs(f,
     assert target_R in ['nonessential', 'R_max', 'R_tot']
 
     number_of_bootstraps = kwargs['number_of_bootstraps_{}'.format(target_R)]
+
+    if number_of_bootstraps == 0:
+        return
     
     embedding_maximising_R_at_T, max_Rs \
         = get_embeddings_that_maximise_R(f,
@@ -493,7 +530,7 @@ def compute_CIs(f,
     elif target_R == 'R_max':
         # bootstrap R for the max R, to get a good estimate for the standard deviation
         # which is used to determine R_tot
-        max_R, max_R_T = get_max_R_T(max_Rs)        
+        max_R, max_R_T = get_max_R_T(max_Rs)
         number_of_bins_d, scaling_k = embedding_maximising_R_at_T[max_R_T]
         
         embeddings = [(max_R_T, number_of_bins_d, scaling_k)]
@@ -868,6 +905,7 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                 'estimation_method' : "shuffling",
                 'bbc_tolerance' : 0.05,
                 'cross_validated_optimization' : True,
+                'return_averaged_R' : True,
                 'number_of_bootstraps_R_max' : 250,
                 'number_of_bootstraps_R_tot' : 250,
                 'number_of_bootstraps_nonessential' : 0,
@@ -980,8 +1018,10 @@ def get_analysis_stats(f,
         temporal_depth_T_D = get_temporal_depth_T_D(f,
                                                     estimation_method=estimation_method,
                                                     **kwargs)
-        
-        R_tot = max_Rs[temporal_depth_T_D]
+
+        R_tot = get_R_tot(f,
+                          estimation_method=estimation_method,
+                          **kwargs)
         opt_number_of_bins_d, opt_scaling_k \
             = embedding_maximising_R_at_T[temporal_depth_T_D]
 
@@ -1003,18 +1043,19 @@ def get_analysis_stats(f,
                                                                      opt_scaling_k),
                                                           estimation_method=estimation_method,
                                                           cross_val=kwargs['cross_val']))
-        
-        bs_Rs = load_from_analysis_file(f,
-                                        "bs_history_dependence",
-                                        embedding_step_size=kwargs["embedding_step_size"],
-                                        embedding=(temporal_depth_T_D,
-                                                   opt_number_of_bins_d,
-                                                   opt_scaling_k),
-                                        estimation_method=estimation_method,
-                                        cross_val=kwargs['cross_val'])
-        if isinstance(bs_Rs, np.ndarray):
-            stats["number_of_bootstraps_{}".format(estimation_method)] \
-                = str(len(bs_Rs))
+
+        if not kwargs['return_averaged_R']:
+            bs_Rs = load_from_analysis_file(f,
+                                            "bs_history_dependence",
+                                            embedding_step_size=kwargs["embedding_step_size"],
+                                            embedding=(temporal_depth_T_D,
+                                                       opt_number_of_bins_d,
+                                                       opt_scaling_k),
+                                            estimation_method=estimation_method,
+                                            cross_val=kwargs['cross_val'])
+            if isinstance(bs_Rs, np.ndarray):
+                stats["number_of_bootstraps_{}".format(estimation_method)] \
+                    = str(len(bs_Rs))
 
         if not stats["number_of_bootstraps_{}".format(estimation_method)] == "-":
             R_tot_CI_lo, R_tot_CI_hi = get_CI_bounds(R_tot,
