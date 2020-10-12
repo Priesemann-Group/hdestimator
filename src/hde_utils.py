@@ -904,7 +904,7 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                                                     'min_step_for_scaling': 0.01},
                 'estimation_method' : "shuffling",
                 'bbc_tolerance' : 0.05,
-                'cross_validated_optimization' : True,
+                'cross_validated_optimization' : False,
                 'return_averaged_R' : True,
                 'number_of_bootstraps_R_max' : 250,
                 'number_of_bootstraps_R_tot' : 250,

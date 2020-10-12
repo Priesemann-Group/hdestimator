@@ -56,7 +56,7 @@ bbc_tolerance : 0.05
 
 # Use cross validation for the embedding optimization: optimize on the first
 # half of the data only, provide the estimate on the second one, to avoid overfitting.
-cross_validated_optimization : True
+cross_validated_optimization : False
 
 # Return R_tot as the average over R(T) for T in [T_D, T_max],
 # instead of R_tot = R(T_D). If set to True, the setting for
