@@ -260,34 +260,32 @@ def get_multiplicities(symbol_counts, alphabet_size):
     return mk
 
 
-def bayesian_bias_criterion(H_nsb, H_plugin, H_uncond, bbc_tolerance):
+def bayesian_bias_criterion(R_nsb, R_plugin, bbc_tolerance):
     """
     Get whether the Bayesian bias criterion (bbc) is passed.
     
-    :param H_NSB: NSB entropy
-    :param H_plugin: Plugin entropy
-    :param H_uncond: (Unconditional) entropy of the spike train, aka H_spiking
+    :param R_nsb: history dependence computed with NSB estimator
+    :param R_plugin: history dependence computed with plugin estimator
     :param bbc_tolerance: tolerance for the Bayesian bias criterion
     """
 
-    if get_bbc_term(H_nsb, H_plugin, H_uncond) < bbc_tolerance:
+    if get_bbc_term(R_nsb, R_plugin) < bbc_tolerance:
         return 1
     else:
         return 0
 
 
-def get_bbc_term(H_nsb, H_plugin, H_uncond):
+def get_bbc_term(R_nsb, R_plugin):
     """
-    Get the bbc-tolerance-independent term of the Bayesian bias
+    Get the bbc tolerance-independent term of the Bayesian bias
     criterion (bbc).
     
-    :param H_NSB: NSB entropy
-    :param H_plugin: Plugin entropy
-    :param H_uncond: (Unconditional) entropy of the spike train, aka H_spiking
+    :param R_nsb: history dependence computed with NSB estimator
+    :param R_plugin: history dependence computed with plugin estimator
     """
     
-    if H_uncond > 0:
-        return np.abs(H_nsb - H_plugin) / H_uncond
+    if R_nsb > 0:
+        return np.abs(R_nsb - R_plugin) / R_nsb
     else:
         return np.inf
     
@@ -314,21 +312,27 @@ def bbc_estimator(symbol_counts,
 
     H_nsb_cond = H_nsb_joint - H_nsb_past
     I_nsb = H_uncond - H_nsb_cond
-    history_dependence = I_nsb / H_uncond
+    R_nsb = I_nsb / H_uncond
+
     
     H_plugin_joint = plugin_entropy(mk, N)
+    H_plugin_past = plugin_entropy(mk_past, N)
+
+    H_plugin_cond = H_plugin_joint - H_plugin_past
+    I_plugin = H_uncond - H_plugin_cond
+    R_plugin = I_plugin / H_uncond
+
 
     if return_ais:
         ret_val = np.float(I_nsb)
     else:
-        ret_val = np.float(history_dependence)
+        ret_val = np.float(R_nsb)
 
     if not bbc_tolerance == None:
-        if bayesian_bias_criterion(H_nsb_joint, H_plugin_joint, H_uncond, bbc_tolerance):
+        if bayesian_bias_criterion(R_nsb, R_plugin, bbc_tolerance):
             return ret_val
         else:
             return None
     else:
-        return ret_val, np.float(get_bbc_term(H_nsb_joint,
-                                              H_plugin_joint,
-                                              H_uncond))
+        return ret_val, np.float(get_bbc_term(R_nsb,
+                                              R_plugin))
