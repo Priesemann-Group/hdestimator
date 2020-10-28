@@ -141,7 +141,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     optional_arguments.add_argument("-p", "--persistent", action="store_true", help="Save the analysis to file.  If an existing analysis is found, read it from file.")
     optional_arguments.add_argument("-s", "--settings-file", metavar="SETTINGS_FILE", action="store", help="Specify yaml file from which to load custom settings.")
     optional_arguments.add_argument("-l", "--label", metavar="LABEL", action="store", help="Include a label in the output to classify the analysis.")
-    optional_arguments.add_argument("-v", "--verbose", action="store_true", help="Print more info at run time.")
+    # optional_arguments.add_argument("-v", "--verbose", action="store_true", help="Print more info at run time.")
     parser._action_groups.append(optional_arguments)
     args = parser.parse_args()
 
@@ -211,8 +211,10 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
 
     if args.persistent:
         settings['persistent_analysis'] = "True"
-    if args.verbose:
-        settings['verbose_output'] = "True"
+    # if args.verbose:
+    #     settings['verbose_output'] = "True"
+    # else:
+    settings['verbose_output'] = "False"
 
     if not args.estimation_method is None:
         settings['estimation_method'] = args.estimation_method

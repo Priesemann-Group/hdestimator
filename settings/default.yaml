@@ -135,9 +135,6 @@ ANALYSIS_DIR : ./analysis
 # is found, read it from file.
 persistent_analysis : True
 
-# If set to True, print more info at run time.
-verbose_output : False
-
 # ------------------------------------------------------------------------------ #
 # Plot settings
 # ------------------------------------------------------------------------------ #

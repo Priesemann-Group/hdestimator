@@ -919,7 +919,7 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                 'label' : '""',
                 'ANALYSIS_DIR' : "./analysis",
                 'persistent_analysis' : True,
-                'verbose_output' : False,
+                # 'verbose_output' : False,
                 'plot_AIS' : False,
                 'plot_settings' : {'figure.figsize' : [6.3, 5.5],
                                    'axes.labelsize': 9,
