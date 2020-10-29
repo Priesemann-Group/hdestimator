@@ -114,17 +114,23 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
 
     Estimate the history dependence and temporal depth of a single
     neuron, based on information-theoretical measures for spike time
-    data, as presented in (Rudelt et al, in prep.).  Parameters can be
-    passed via the command line or through files, where command line
-    options are prioritised over those passed by file.  (If none are
-    supplied, settings are read from the 'default.yaml' file.)  A user
-    new to this tool is encouraged to run
+    data, as presented in (Rudelt et al, in prep.) [1].  Parameters
+    can be passed via the command line or through files, where command
+    line options are prioritised over those passed by file.  (If none
+    are supplied, settings are read from the 'default.yaml' file.)  A
+    user new to this tool is encouraged to run
 
       python3 {} sample_data/spike_times.dat -o sample_output.pdf \\
         -s settings/test.yaml
 
     to test the functionality of this tool.  A more detailed
-    description can be found in the guide provided with the tool.
+    description can be found in the guide provided with the tool [2].
+
+    [1]: L. Rudelt, D. G. Marx, M. Wibral, V. Priesemann: Embedding
+        optimization reveals long-lasting history dependence in
+        neural spiking activity (in prep.)
+
+    [2]: https://github.com/Priesemann-Group/hdestimator
         """.format(__version__, argv[0]), formatter_class=argparse.RawDescriptionHelpFormatter)
     optional_arguments = parser._action_groups.pop()
     
@@ -142,6 +148,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     optional_arguments.add_argument("-s", "--settings-file", metavar="SETTINGS_FILE", action="store", help="Specify yaml file from which to load custom settings.")
     optional_arguments.add_argument("-l", "--label", metavar="LABEL", action="store", help="Include a label in the output to classify the analysis.")
     # optional_arguments.add_argument("-v", "--verbose", action="store_true", help="Print more info at run time.")
+    optional_arguments.add_argument('--version', action='version', version='hdestimator v. {}'.format(__version__), help="Show version of the tool and exit.")
     parser._action_groups.append(optional_arguments)
     args = parser.parse_args()
 
