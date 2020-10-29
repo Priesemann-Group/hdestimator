@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/276416522.svg)](https://zenodo.org/badge/latestdoi/276416522)
+
 # hdestimator --- history dependence estimator
 
 The history dependence estimator tool provides a set of
