@@ -2,6 +2,7 @@
 src/__pycache__/
 src/build/
 *.py[cod]
+*.so
 
 # Annotations (python profiling)
 src/*.html
@@ -9,3 +10,6 @@ src/*.html
 # emacs
 *~
 \#*\#
+
+# pycharm
+.idea

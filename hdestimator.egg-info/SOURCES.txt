@@ -1,7 +1,0 @@
-README.md
-setup.py
-hdestimator.egg-info/PKG-INFO
-hdestimator.egg-info/SOURCES.txt
-hdestimator.egg-info/dependency_links.txt
-hdestimator.egg-info/requires.txt
-hdestimator.egg-info/top_level.txt
