@@ -63,8 +63,13 @@ There, compile the Cython modules:
 
 `python3 setup.py build_ext --inplace`
 
-If no errors occured (warnings are OK), you are all set.
+If no errors occurred (warnings are OK), you are all set.
 
+### Testing the installation 
+`python3 estimate.py sample_data/spike_times.dat \
+--settings-file settings/test.yaml \
+--output sample_analysis.pdf
+`
 ### Windows users
 
 Under Windows, you can use the tool eg through miniconda.

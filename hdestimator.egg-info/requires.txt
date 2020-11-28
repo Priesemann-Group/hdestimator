@@ -1,0 +1,7 @@
+h5py
+pyyaml
+numpy
+scipy
+mpmath
+matplotlib
+cython
