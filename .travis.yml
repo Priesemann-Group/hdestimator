@@ -11,10 +11,8 @@ install:
   - pip install -r requirements.txt
   - pip install --editable .
   - pip install pytest-cov
-  - pip install coveralls
   - pip install codecov
 script: pytest --cov=src tests/
 after_success:
   - codecov
-  - coveralls
 
