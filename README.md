@@ -1,4 +1,6 @@
 [![DOI](https://zenodo.org/badge/276416522.svg)](https://zenodo.org/badge/latestdoi/276416522)
+[![Build Status](https://travis-ci.com/mmyros/hdestimator.svg?branch=master)](https://travis-ci.com/mmyros/hdestimator)
+[![codecov](https://codecov.io/gh/mmyros/hdestimator/branch/master/graph/badge.svg)](https://codecov.io/gh/mmyros/hdestimator)
 
 # hdestimator --- history dependence estimator
 
