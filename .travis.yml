@@ -1,0 +1,23 @@
+[![Build Status](https://travis-ci.com/mmyros/hdestimator.svg?branch=master)](https://travis-ci.com/mmyros/hdestimator)
+[![codecov](https://codecov.io/gh/mmyros/hdestimator/branch/master/graph/badge.svg)](https://codecov.io/gh/mmyros/hdestimator)
+
+language: python
+python:
+    - '3.7'
+notifications:
+  email: false
+before_install:
+ - python --version
+ - pip install -U cython setuptools pip numpy
+
+install:
+  - pip install -r requirements.txt
+  - pip install --editable .
+  - pip install pytest-cov
+  - pip install coveralls
+  - pip install codecov
+script: pytest --cov=cluster_quality tests/
+after_success:
+  - codecov
+  - coveralls
+
