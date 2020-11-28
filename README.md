@@ -11,7 +11,19 @@ measures, as presented in (Rudelt et al, in prep.).
 
 A guide for how to use the tool can be found under
 [docs/howto.pdf](docs/howto.pdf).
+# Automatic installation through pip 
+```pip install git+https://github.com/Priesemann-Group/hdestimator.git```
 
+(TODO change to `pip install git+https://github.com/Priesemann-Group/hdestimator.git` after merging)
+
+or, if you want to be able to modify code:
+
+```
+git clone git@github.com:Priesemann-Group/hdestimator.git
+pip install -e .
+```
+
+# Manual installation
 
 ## Dependencies
 - Python (>=3.2)
