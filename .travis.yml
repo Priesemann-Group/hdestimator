@@ -1,0 +1,18 @@
+language: python
+python:
+    - '3.7'
+notifications:
+  email: false
+before_install:
+ - python --version
+ - pip install -U cython setuptools pip numpy
+
+install:
+  - pip install -r requirements.txt
+  - pip install --editable .
+  - pip install pytest-cov
+  - pip install codecov
+script: pytest --cov=src tests/
+after_success:
+  - codecov
+
