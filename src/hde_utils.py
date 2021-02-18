@@ -1856,7 +1856,11 @@ def load_from_analysis_file(f,
     if data_dir == None or data_label not in data_dir:
         return None
     elif data_label == "symbol_counts":
-        return Counter(ast.literal_eval(data_dir[data_label][()]))
+        symbol_counts = data_dir[data_label][()]
+        if type(symbol_counts) == bytes:
+            return Counter(ast.literal_eval(symbol_counts.decode('utf-8')))
+        else:
+            return Counter(ast.literal_eval(symbol_counts))
     else:
         return data_dir[data_label][()]
 
