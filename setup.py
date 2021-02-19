@@ -19,7 +19,7 @@ setup(
     py_modules=['hdestimator'],
 
     url='',
-    license='MIT',
+    license='BSD 3-Clause',
     author='',
     author_email='',
     description='The history dependence estimator tool',
