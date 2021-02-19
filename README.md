@@ -1,6 +1,6 @@
 [![DOI](https://zenodo.org/badge/276416522.svg)](https://zenodo.org/badge/latestdoi/276416522)
-[![Build Status](https://travis-ci.com/mmyros/hdestimator.svg?branch=master)](https://travis-ci.com/mmyros/hdestimator)
-[![codecov](https://codecov.io/gh/mmyros/hdestimator/branch/master/graph/badge.svg)](https://codecov.io/gh/mmyros/hdestimator)
+[![Build Status](https://travis-ci.org/Priesemann-Group/hdestimator.svg?branch=master)](https://travis-ci.org/Priesemann-Group/hdestimator)
+[![codecov](https://codecov.io/gh/Priesemann-Group/hdestimator/branch/master/graph/badge.svg)](https://codecov.io/gh/Priesemann-Group/hdestimator)
 
 # hdestimator --- history dependence estimator
 
@@ -13,8 +13,6 @@ A guide for how to use the tool can be found under
 [docs/howto.pdf](docs/howto.pdf).
 # Automatic installation through pip 
 ```pip install git+https://github.com/Priesemann-Group/hdestimator.git```
-
-(TODO change to `pip install git+https://github.com/Priesemann-Group/hdestimator.git` after merging)
 
 or, if you want to be able to modify code:
 
@@ -80,10 +78,8 @@ There, compile the Cython modules:
 If no errors occurred (warnings are OK), you are all set.
 
 ### Testing the installation 
-`python3 estimate.py sample_data/spike_times.dat \
---settings-file settings/test.yaml \
---output sample_analysis.pdf
-`
+`python3 estimate.py sample_data/spike_times.dat --settings-file settings/test.yaml --output sample_analysis.pdf`
+
 ### Windows users
 
 Under Windows, you can use the tool eg through miniconda.
