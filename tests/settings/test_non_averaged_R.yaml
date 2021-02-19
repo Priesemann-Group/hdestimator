@@ -1,0 +1,9 @@
+embedding_past_range_set : [0.005, 0.00998, 0.15811, 1.25594, 5.0]
+embedding_number_of_bins_set : [1, 3, 5]
+estimation_method : all
+number_of_bootstraps_R_max : 10
+number_of_bootstraps_R_tot : 10
+auto_MI_bin_size_set : [0.01, 0.05, 0.25]
+persistent_analysis: True
+ANALYSIS_DIR : ./tests/analysis
+return_averaged_R : True

@@ -100,7 +100,7 @@ def produce_plots(spike_times, csv_stats_file, csv_histdep_data_file, csv_auto_M
                       **settings)
     
 # parse arguments received via the command line and check for validity
-def parse_arguments(defined_tasks, defined_estimation_methods):
+def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
     """
     Parse the arguments passed to the script via the command line.
 
@@ -120,7 +120,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     are supplied, settings are read from the 'default.yaml' file.)  A
     user new to this tool is encouraged to run
 
-      python3 {} sample_data/spike_times.dat -o sample_output.pdf \\
+      python3 estimate.py sample_data/spike_times.dat -o sample_output.pdf \\
         -s settings/test.yaml
 
     to test the functionality of this tool.  A more detailed
@@ -131,7 +131,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         neural spiking activity (in prep.)
 
     [2]: https://github.com/Priesemann-Group/hdestimator
-        """.format(__version__, argv[0]), formatter_class=argparse.RawDescriptionHelpFormatter)
+        """.format(__version__), formatter_class=argparse.RawDescriptionHelpFormatter)
     optional_arguments = parser._action_groups.pop()
     
     required_arguments = parser.add_argument_group("required arguments")
@@ -150,7 +150,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
     # optional_arguments.add_argument("-v", "--verbose", action="store_true", help="Print more info at run time.")
     optional_arguments.add_argument('--version', action='version', version='hdestimator v. {}'.format(__version__), help="Show version of the tool and exit.")
     parser._action_groups.append(optional_arguments)
-    args = parser.parse_args()
+    args = parser.parse_args(arguments)
 
     # check that parsed arguments are valid
 
@@ -411,7 +411,7 @@ def parse_arguments(defined_tasks, defined_estimation_methods):
         analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, analysis_num, \
         settings
             
-def main():
+def main(arguments):
     """
     Parse arguments and settings and then run selected tasks.
     """
@@ -430,7 +430,8 @@ def main():
     # get task and target (parse arguments and check for validity)
     task, spike_times, spike_times_optimization, spike_times_validation, \
         analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, analysis_num, \
-        settings = parse_arguments(defined_tasks,
+        settings = parse_arguments(arguments,
+                                   defined_tasks,
                                    defined_estimation_methods)
 
     if settings['estimation_method'] == 'all':
@@ -481,5 +482,5 @@ def main():
 if __name__ == "__main__":
     if len(argv) == 1:
         argv += ["-h"]
-    exit(main())
+    exit(main(argv[1:]))
 
