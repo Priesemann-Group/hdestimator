@@ -4,13 +4,13 @@ from os import mkdir, listdir
 from pathlib import Path
 import pytest
 
-
 ## setup test environment
 
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
 analysis_dir = 'tests/analysis'
 output_file_name = 'tests/test_output.pdf'
+spike_times_file_name = 'sample_data/spike_times.dat'
 
 # we don't create analysis dir using tempfile
 # so that we can reference it from the settings
@@ -34,7 +34,7 @@ output_file_path.unlink(missing_ok=True)
 def test_main():
     output_file_path.unlink(missing_ok=True)
     
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_main.yaml',
                  '--output', 'tests/test_output.pdf']
 
@@ -45,7 +45,7 @@ def test_command_line_params():
     output_file_path.unlink(missing_ok=True)
 
     # bbc estimator
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_main.yaml',
                  '--output', 'tests/test_output.pdf',
                  '-e', 'bbc']
@@ -64,35 +64,35 @@ def test_command_line_params():
     output_file_path.unlink(missing_ok=False)
 
     # each task individually
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_main.yaml',
                  '--output', 'tests/test_output.pdf',
                  '-e', 'shuffling',
                  '-t', 'history-dependence']
     assert main(arguments) == EXIT_SUCCESS
 
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_main.yaml',
                  '--output', 'tests/test_output.pdf',
                  '-e', 'shuffling',
                  '-t', 'confidence-intervals']
     assert main(arguments) == EXIT_SUCCESS
 
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_main.yaml',
                  '--output', 'tests/test_output.pdf',
                  '-e', 'shuffling',
                  '-t', 'auto-mi']
     assert main(arguments) == EXIT_SUCCESS
 
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_main.yaml',
                  '--output', 'tests/test_output.pdf',
                  '-e', 'shuffling',
                  '-t', 'csv-files']
     assert main(arguments) == EXIT_SUCCESS
 
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_main.yaml',
                  '--output', 'tests/test_output.pdf',
                  '-e', 'shuffling',
@@ -103,7 +103,7 @@ def test_command_line_params():
 def test_crossval(): # also tests persistent_analysis: False
     output_file_path.unlink(missing_ok=True)
     
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_crossval.yaml',
                  '--output', 'tests/test_output.pdf']
 
@@ -113,13 +113,12 @@ def test_crossval(): # also tests persistent_analysis: False
 def test_non_averaged_R():
     output_file_path.unlink(missing_ok=True)
     
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_non_averaged_R.yaml',
                  '--output', 'tests/test_output.pdf']
 
     assert main(arguments) == EXIT_SUCCESS
     output_file_path.unlink(missing_ok=False)
-
 
 def test_error_no_analysis_dir():
     ## cleanup test environment
@@ -134,7 +133,7 @@ def test_error_no_analysis_dir():
 
     assert not p.is_dir()
 
-    arguments = ['sample_data/spike_times.dat',
+    arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_main.yaml']
 
     with pytest.raises(SystemExit) as pytest_e:
