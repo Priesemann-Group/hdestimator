@@ -2,9 +2,18 @@ from setuptools import setup, find_packages
 from Cython.Build import cythonize
 import numpy
 
+try:
+    from os.path import realpath, dirname
+    ESTIMATOR_DIR = dirname(realpath(__file__))
+    path.insert(1, '{}/src'.format(ESTIMATOR_DIR))
+    from _version import __version__
+except:
+    __version__ = "unknown"
+
+
 setup(
     name='hdestimator',
-    version='0.9',
+    version=__version__,
     install_requires=[
         'h5py',
         'pyyaml',
