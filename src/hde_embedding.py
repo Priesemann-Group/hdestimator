@@ -187,12 +187,15 @@ def get_raw_symbols(spike_times,
     window_length = window_delimiters[-1]
     num_spike_times = len(spike_times)
     last_spike_time = spike_times[-1]
+
+    num_symbols = int((last_spike_time - window_length) / embedding_step_size)
     
     raw_symbols = []
-    
+
+    time = 0
     spike_index_lo = 0
-    # for time in np.arange(0, int(last_spike_time - window_length), embedding_step_size):
-    for time in np.arange(0, last_spike_time - window_length, embedding_step_size):
+
+    for symbol_num in range(num_symbols):
         while(spike_index_lo < num_spike_times and spike_times[spike_index_lo] < time):
             spike_index_lo += 1
         spike_index_hi = spike_index_lo
@@ -201,6 +204,8 @@ def get_raw_symbols(spike_times,
             spike_index_hi += 1
 
         spikes_in_window = np.zeros(number_of_bins_d + 1)
+
+
         embedding_bin_index = 0
         for spike_index in range(spike_index_lo, spike_index_hi):
             while(spike_times[spike_index] > time + window_delimiters[embedding_bin_index]):
@@ -208,6 +213,9 @@ def get_raw_symbols(spike_times,
             spikes_in_window[embedding_bin_index] += 1
 
         raw_symbols += [spikes_in_window]
+
+
+        time += embedding_step_size
 
     return raw_symbols
 
