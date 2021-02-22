@@ -1,0 +1,4 @@
+embedding_past_range_set : [0.005, 0.00998, 0.15811, 1.25594, 5.0]
+embedding_number_of_bins_set : [63]
+persistent_analysis: False
+ANALYSIS_DIR : ./tests
