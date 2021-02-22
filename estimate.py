@@ -299,6 +299,13 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
         else:
             settings[parameter_key] = ast.literal_eval(settings[parameter_key])
 
+    # Cython implementation uses 64bit unsigned integers for the symbols,
+    # we allow up to 62 bins (window has 1 bin more..)
+    if max(settings['embedding_number_of_bins_set']) > 62:
+        print("Error: Max number of bins too large; use less than 63. Aborting.",
+              file=stderr, flush=True)
+        exit(EXIT_FAILURE)
+
     # If R_tot is computed as an average over Rs, no confidence interval can be estimated
     if settings['return_averaged_R']:
         settings['number_of_bootstraps_R_tot'] = 0

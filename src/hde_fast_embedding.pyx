@@ -6,8 +6,8 @@ from sys import stderr, exit
 
 cimport cython
 cimport numpy as np
-DTYPE = np.uint32
-ctypedef np.uint32_t DTYPE_t
+DTYPE = np.uint64
+ctypedef np.uint64_t DTYPE_t
 
 def get_median_number_of_spikes_per_bin(raw_symbols):
     return np.median(raw_symbols, axis=0)
