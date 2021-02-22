@@ -168,7 +168,7 @@ def get_CI_for_embedding(history_dependence,
         block_length_l = max(1, int(1 / (firing_rate * embedding_step_size)))
     
     bs_history_dependence \
-            = utl.get_bootstrap_history_dependence(spike_times,
+            = utl.get_bootstrap_history_dependence([spike_times],
                                                    embedding,
                                                    embedding_step_size,
                                                    estimation_method,
