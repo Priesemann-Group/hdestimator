@@ -1,5 +1,5 @@
 [![DOI](https://zenodo.org/badge/276416522.svg)](https://zenodo.org/badge/latestdoi/276416522)
-[![Build Status](https://travis-ci.org/Priesemann-Group/hdestimator.svg?branch=master)](https://travis-ci.org/Priesemann-Group/hdestimator)
+[![Build Status](https://travis-ci.com/Priesemann-Group/hdestimator.svg?branch=master)](https://travis-ci.com/Priesemann-Group/hdestimator)
 [![codecov](https://codecov.io/gh/Priesemann-Group/hdestimator/branch/master/graph/badge.svg)](https://codecov.io/gh/Priesemann-Group/hdestimator)
 
 # hdestimator --- history dependence estimator
