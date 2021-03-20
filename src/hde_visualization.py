@@ -47,31 +47,24 @@ def make_twin_plot_pretty(axv):
     axv.tick_params(axis = 'y', length = 0)
 
 def plot_neuron_activity(ax, spike_times, averaging_time,
-                         color):
+                         color, binning_time=0.005):
     """
     Visualize the moving average of some neural spiking activity.
     """
 
     offset = 0
     for i, spt in enumerate(spike_times):
-        recording_length = spt[-1] - spt[0]
-        spike_density = np.zeros(int(recording_length) - averaging_time)
-        spike_index = 0
-        for t in range(len(spike_density)):
-            while spike_index < len(spt) and spt[spike_index] < t:
-                spike_index += 1
-            spike_index_2 = 0
-
-            while spike_index + spike_index_2 < len(spt) \
-                  and spt[spike_index + spike_index_2] < t + averaging_time:
-                spike_density[t] += 1
-                spike_index_2 += 1
-
-        ax.plot(np.arange(len(spike_density)) + offset, spike_density / averaging_time,
+        smoothed_neuron_activity \
+            = utl.get_smoothed_neuron_activity(spt,
+                                               averaging_time,
+                                               binning_time)
+        ax.plot(np.linspace(spt[0], spt[-1],
+                            num=len(smoothed_neuron_activity)) + offset,
+                smoothed_neuron_activity,
                 color=color)
 
         if not i == len(spike_times) - 1:
-            offset += len(spike_density)
+            offset += spt[-1]
             ax.axvline(x=offset, color='0.8', ls='-')
 
 

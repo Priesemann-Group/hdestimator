@@ -860,6 +860,29 @@ def get_binned_firing_rate(spike_times, bin_size):
     number_of_bins = int(spike_times[-1] / bin_size) + 1
     return sum(binned_neuron_activity) / (number_of_bins * bin_size)
 
+def get_smoothed_neuron_activity(spt,
+                                 averaging_time,
+                                 binning_time=0.005):
+    """
+    Get a smoothed version of the neuron activity, for visualization.
+
+    cf https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html
+    """
+
+    binned_neuron_activity \
+        = get_binned_neuron_activity(spt,
+                                     binning_time)
+    smoothing_window_len = int(averaging_time / binning_time)
+
+    s = np.r_[binned_neuron_activity[smoothing_window_len-1:0:-1],
+              binned_neuron_activity,
+              binned_neuron_activity[-2:-smoothing_window_len-1:-1]]
+
+    return np.convolve(np.hanning(smoothing_window_len) /
+                       np.hanning(smoothing_window_len).sum(), s,
+                       mode='valid') / binning_time
+
+
 def remove_key(d, key):
     """    
     Remove an entry from a dictionary .
