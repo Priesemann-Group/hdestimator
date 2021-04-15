@@ -9,6 +9,7 @@ estimation_method : shuffling
 bbc_tolerance : 0.05
 cross_validated_optimization : False
 return_averaged_R : True
+timescale_minimum_past_range : 0.01
 number_of_bootstraps_R_max : 250
 number_of_bootstraps_R_tot : 250
 number_of_bootstraps_nonessential : 0

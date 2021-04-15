@@ -372,6 +372,67 @@ def get_temporal_depth_T_D(f,
     else:
         return T_D, R_tot_thresh
 
+def get_information_timescale_tau_R(f,
+                                    estimation_method,
+                                    **kwargs):
+    """
+    Get the information timescale tau_R, a characteristic
+    timescale of history dependence similar to an autocorrelation 
+    time.
+    """
+
+    # load data
+    embedding_maximising_R_at_T, max_Rs \
+        = get_embeddings_that_maximise_R(f,
+                                         estimation_method=estimation_method,
+                                         **kwargs)
+
+    Ts = np.array(sorted([key for key in max_Rs.keys()]))
+    Rs = np.array([max_Rs[T] for T in Ts])
+
+    R_tot = get_R_tot(f,
+                      estimation_method=estimation_method,
+                      **kwargs)
+
+    T_0 = kwargs["timescale_minimum_past_range"]
+
+    # get dRs
+    dRs = []
+    R_prev = 0.
+
+    # No values higher than R_tot are allowed,
+    # otherwise the information timescale might be
+    # misestimated because of spurious contributions
+    # at large T
+    for R, T in zip(Rs[Rs <= R_tot], Ts[Rs <= R_tot]):
+
+        # No negative increments are allowed
+        dRs += [np.amax([0.0, R - R_prev])]
+        
+        # The increment is taken with respect to the highest previous value of R
+        if R > R_prev:
+            R_prev = R
+
+    dRs = np.pad(dRs, (0, len(Rs) - len(dRs)),
+                 mode='constant', constant_values=0)
+
+
+    # compute tau_R
+    Ts_0 = np.append([0], Ts)
+    dRs_0 = dRs[Ts_0[:-1] >= T_0]
+    
+    # Only take into considerations contributions beyond T_0
+    Ts_0 = Ts_0[Ts_0 >= T_0]
+    norm = np.sum(dRs_0)
+    
+    if norm == 0.:
+        tau = 0.0
+    else:
+        Ts_0 -= Ts_0[0]
+        tau = np.dot(((Ts_0[:-1] + Ts_0[1:]) / 2), dRs_0) / norm
+    return tau
+
+    
 def get_R_tot(f,
               estimation_method,
               return_averaged_R=False,
@@ -929,6 +990,7 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                 'bbc_tolerance' : 0.05,
                 'cross_validated_optimization' : False,
                 'return_averaged_R' : True,
+                'timescale_minimum_past_range' : 0.01,
                 'number_of_bootstraps_R_max' : 250,
                 'number_of_bootstraps_R_tot' : 250,
                 'number_of_bootstraps_nonessential' : 0,
@@ -977,6 +1039,7 @@ def get_analysis_stats(f,
     stats = {
         "analysis_num" : str(analysis_num),
         "label" : kwargs["label"],
+        "tau_R_bbc" : "-",
         "T_D_bbc" : "-",
         "R_tot_bbc" : "-",
         "R_tot_bbc_CI_lo" : "-",
@@ -992,6 +1055,7 @@ def get_analysis_stats(f,
         "opt_scaling_k_bbc" : "-",
         "opt_first_bin_size_bbc" : "-",
         # "asl_permutation_test_bbc" : "-",
+        "tau_R_shuffling" : "-",
         "T_D_shuffling" : "-",
         "R_tot_shuffling" : "-",
         "R_tot_shuffling_CI_lo" : "-",
@@ -1009,6 +1073,7 @@ def get_analysis_stats(f,
         # "asl_permutation_test_shuffling" : "-",
         "embedding_step_size" : get_parameter_label(kwargs["embedding_step_size"]),
         "bbc_tolerance" : get_parameter_label(kwargs["bbc_tolerance"]),
+        "timescale_minimum_past_range" : get_parameter_label(kwargs["timescale_minimum_past_range"]),
         "number_of_bootstraps_bbc" : "-",
         "number_of_bootstraps_shuffling" : "-",
         "bs_CI_percentile_lo" : "-",
@@ -1037,7 +1102,11 @@ def get_analysis_stats(f,
 
         if len(embedding_maximising_R_at_T) == 0:
             continue
-            
+
+        tau_R = get_information_timescale_tau_R(f,
+                                                estimation_method=estimation_method,
+                                                **kwargs)
+        
         temporal_depth_T_D = get_temporal_depth_T_D(f,
                                                     estimation_method=estimation_method,
                                                     **kwargs)
@@ -1048,6 +1117,7 @@ def get_analysis_stats(f,
         opt_number_of_bins_d, opt_scaling_k \
             = embedding_maximising_R_at_T[temporal_depth_T_D]
 
+        stats["tau_R_{}".format(estimation_method)] = get_parameter_label(tau_R)
         stats["T_D_{}".format(estimation_method)] = get_parameter_label(temporal_depth_T_D)
         stats["R_tot_{}".format(estimation_method)] = get_parameter_label(R_tot)
         stats["AIS_tot_{}".format(estimation_method)] = get_parameter_label(R_tot * H_spiking)

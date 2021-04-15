@@ -194,6 +194,8 @@ def check_parameters():
     # H_spiking is approx 0.1, so we use this as a factor for the tolerance
     
     # for the bbc estimator results should also be the same -> low error tolerance
+    assert np.isclose(exp.tau_R_bbc, utl.load_from_CSV_file(estimator_env.csv_stats_file,
+                                                            "tau_R_bbc"))
     assert np.isclose(exp.T_D_bbc, utl.load_from_CSV_file(estimator_env.csv_stats_file,
                                                           "T_D_bbc"))
     assert np.isclose(exp.R_tot_bbc, utl.load_from_CSV_file(estimator_env.csv_stats_file,
@@ -211,6 +213,8 @@ def check_parameters():
                                              "opt_first_bin_size_bbc"))
 
     # the shuffling estimator has some stochasticity -> be a bit more tolerant
+    assert np.isclose(exp.tau_R_shuffling, utl.load_from_CSV_file(estimator_env.csv_stats_file,
+                                                                  "tau_R_shuffling"))
     assert np.isclose(exp.T_D_shuffling, utl.load_from_CSV_file(estimator_env.csv_stats_file,
                                                                 "T_D_shuffling"))
     assert np.isclose(exp.R_tot_shuffling, utl.load_from_CSV_file(estimator_env.csv_stats_file,

@@ -11,6 +11,7 @@ embedding_scaling_exponent_set = {'number_of_scalings': 10,
                                   'min_step_for_scaling': 0.01}
 estimation_method = 'all'
 
+tau_R_bbc = 0.54892
 T_D_bbc = 1.25594
 R_tot_bbc = 0.11185
 AIS_tot_bbc = 0.01101
@@ -19,6 +20,7 @@ opt_scaling_k_bbc = 0.44001
 opt_first_bin_size_bbc = 0.01399
 bbc_term = 0.001737059851451546
 
+tau_R_shuffling = 0.54892
 T_D_shuffling = 1.25594
 R_tot_shuffling = 0.11087
 AIS_tot_shuffling = 0.01091

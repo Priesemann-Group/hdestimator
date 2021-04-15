@@ -137,8 +137,10 @@ def plot_history_dependence(ax,
     # Ys_CI_med = utl.load_from_CSV_file(csv_histdep_data_file,
     #                                    "max_{}_{}_CI_med".format(Y_label,
     #                                                              estimation_method))
-    T_D = utl.load_from_CSV_file(csv_stats_file,
-                                 "T_D_{}".format(estimation_method))
+    tau_R = utl.load_from_CSV_file(csv_stats_file,
+                                   "tau_R_{}".format(estimation_method))
+    # T_D = utl.load_from_CSV_file(csv_stats_file,
+    #                              "T_D_{}".format(estimation_method))
 
     bs_CI_percentile_lo = utl.load_from_CSV_file(csv_stats_file,
                                                  "bs_CI_percentile_lo")
@@ -150,7 +152,10 @@ def plot_history_dependence(ax,
     ax.plot(Ts, Ys, '-', color=color)
 
     # vertical line marking T_D
-    ax.axvline(x=T_D, color='k', ls='--', label=r"$T_D$")
+    # ax.axvline(x=T_D, color='k', ls='--', label=r"$T_D$")
+
+    # vertical line marking tau_R
+    ax.axvline(x=tau_R, color='k', ls='--', label=r"$\tau_R$")
 
     # bootstrap confidence intervals
     ax.fill_between(Ts, Ys_CI_lo, Ys_CI_hi,
@@ -300,6 +305,8 @@ def produce_plots(spike_times,
     recording_length_sd = utl.load_from_CSV_file(csv_stats_file,
                                                  "recording_length_sd")
 
+    tau_R_bbc = utl.load_from_CSV_file(csv_stats_file,
+                                       "tau_R_bbc")
     T_D_bbc = utl.load_from_CSV_file(csv_stats_file,
                                      "T_D_bbc")
     Y_tot_bbc = utl.load_from_CSV_file(csv_stats_file,
@@ -317,6 +324,8 @@ def produce_plots(spike_times,
     # asl_permutation_test_bbc = utl.load_from_CSV_file(csv_stats_file,
     #                                                   "asl_permutation_test_bbc")
 
+    tau_R_shuffling = utl.load_from_CSV_file(csv_stats_file,
+                                             "tau_R_shuffling")
     T_D_shuffling = utl.load_from_CSV_file(csv_stats_file,
                                            "T_D_shuffling")
     Y_tot_shuffling = utl.load_from_CSV_file(csv_stats_file,
@@ -384,6 +393,7 @@ def produce_plots(spike_times,
     shuffling_results = []
     
     for label, shuffling_value, bbc_value in [("$\hat{{T}}_D\,$[s]:", T_D_shuffling, T_D_bbc),
+                                              (r"$\hat{{\tau}}_R\,$" + "[s]:", tau_R_shuffling, tau_R_bbc),
                                               ("$\hat{{{}}}_{{tot}}$:".format(Y_label),
                                                Y_tot_shuffling, Y_tot_bbc),
                                               ("$\hat{{{}}}_{{tot}}$, {}% CI:".format(Y_label, CI),

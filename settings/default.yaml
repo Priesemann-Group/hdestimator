@@ -63,6 +63,10 @@ cross_validated_optimization : False
 # number_of_bootstraps_R_tot (see below) is ignored and set to 0.
 return_averaged_R : True
 
+# Minimum past range T_0 (in seconds) to take into consideration for the
+# estimation of the information timescale tau_R.
+timescale_minimum_past_range : 0.01
+
 # ------------------------------------------------------------------------------ #
 # Bootstrap parameters
 # ------------------------------------------------------------------------------ #

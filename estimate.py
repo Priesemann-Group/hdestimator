@@ -232,7 +232,7 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
     # check that required settings are defined
     required_parameters = ['embedding_past_range_set', 'embedding_number_of_bins_set',
                            'embedding_scaling_exponent_set', 'embedding_step_size',
-                           'bbc_tolerance',
+                           'bbc_tolerance', 'timescale_minimum_past_range',
                            'number_of_bootstraps_R_max', 'number_of_bootstraps_R_tot',
                            'number_of_bootstraps_nonessential',
                            'block_length_l',
