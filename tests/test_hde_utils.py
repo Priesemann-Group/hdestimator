@@ -13,6 +13,8 @@ import h5py
 import pytest
 import numpy as np
 
+np.random.seed(42)
+
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
 

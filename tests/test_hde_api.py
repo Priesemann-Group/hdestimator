@@ -9,6 +9,8 @@ import expected_output as exp
 
 import numpy as np
 
+np.random.seed(42)
+
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
 
