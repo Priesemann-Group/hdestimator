@@ -1,14 +1,14 @@
 import numpy as np
 from collections import Counter
-import hde_utils as utl
-import hde_embedding as emb
+from . import hde_utils as utl
+from . import hde_embedding as emb
 
 def get_P_X_uncond(number_of_symbols):
     """
     Compute P(X), the probability of the current activity using
     the plug-in estimator.
     """
-    
+
     return [number_of_symbols[0] / sum(number_of_symbols),
             number_of_symbols[1] / sum(number_of_symbols)]
 
@@ -17,7 +17,7 @@ def get_P_X_past_uncond(past_symbol_counts, number_of_symbols):
     Compute P(X_past), the probability of the past activity using
     the plug-in estimator.
     """
-    
+
     P_X_past_uncond = {}
     for response in [0, 1]:
         for symbol in past_symbol_counts[response]:
@@ -36,7 +36,7 @@ def get_P_X_past_cond_X(past_symbol_counts, number_of_symbols):
     Compute P(X_past | X), the probability of the past activity conditioned
     on the response X using the plug-in estimator.
     """
-    
+
     P_X_past_cond_X = [{}, {}]
     for response in [0, 1]:
         for symbol in past_symbol_counts[response]:
@@ -69,7 +69,7 @@ def get_H_X_past_uncond(P_X_past_uncond):
     Compute H(X_past), the plug-in estimate of the entropy for the past symbols, given
     their probabilities.
     """
-    
+
     return utl.get_shannon_entropy(P_X_past_uncond.values())
 
 def get_H_X_past_cond_X(P_X_uncond, P_X_past_cond_X):
@@ -77,7 +77,7 @@ def get_H_X_past_cond_X(P_X_uncond, P_X_past_cond_X):
     Compute H(X_past | X), the plug-in estimate of the conditional entropy for the past
     symbols, conditioned on the response X,  given their probabilities.
     """
-        
+
     return sum((P_X_uncond[response] * get_H_X_past_uncond(P_X_past_cond_X[response])
                 for response in [0, 1]))
 
@@ -94,7 +94,7 @@ def get_shuffled_symbol_counts(symbol_counts, past_symbol_counts, number_of_bins
                                number_of_symbols):
     """
     Simulate new data by, for each past bin 1...d, permutating the activity
-    across all observed past_symbols (for a given response X). The marginal 
+    across all observed past_symbols (for a given response X). The marginal
     probability of observing a spike given the response is thus preserved for
     each past bin.
     """
@@ -161,18 +161,18 @@ def shuffling_MI(symbol_counts, number_of_bins_d):
     in the past contributes independently towards the current activity.
     - Compute the entropy under the assumptions of the model, which
     due to its simplicity is easy to sample and the estimate unbiased
-    - Compute the entropy using the plug-in estimate, whose bias is 
+    - Compute the entropy using the plug-in estimate, whose bias is
     similar to that of the plug-in estimate on the original data
     - Compute the correction term as the difference between the
     unbiased and biased terms
 
     Notation:
-    P0_sh_X_past_cond_X: P_0,sh(X_past | X), equiv. to P(X_past | X) 
+    P0_sh_X_past_cond_X: P_0,sh(X_past | X), equiv. to P(X_past | X)
                          on the shuffled data
 
     H0_X_past_cond_X: H_0(X_past | X), based on the model of independent
     contributions
-    H0_sh_X_past_cond_X: H_0,sh(X_past | X), based on 
+    H0_sh_X_past_cond_X: H_0,sh(X_past | X), based on
     P0_sh_X_past_cond_X, ie the plug-in estimate
 
     I_corr: the correction term to reduce the bias of I_plugin
@@ -182,11 +182,11 @@ def shuffling_MI(symbol_counts, number_of_bins_d):
     whose occurences are counted (cf emb.get_symbol_counts)
     :param number_of_bins_d: the number of bins of the embedding
     """
-    
+
     # plug-in estimate
     past_symbol_counts = utl.get_past_symbol_counts(symbol_counts, merge=False)
     number_of_symbols = [sum(past_symbol_counts[response].values()) for response in [0, 1]]
-    
+
     P_X_uncond = get_P_X_uncond(number_of_symbols)
     P_X_past_uncond = get_P_X_past_uncond(past_symbol_counts, number_of_symbols)
     P_X_past_cond_X = get_P_X_past_cond_X(past_symbol_counts, number_of_symbols)
@@ -200,7 +200,7 @@ def shuffling_MI(symbol_counts, number_of_bins_d):
     shuffled_past_symbol_counts, marginal_probabilities \
         = get_shuffled_symbol_counts(symbol_counts, past_symbol_counts, number_of_bins_d,
                                      number_of_symbols)
-    
+
     P0_sh_X_past_cond_X = get_P_X_past_cond_X(shuffled_past_symbol_counts, number_of_symbols)
 
     H0_X_past_cond_X = get_H0_X_past_cond_X(marginal_probabilities, number_of_bins_d, P_X_uncond)
@@ -223,7 +223,7 @@ def shuffling_estimator(symbol_counts, number_of_bins_d, H_uncond,
     :param return_ais: define whether to return the unnormalized mutual information,
     aka active information storage (ais), instead of the history dependence
     """
-        
+
     I_sh = shuffling_MI(symbol_counts,
                         number_of_bins_d)
 

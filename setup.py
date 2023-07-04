@@ -3,9 +3,10 @@ from Cython.Build import cythonize
 import numpy
 
 try:
+    import sys
     from os.path import realpath, dirname
     ESTIMATOR_DIR = dirname(realpath(__file__))
-    path.insert(1, '{}/src'.format(ESTIMATOR_DIR))
+    sys.path.insert(1, '{}/src'.format(ESTIMATOR_DIR))
     from _version import __version__
 except:
     __version__ = "unknown"

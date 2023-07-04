@@ -2,16 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from datetime import date
-import hde_utils as utl
+from . import hde_utils as utl
 __version__ = "unknown"
-from _version import __version__
+from ._version import __version__
 
 def format_x_label(x, pos):
     return "{:.0f}".format(x)
 
 def format_x_label_in_ms(x, pos):
     return "{:.0f}".format(x * 1000)
-    
+
 def format_y_label(y, pos):
     if y > 0 and y <= 0.02:
         ret = "{:.3f}".format(y)
@@ -80,12 +80,12 @@ def plot_auto_mutual_information(ax, auto_MI_data, color):
 
     As with the history dependence R, the auto MI is normalized to
     be in the range [0, 1] (unless data is scarce and there is
-    a bias in the estimation). 
+    a bias in the estimation).
     """
-    
+
     line_styles = ["-", ":", "-.", "--"]
     marker_types = [None, "^", ">", "v", "<"]
-    
+
     for i, auto_MI_bin_size in enumerate(sorted(auto_MI_data.keys())):
         delays, auto_MIs = auto_MI_data[auto_MI_bin_size]
 
@@ -115,7 +115,7 @@ def plot_history_dependence(ax,
                             color,
                             plot_AIS=False):
     """
-    Plot history dependence (or AIS) estimates for the BBC or 
+    Plot history dependence (or AIS) estimates for the BBC or
     shuffling estimator.
     """
 
@@ -123,7 +123,7 @@ def plot_history_dependence(ax,
         Y_label = 'AIS'
     else:
         Y_label = 'R'
-    
+
     Ts = utl.load_from_CSV_file(csv_histdep_data_file,
                                  "T")
     Ys = utl.load_from_CSV_file(csv_histdep_data_file,
@@ -160,7 +160,7 @@ def plot_history_dependence(ax,
     # bootstrap confidence intervals
     ax.fill_between(Ts, Ys_CI_lo, Ys_CI_hi,
                     alpha=0.25, linewidth=0, color=color, label='{}% CI'.format(CI))
-    
+
     make_plot_pretty(ax)
     ax.set_xscale('log')
 
@@ -193,7 +193,7 @@ def produce_plots(spike_times,
 
     Plot neural activity.
     Plot auto mutual information.
-    Plot history dependence estimates for the BBC and 
+    Plot history dependence estimates for the BBC and
     shuffling estimators.
     Print a table with the main results.
     """
@@ -214,7 +214,7 @@ def produce_plots(spike_times,
     ax2l = plt.subplot(325)
     ax2r = plt.subplot(326, sharex=ax2l, sharey=ax2l)
     fig0.subplots_adjust(right=0.98, left=0.1, bottom=0.1, wspace=1, hspace=0.8)
-    
+
     #
     # ax0l
     # plot (5s moving-average) of firing rate
@@ -232,7 +232,7 @@ def produce_plots(spike_times,
     #
 
     auto_MI_data = utl.load_auto_MI_data(csv_auto_MI_data_file)
-    
+
     plot_auto_mutual_information(ax1l, auto_MI_data, plot_color)
 
 
@@ -258,7 +258,7 @@ def produce_plots(spike_times,
 
     x_lo = min(x_autoMI_lo, x_R_lo)
     x_hi = max(x_autoMI_hi, x_R_hi)
-    
+
     ax1l.set_xlim(x_lo, x_hi)
 
     #
@@ -349,7 +349,7 @@ def produce_plots(spike_times,
                                                  "bs_CI_percentile_hi")
     CI = int(bs_CI_percentile_hi - bs_CI_percentile_lo)
 
-    
+
     ax0r.text(-0.5, 0.975, "analysis: {}".format(analysis_num),
               fontsize=stats_fontsize)
     ax0r.text(0.35, 0.975, "hde v. {}, {}".format(__version__, date.today()),
@@ -364,7 +364,7 @@ def produce_plots(spike_times,
                                                          recording_length / len(spike_times),
                                                          recording_length_sd)
         fr_suffix = r" $\pm$ {:.1f}".format(firing_rate_sd)
-    
+
     ax0r.text(-0.3, 0.475, "recording length: {:.1f} s{}".format(recording_length,
                                                                  rl_suffix),
               fontsize=stats_fontsize)
@@ -391,7 +391,7 @@ def produce_plots(spike_times,
     # these are used further below to print results to terminal
     bbc_results = []
     shuffling_results = []
-    
+
     for label, shuffling_value, bbc_value in [("$\hat{{T}}_D\,$[s]:", T_D_shuffling, T_D_bbc),
                                               (r"$\hat{{\tau}}_R\,$" + "[s]:", tau_R_shuffling, tau_R_bbc),
                                               ("$\hat{{{}}}_{{tot}}$:".format(Y_label),
@@ -417,7 +417,7 @@ def produce_plots(spike_times,
             shuffling_value = "{:.3f}".format(shuffling_value)
         if not type(bbc_value) == str:
             bbc_value = "{:.3f}".format(bbc_value)
-                
+
         ax0r.text(-0.3, current_v_pos, label, fontsize=stats_fontsize)
         ax0r.text(shuffling_h_pos, current_v_pos, shuffling_value, fontsize=stats_fontsize)
         ax0r.text(bbc_h_pos, current_v_pos, bbc_value, fontsize=stats_fontsize)
@@ -425,7 +425,7 @@ def produce_plots(spike_times,
         current_v_pos -= 0.2
 
         label = label.replace("$", "").replace("\\,", " ").replace("\\", "").replace("{", "").replace("}", "").replace("hat", "")
-        
+
         shuffling_results += ["{} {}".format(label,
                                              shuffling_value)]
         bbc_results += ["{} {}".format(label,

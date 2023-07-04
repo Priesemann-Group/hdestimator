@@ -1,6 +1,6 @@
 from estimate import parse_arguments
-import hde_utils as utl
-import hde_bbc_estimator as bbc
+from .. src import hde_utils as utl
+from .. src import hde_bbc_estimator as bbc
 
 from sys import path
 from os.path import realpath, dirname
@@ -22,7 +22,7 @@ defined_tasks = ["history-dependence",
                  "full-analysis"]
 defined_estimation_methods = ['bbc', 'shuffling', 'all']
 
-class estimator_env():    
+class estimator_env():
     spike_times = None
     settings = None
 
@@ -44,7 +44,7 @@ def test_setup_env():
 
 def test_bbc_estimator():
     past_range_T, number_of_bins_d, scaling_k = exp.embedding
-    
+
     alphabet_size_past = 2 ** int(number_of_bins_d) # K for past activity
     alphabet_size = alphabet_size_past * 2          # K
 

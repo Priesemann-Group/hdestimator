@@ -6,13 +6,13 @@ import yaml
 import numpy as np
 
 ESTIMATOR_DIR = dirname(realpath(__file__))
-path.insert(1, '{}/src'.format(ESTIMATOR_DIR))
+path.insert(1, '{}'.format(ESTIMATOR_DIR))
 
-import hde_utils as utl
-import hde_visualization as vsl
+from src import hde_utils as utl
+from src import hde_visualization as vsl
 
 __version__ = "unknown"
-from _version import __version__
+from src._version import __version__
 
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
@@ -25,7 +25,7 @@ def do_main_analysis(spike_times, spike_times_optimization, spike_times_validati
     """
 
     utl.save_spike_times_stats(analysis_file, spike_times, **settings)
-    
+
     if settings['cross_validated_optimization']:
         settings['cross_val'] = 'h1' # first half of the data
         utl.save_history_dependence_for_embeddings(analysis_file,
@@ -53,13 +53,13 @@ def compute_CIs(spike_times, analysis_file, settings):
         settings['cross_val'] = 'h2' # second half of the data
     else:
         settings['cross_val'] = None
-    
+
     utl.compute_CIs(analysis_file, spike_times, target_R='R_tot', **settings)
     utl.compute_CIs(analysis_file, spike_times, target_R='nonessential', **settings)
 
 # def perform_permutation_test(analysis_file, settings):
 #     """
-#     Perform a permutation test to check whether the history dependece 
+#     Perform a permutation test to check whether the history dependece
 #     in the target neuron is significantly different from zero.
 #     """
 
@@ -67,7 +67,7 @@ def compute_CIs(spike_times, analysis_file, settings):
 
 def analyse_auto_MI(spike_times, analysis_file, settings):
     """
-    Compute the auto mutual information in the neuron's activity, a 
+    Compute the auto mutual information in the neuron's activity, a
     measure closely related to history dependence.
     """
 
@@ -84,7 +84,7 @@ def create_CSV_files(analysis_file,
         settings['cross_val'] = 'h2' # second half of the data
     else:
         settings['cross_val'] = None
-    
+
     utl.create_CSV_files(analysis_file,
                          csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file,
                          analysis_num, **settings)
@@ -94,11 +94,11 @@ def produce_plots(spike_times, csv_stats_file, csv_histdep_data_file, csv_auto_M
     """
     Produce plots that visualize the results.
     """
-    
+
     vsl.produce_plots(spike_times,
                       csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file,
                       **settings)
-    
+
 # parse arguments received via the command line and check for validity
 def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
     """
@@ -106,7 +106,7 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
 
     Import settings from file, do some sanity checks to avoid faulty runs.
     """
-    
+
     # parse arguments
     parser = argparse.ArgumentParser(description=
         """
@@ -133,7 +133,7 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
     [2]: https://github.com/Priesemann-Group/hdestimator
         """.format(__version__), formatter_class=argparse.RawDescriptionHelpFormatter)
     optional_arguments = parser._action_groups.pop()
-    
+
     required_arguments = parser.add_argument_group("required arguments")
     required_arguments.add_argument('spike_times_file', action="store", help="Define file from which to read spike times and on which to perform the analysis.  The file should contain one spike time per line.",
                                     nargs='+')
@@ -169,7 +169,7 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
                 exit(EXIT_FAILURE)
 
     task = task_full_name
-                
+
     if not task in defined_tasks:
         print("Task must be one of {}.  Aborting.".format(defined_tasks), file=stderr, flush=True)
         exit(EXIT_FAILURE)
@@ -191,11 +191,11 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
         print("Spike times are empty. Aborting.",
               file=stderr, flush=True)
         exit(EXIT_FAILURE)
-    
+
     #
     # PARSE SETTINGS
     #
-        
+
     # create default settings file if it does not exist:
     if not isfile('{}/settings/default.yaml'.format(ESTIMATOR_DIR)):
         utl.create_default_settings_file(ESTIMATOR_DIR)
@@ -241,7 +241,7 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
                            # 'number_of_permutations',
                            'auto_MI_bin_size_set',
                            'auto_MI_max_delay']
-    
+
     required_settings = ['estimation_method', 'plot_AIS',
                          'ANALYSIS_DIR', 'persistent_analysis',
                          'cross_validated_optimization',
@@ -249,7 +249,7 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
                          'bootstrap_CI_use_sd',
                          'verbose_output',
                          'plot_settings', 'plot_color'] + required_parameters
-    
+
     for required_setting in required_settings:
         if not required_setting in settings:
             print("Error in settings file: {} is not defined. Aborting.".format(required_setting),
@@ -309,13 +309,13 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
     # If R_tot is computed as an average over Rs, no confidence interval can be estimated
     if settings['return_averaged_R']:
         settings['number_of_bootstraps_R_tot'] = 0
-            
+
     # if the user specifies a file in which to store output image:
     # store this in settings
     if not args.output is None:
         settings['output_image'] = args.output
 
-        
+
     # if the user wants to store the data, do so in a dedicated directory below the
     # ANALYSIS_DIR passed via settings (here it is also checked whether there is an
     # existing analysis, for which the hash sum of the content of the spike times
@@ -337,7 +337,7 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
                                              spike_times_file_names,
                                              settings['ANALYSIS_DIR'])
 
-    
+
         settings['ANALYSIS_DIR'] = analysis_dir
     else:
         analysis_num = "temp"
@@ -374,8 +374,8 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
             if csv_file == None:
                 print("Error.  CSV files not found and needed to produce plots.  Please run the 'csv-files' task first.  Aborting.", file=stderr, flush=True)
                 exit(EXIT_FAILURE)
-                                                
-    
+
+
     # label for the output
     if not args.label is None:
         settings['label'] = args.label
@@ -411,18 +411,18 @@ def parse_arguments(arguments, defined_tasks, defined_estimation_methods):
             spike_times_optimization += [spt]
             spike_times_validation += [spt]
 
-    spike_times_optimization = np.array(spike_times_optimization)
-    spike_times_validation = np.array(spike_times_validation)
+    spike_times_optimization = np.array(spike_times_optimization, dtype=object)
+    spike_times_validation = np.array(spike_times_validation, dtype=object)
 
     return task, spike_times, spike_times_optimization, spike_times_validation, \
         analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, analysis_num, \
         settings
-            
+
 def main(arguments):
     """
     Parse arguments and settings and then run selected tasks.
     """
-    
+
     # definitions
     defined_tasks = ["history-dependence",
                      "confidence-intervals",
@@ -431,9 +431,9 @@ def main(arguments):
                      "csv-files",
                      "plots",
                      "full-analysis"]
-    
+
     defined_estimation_methods = ['bbc', 'shuffling', 'all']
-    
+
     # get task and target (parse arguments and check for validity)
     task, spike_times, spike_times_optimization, spike_times_validation, \
         analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, analysis_num, \
@@ -445,9 +445,9 @@ def main(arguments):
         estimation_methods = ['bbc', 'shuffling']
     else:
         estimation_methods = [settings['estimation_method']]
-        
+
     # now perform tasks as specified by the parsed arguments
-    
+
     for estimation_method in estimation_methods:
         settings['estimation_method'] = estimation_method
 
@@ -464,12 +464,12 @@ def main(arguments):
 
     if task == "auto-mi" or task == "full-analysis":
         analyse_auto_MI(spike_times, analysis_file, settings)
-        
+
     if task == "csv-files" or task == "full-analysis":
         create_CSV_files(analysis_file,
                          csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file,
                          analysis_num, settings)
-        
+
 
     if task == "plots" or task == "full-analysis":
         produce_plots(spike_times,
@@ -482,8 +482,8 @@ def main(arguments):
               csv_histdep_data_file,
               csv_auto_MI_data_file]:
         if not f == None:
-            f.close()    
-        
+            f.close()
+
     return EXIT_SUCCESS
 
 if __name__ == "__main__":
