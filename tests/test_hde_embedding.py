@@ -1,6 +1,6 @@
 from estimate import parse_arguments
-import hde_utils as utl
-import hde_embedding as emb
+from ..hdestimator import hde_utils as utl
+from ..hdestimator import hde_embedding as emb
 
 from sys import path
 from os.path import realpath, dirname
@@ -28,7 +28,7 @@ defined_tasks = ["history-dependence",
                  "full-analysis"]
 defined_estimation_methods = ['bbc', 'shuffling', 'all']
 
-class estimator_env():    
+class estimator_env():
     spike_times = None
     settings = None
 
@@ -73,7 +73,7 @@ class TestGetSymbolCounts():
         symbol_counts = emb.get_symbol_counts(estimator_env.spike_times[0],
                                               exp.embedding,
                                               estimator_env.settings["embedding_step_size"])
-        
+
         assert sum(symbol_counts.values()) == sum(exp.symbol_counts.values())
         assert symbol_counts == exp.symbol_counts
 

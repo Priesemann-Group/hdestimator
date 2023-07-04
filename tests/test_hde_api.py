@@ -1,6 +1,6 @@
 from estimate import parse_arguments
-import hde_utils as utl
-import hde_api as hapi
+from .. hdestimator import hde_utils as utl
+from .. hdestimator import hde_api as hapi
 
 from sys import path
 from os.path import realpath, dirname
@@ -24,7 +24,7 @@ defined_tasks = ["history-dependence",
                  "full-analysis"]
 defined_estimation_methods = ['bbc', 'shuffling', 'all']
 
-class estimator_env():    
+class estimator_env():
     spike_times = None
     settings = None
 
@@ -46,20 +46,20 @@ def test_setup_env():
 class TestGetHistoryDependence():
     def test_bbc(self):
         past_range_T, number_of_bins_d, scaling_k = exp.embedding
-        
+
         assert np.isclose([exp.R_tot_bbc, exp.bbc_term],
                           hapi.get_history_dependence("bbc",
                                                       exp.symbol_counts,
                                                       number_of_bins_d)).all()
     def test_shuffling(self):
         past_range_T, number_of_bins_d, scaling_k = exp.embedding
-        
+
         assert np.isclose(exp.R_tot_shuffling,
                           hapi.get_history_dependence("shuffling",
                                                       exp.symbol_counts,
                                                       number_of_bins_d),
                           atol=1e-3)
-    
+
 
 class TestGetHistoryDependenceForSingleEmbedding():
     def test_bbc(self):

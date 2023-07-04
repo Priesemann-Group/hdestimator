@@ -1,6 +1,6 @@
 from estimate import parse_arguments
-import hde_utils as utl
-import hde_shuffling_estimator as sh
+from ..hdestimator import hde_utils as utl
+from ..hdestimator import hde_shuffling_estimator as sh
 
 from sys import path
 from os.path import realpath, dirname
@@ -24,7 +24,7 @@ defined_tasks = ["history-dependence",
                  "full-analysis"]
 defined_estimation_methods = ['bbc', 'shuffling', 'all']
 
-class estimator_env():    
+class estimator_env():
     spike_times = None
     settings = None
 
@@ -46,7 +46,7 @@ def test_setup_env():
 
 def test_shuffling_estimator():
     past_range_T, number_of_bins_d, scaling_k = exp.embedding
-    
+
     alphabet_size_past = 2 ** int(number_of_bins_d) # K for past activity
     alphabet_size = alphabet_size_past * 2          # K
 
@@ -54,6 +54,6 @@ def test_shuffling_estimator():
                                                 number_of_bins_d,
                                                 H_uncond=utl.get_H_spiking(exp.symbol_counts),
                                                 return_ais=False)
-    
+
     assert np.isclose(history_dependence, exp.R_tot_shuffling,
                       atol=1e-3)

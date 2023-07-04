@@ -1,5 +1,5 @@
 from estimate import parse_arguments
-import hde_utils as utl
+from ..hdestimator import hde_utils as utl
 
 from sys import path
 from os.path import realpath, dirname
@@ -28,7 +28,7 @@ defined_tasks = ["history-dependence",
                  "full-analysis"]
 defined_estimation_methods = ['bbc', 'shuffling', 'all']
 
-class estimator_env():    
+class estimator_env():
     spike_times = None
     spike_times_optimization = None
     spike_times_validation = None
@@ -39,10 +39,10 @@ class estimator_env():
     analysis_num = None
     settings = None
 
-def test_get_spike_times_from_file():    
+def test_get_spike_times_from_file():
     estimator_env.spike_times = utl.get_spike_times_from_file(spike_times_file_name)
     assert len(estimator_env.spike_times) > 0
-    
+
 def test_find_existing_analysis():
     analysis_dir, analysis_num, existing_analysis_found \
         = utl.get_or_create_analysis_dir(estimator_env.spike_times,
@@ -101,7 +101,7 @@ def test_argument_parser():
     # assert error catching
     # no arguments
     arguments = []
-    
+
     with pytest.raises(SystemExit) as pytest_e:
         task, spike_times, spike_times_optimization, spike_times_validation, \
             analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, \
@@ -112,8 +112,8 @@ def test_argument_parser():
     assert pytest_e.value.code == 2 # might want to remove this line
 
     # wrong task (non-existing spike times file)
-    arguments = ['tests/asdfg.dat'] 
-    
+    arguments = ['tests/asdfg.dat']
+
     with pytest.raises(SystemExit) as pytest_e:
         task, spike_times, spike_times_optimization, spike_times_validation, \
             analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, \
@@ -127,7 +127,7 @@ def test_argument_parser():
     arguments = [spike_times_file_name,
                  '-t', 'c',
                  '--settings-file', 'tests/settings/test_utils.yaml']
-    
+
     with pytest.raises(SystemExit) as pytest_e:
         task, spike_times, spike_times_optimization, spike_times_validation, \
             analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, \
@@ -140,7 +140,7 @@ def test_argument_parser():
     # max number of bins d too large, has to be < 63
     arguments = [spike_times_file_name,
                  '--settings-file', 'tests/settings/test_max_num_bins.yaml']
-    
+
     with pytest.raises(SystemExit) as pytest_e:
         task, spike_times, spike_times_optimization, spike_times_validation, \
             analysis_file, csv_stats_file, csv_histdep_data_file, csv_auto_MI_data_file, \
@@ -172,7 +172,7 @@ def test_get_past_symbol_counts():
 
 def test_history_dependence_estimation():
     estimator_env.settings['cross_val'] = None
-    
+
     for estimation_method in ['bbc', 'shuffling']:
         estimator_env.settings['estimation_method'] = estimation_method
 
@@ -194,7 +194,7 @@ def test_history_dependence_estimation():
 
 def check_parameters():
     # H_spiking is approx 0.1, so we use this as a factor for the tolerance
-    
+
     # for the bbc estimator results should also be the same -> low error tolerance
     assert np.isclose(exp.tau_R_bbc, utl.load_from_CSV_file(estimator_env.csv_stats_file,
                                                             "tau_R_bbc"))
