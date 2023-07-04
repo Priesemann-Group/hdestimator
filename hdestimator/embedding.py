@@ -9,9 +9,9 @@ FAST_EMBEDDING_AVAILABLE = True
 try:
     import pyximport
     pyximport.install()
-    from . import hde_fast_embedding as fast_emb
+    from . import fast_embedding as fast_emb
 except Exception as e:
-    log.debug(e)
+    log.warning(e)
     FAST_EMBEDDING_AVAILABLE = False
     print("""
     Error importing Cython fast embedding module. Continuing with slow Python implementation.\n

@@ -3,10 +3,10 @@ import logging
 
 log = logging.getLogger("hdestimator")
 
-from . import hde_utils as utl
-from . import hde_embedding as emb
-from . import hde_bbc_estimator as bbc
-from . import hde_shuffling_estimator as sh
+from . import utils as utl
+from . import embedding as emb
+from . import bbc_estimator as bbc
+from . import shuffling_estimator as sh
 
 
 def wrapper(

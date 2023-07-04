@@ -12,20 +12,8 @@ import io
 from sys import stderr
 import hashlib
 from collections import Counter
-from . import hde_api as hapi # ps: this is a circular import. we should avoid this. the only func we use is get_history_dependence
-from . import hde_embedding as emb
-# from . import hde_bbc_estimator as bbc
-# from . import hde_shuffling_estimator as sh
-
-# FAST_UTILS_AVAILABLE = True
-# try:
-#     import hde_fast_utils as fast_utl
-# except:
-#     FAST_UTILS_AVAILABLE = False
-#     print("""
-#     Error importing Cython fast utils module. Continuing with slow Python implementation.\n
-#     This may take a long time.\n
-#     """, file=stderr, flush=True)
+from . import api as hapi # ps: this is a circular import. we should avoid this. the only func we use is get_history_dependence
+from . import embedding as emb
 
 #
 # main routines

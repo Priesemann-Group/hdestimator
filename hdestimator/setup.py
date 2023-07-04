@@ -5,8 +5,7 @@ import numpy
 # to compile, run
 # python3 setup.py build_ext --inplace
 
-setup(name="Speedy Module",
-      ext_modules=cythonize(["hde_fast_embedding.pyx"],
-                             # "hde_fast_utils.pyx"],
+setup(name="Fase Embedding",
+      ext_modules=cythonize(["fast_embedding.pyx"],
                             annotate=False),
       include_dirs=[numpy.get_include()])

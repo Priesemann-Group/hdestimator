@@ -1,6 +1,6 @@
 from estimate import parse_arguments
-from ..hdestimator import hde_utils as utl
-from ..hdestimator import hde_shuffling_estimator as sh
+from ..hdestimator import utils as utl
+from ..hdestimator import shuffling_estimator as sh
 
 from sys import path
 from os.path import realpath, dirname

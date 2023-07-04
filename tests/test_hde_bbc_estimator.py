@@ -1,6 +1,6 @@
 from estimate import parse_arguments
-from .. hdestimator import hde_utils as utl
-from .. hdestimator import hde_bbc_estimator as bbc
+from ..hdestimator import utils as utl
+from ..hdestimator import bbc_estimator as bbc
 
 from sys import path
 from os.path import realpath, dirname

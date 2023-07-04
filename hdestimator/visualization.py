@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from datetime import date
-from . import hde_utils as utl
+from . import utils as utl
 __version__ = "unknown"
 from ._version import __version__
 

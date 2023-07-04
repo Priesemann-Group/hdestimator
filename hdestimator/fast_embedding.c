@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "hdestimator.hde_fast_embedding",
+        "name": "hdestimator.fast_embedding",
         "sources": [
-            "hdestimator/hde_fast_embedding.pyx"
+            "hdestimator/fast_embedding.pyx"
         ]
     },
-    "module_name": "hdestimator.hde_fast_embedding"
+    "module_name": "hdestimator.fast_embedding"
 }
 END: Cython Metadata */
 
@@ -755,8 +755,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__hdestimator__hde_fast_embedding
-#define __PYX_HAVE_API__hdestimator__hde_fast_embedding
+#define __PYX_HAVE__hdestimator__fast_embedding
+#define __PYX_HAVE_API__hdestimator__fast_embedding
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -1002,7 +1002,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "hdestimator/hde_fast_embedding.pyx",
+  "hdestimator/fast_embedding.pyx",
   "__init__.pxd",
   "stringsource",
   "type.pxd",
@@ -1112,7 +1112,7 @@ typedef volatile __pyx_atomic_int_type __pyx_atomic_int;
 #define __Pyx_FastGilFuncInit()
 
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":688
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":688
  * # in Cython to enable them only on the right systems.
  * 
  * ctypedef npy_int8       int8_t             # <<<<<<<<<<<<<<
@@ -1121,7 +1121,7 @@ typedef volatile __pyx_atomic_int_type __pyx_atomic_int;
  */
 typedef npy_int8 __pyx_t_5numpy_int8_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":689
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":689
  * 
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t             # <<<<<<<<<<<<<<
@@ -1130,7 +1130,7 @@ typedef npy_int8 __pyx_t_5numpy_int8_t;
  */
 typedef npy_int16 __pyx_t_5numpy_int16_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":690
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":690
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t             # <<<<<<<<<<<<<<
@@ -1139,7 +1139,7 @@ typedef npy_int16 __pyx_t_5numpy_int16_t;
  */
 typedef npy_int32 __pyx_t_5numpy_int32_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":691
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":691
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t
  * ctypedef npy_int64      int64_t             # <<<<<<<<<<<<<<
@@ -1148,7 +1148,7 @@ typedef npy_int32 __pyx_t_5numpy_int32_t;
  */
 typedef npy_int64 __pyx_t_5numpy_int64_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":695
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":695
  * #ctypedef npy_int128     int128_t
  * 
  * ctypedef npy_uint8      uint8_t             # <<<<<<<<<<<<<<
@@ -1157,7 +1157,7 @@ typedef npy_int64 __pyx_t_5numpy_int64_t;
  */
 typedef npy_uint8 __pyx_t_5numpy_uint8_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":696
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":696
  * 
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t             # <<<<<<<<<<<<<<
@@ -1166,7 +1166,7 @@ typedef npy_uint8 __pyx_t_5numpy_uint8_t;
  */
 typedef npy_uint16 __pyx_t_5numpy_uint16_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":697
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":697
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t             # <<<<<<<<<<<<<<
@@ -1175,7 +1175,7 @@ typedef npy_uint16 __pyx_t_5numpy_uint16_t;
  */
 typedef npy_uint32 __pyx_t_5numpy_uint32_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":698
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":698
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t
  * ctypedef npy_uint64     uint64_t             # <<<<<<<<<<<<<<
@@ -1184,7 +1184,7 @@ typedef npy_uint32 __pyx_t_5numpy_uint32_t;
  */
 typedef npy_uint64 __pyx_t_5numpy_uint64_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":702
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":702
  * #ctypedef npy_uint128    uint128_t
  * 
  * ctypedef npy_float32    float32_t             # <<<<<<<<<<<<<<
@@ -1193,7 +1193,7 @@ typedef npy_uint64 __pyx_t_5numpy_uint64_t;
  */
 typedef npy_float32 __pyx_t_5numpy_float32_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":703
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":703
  * 
  * ctypedef npy_float32    float32_t
  * ctypedef npy_float64    float64_t             # <<<<<<<<<<<<<<
@@ -1202,7 +1202,7 @@ typedef npy_float32 __pyx_t_5numpy_float32_t;
  */
 typedef npy_float64 __pyx_t_5numpy_float64_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":712
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":712
  * # The int types are mapped a bit surprising --
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t             # <<<<<<<<<<<<<<
@@ -1211,7 +1211,7 @@ typedef npy_float64 __pyx_t_5numpy_float64_t;
  */
 typedef npy_long __pyx_t_5numpy_int_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":713
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":713
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   longlong_t             # <<<<<<<<<<<<<<
@@ -1220,7 +1220,7 @@ typedef npy_long __pyx_t_5numpy_int_t;
  */
 typedef npy_longlong __pyx_t_5numpy_longlong_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":715
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":715
  * ctypedef npy_longlong   longlong_t
  * 
  * ctypedef npy_ulong      uint_t             # <<<<<<<<<<<<<<
@@ -1229,7 +1229,7 @@ typedef npy_longlong __pyx_t_5numpy_longlong_t;
  */
 typedef npy_ulong __pyx_t_5numpy_uint_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":716
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":716
  * 
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulonglong_t             # <<<<<<<<<<<<<<
@@ -1238,7 +1238,7 @@ typedef npy_ulong __pyx_t_5numpy_uint_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":718
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":718
  * ctypedef npy_ulonglong  ulonglong_t
  * 
  * ctypedef npy_intp       intp_t             # <<<<<<<<<<<<<<
@@ -1247,7 +1247,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
  */
 typedef npy_intp __pyx_t_5numpy_intp_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":719
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":719
  * 
  * ctypedef npy_intp       intp_t
  * ctypedef npy_uintp      uintp_t             # <<<<<<<<<<<<<<
@@ -1256,7 +1256,7 @@ typedef npy_intp __pyx_t_5numpy_intp_t;
  */
 typedef npy_uintp __pyx_t_5numpy_uintp_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":721
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":721
  * ctypedef npy_uintp      uintp_t
  * 
  * ctypedef npy_double     float_t             # <<<<<<<<<<<<<<
@@ -1265,7 +1265,7 @@ typedef npy_uintp __pyx_t_5numpy_uintp_t;
  */
 typedef npy_double __pyx_t_5numpy_float_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":722
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":722
  * 
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t             # <<<<<<<<<<<<<<
@@ -1274,7 +1274,7 @@ typedef npy_double __pyx_t_5numpy_float_t;
  */
 typedef npy_double __pyx_t_5numpy_double_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":723
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":723
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t
  * ctypedef npy_longdouble longdouble_t             # <<<<<<<<<<<<<<
@@ -1283,14 +1283,14 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "hdestimator/hde_fast_embedding.pyx":10
+/* "hdestimator/fast_embedding.pyx":10
  * cimport numpy as np
  * DTYPE = np.uint64
  * ctypedef np.uint64_t DTYPE_t             # <<<<<<<<<<<<<<
  * 
  * def get_median_number_of_spikes_per_bin(raw_symbols):
  */
-typedef __pyx_t_5numpy_uint64_t __pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t;
+typedef __pyx_t_5numpy_uint64_t __pyx_t_11hdestimator_14fast_embedding_DTYPE_t;
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -1322,7 +1322,7 @@ struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
 struct __pyx_memoryviewslice_obj;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":725
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":725
  * ctypedef npy_longdouble longdouble_t
  * 
  * ctypedef npy_cfloat      cfloat_t             # <<<<<<<<<<<<<<
@@ -1331,7 +1331,7 @@ struct __pyx_memoryviewslice_obj;
  */
 typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":726
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":726
  * 
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t             # <<<<<<<<<<<<<<
@@ -1340,7 +1340,7 @@ typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":727
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":727
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t
  * ctypedef npy_clongdouble clongdouble_t             # <<<<<<<<<<<<<<
@@ -1349,7 +1349,7 @@ typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
  */
 typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":729
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":729
  * ctypedef npy_clongdouble clongdouble_t
  * 
  * ctypedef npy_cdouble     complex_t             # <<<<<<<<<<<<<<
@@ -1357,16 +1357,16 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  * cdef inline object PyArray_MultiIterNew1(a):
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
-struct __pyx_opt_args_11hdestimator_18hde_fast_embedding_get_symbols;
+struct __pyx_opt_args_11hdestimator_14fast_embedding_get_symbols;
 
-/* "hdestimator/hde_fast_embedding.pyx":77
+/* "hdestimator/fast_embedding.pyx":77
  * @cython.boundscheck(False)  # Deactivate bounds checking
  * @cython.wraparound(False)   # Deactivate negative indexing.
  * cdef np.ndarray[DTYPE_t, ndim=1] get_symbols(DTYPE_t[:,:] raw_symbols,             # <<<<<<<<<<<<<<
  *                                              mode=None):
  *     cdef long num_symbols
  */
-struct __pyx_opt_args_11hdestimator_18hde_fast_embedding_get_symbols {
+struct __pyx_opt_args_11hdestimator_14fast_embedding_get_symbols {
   int __pyx_n;
   PyObject *mode;
 };
@@ -2366,7 +2366,7 @@ static int __Pyx_ValidateAndInit_memviewslice(
                 PyObject *original_obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(PyObject *, int writable_flag);
 
 /* GCCDiagnostics.proto */
 #if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
@@ -2374,11 +2374,11 @@ static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn_
 #endif
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(PyObject *, int writable_flag);
 
 /* MemviewDtypeToObject.proto */
-static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(const char *itemp);
-static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(const char *itemp, PyObject *obj);
+static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(const char *itemp);
+static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(const char *itemp, PyObject *obj);
 
 /* IntPow.proto */
 static CYTHON_INLINE long __Pyx_pow_long(long, long);
@@ -2568,7 +2568,7 @@ static PyTypeObject *__pyx_ptype_5numpy_flexible = 0;
 static PyTypeObject *__pyx_ptype_5numpy_character = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 
-/* Module declarations from 'hdestimator.hde_fast_embedding' */
+/* Module declarations from 'hdestimator.fast_embedding' */
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
 static PyTypeObject *__pyx_memoryview_type = 0;
@@ -2580,8 +2580,8 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols(PyArrayObject *, PyObject *, PyObject *, PyObject *); /*proto*/
-static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__Pyx_memviewslice, struct __pyx_opt_args_11hdestimator_18hde_fast_embedding_get_symbols *__pyx_optional_args); /*proto*/
+static PyArrayObject *__pyx_f_11hdestimator_14fast_embedding_get_raw_symbols(PyArrayObject *, PyObject *, PyObject *, PyObject *); /*proto*/
+static PyArrayObject *__pyx_f_11hdestimator_14fast_embedding_get_symbols(__Pyx_memviewslice, struct __pyx_opt_args_11hdestimator_14fast_embedding_get_symbols *__pyx_optional_args); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -2616,13 +2616,13 @@ static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5numpy_double_t = { "double_t", NULL, sizeof(__pyx_t_5numpy_double_t), { 0 }, 0, 'R', 0, 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t = { "DTYPE_t", NULL, sizeof(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t), { 0 }, 0, IS_UNSIGNED(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t), 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t = { "DTYPE_t", NULL, sizeof(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t), { 0 }, 0, IS_UNSIGNED(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t), 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5numpy_float64_t = { "float64_t", NULL, sizeof(__pyx_t_5numpy_float64_t), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "hdestimator.hde_fast_embedding"
-extern int __pyx_module_is_main_hdestimator__hde_fast_embedding;
-int __pyx_module_is_main_hdestimator__hde_fast_embedding = 0;
+#define __Pyx_MODULE_NAME "hdestimator.fast_embedding"
+extern int __pyx_module_is_main_hdestimator__fast_embedding;
+int __pyx_module_is_main_hdestimator__fast_embedding = 0;
 
-/* Implementation of 'hdestimator.hde_fast_embedding' */
+/* Implementation of 'hdestimator.fast_embedding' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_ImportError;
 static PyObject *__pyx_builtin_ValueError;
@@ -2712,7 +2712,6 @@ static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
 static const char __pyx_k_stringsource[] = "stringsource";
 static const char __pyx_k_symbol_count[] = "symbol_count";
 static const char __pyx_k_count_symbols[] = "count_symbols";
-static const char __pyx_k_hde_embedding[] = "hde_embedding";
 static const char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_symbol_counts[] = "symbol_counts";
@@ -2738,9 +2737,10 @@ static const char __pyx_k_MemoryView_of_r_at_0x_x[] = "<MemoryView of %r at 0x%x
 static const char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>";
 static const char __pyx_k_Cannot_index_with_type_s[] = "Cannot index with type '%s'";
 static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %d: %d.";
+static const char __pyx_k_hdestimator_fast_embedding[] = "hdestimator.fast_embedding";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
-static const char __pyx_k_hdestimator_hde_fast_embedding[] = "hdestimator.hde_fast_embedding";
+static const char __pyx_k_hdestimator_fast_embedding_pyx[] = "hdestimator/fast_embedding.pyx";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
 static const char __pyx_k_get_fist_bin_size_for_embedding[] = "get_fist_bin_size_for_embedding";
 static const char __pyx_k_get_median_number_of_spikes_per[] = "get_median_number_of_spikes_per_bin";
@@ -2756,7 +2756,6 @@ static const char __pyx_k_Invalid_mode_expected_c_or_fortr[] = "Invalid mode, ex
 static const char __pyx_k_Out_of_bounds_on_buffer_access_a[] = "Out of bounds on buffer access (axis %d)";
 static const char __pyx_k_Unable_to_convert_item_to_object[] = "Unable to convert item to object";
 static const char __pyx_k_got_differing_extents_in_dimensi[] = "got differing extents in dimension %d (got %d and %d)";
-static const char __pyx_k_hdestimator_hde_fast_embedding_p[] = "hdestimator/hde_fast_embedding.pyx";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_unable_to_allocate_shape_and_str[] = "unable to allocate shape and strides.";
@@ -2817,9 +2816,8 @@ static PyObject *__pyx_n_s_get_symbol_counts;
 static PyObject *__pyx_n_s_get_window_delimiters;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
-static PyObject *__pyx_n_s_hde_embedding;
-static PyObject *__pyx_n_s_hdestimator_hde_fast_embedding;
-static PyObject *__pyx_kp_s_hdestimator_hde_fast_embedding_p;
+static PyObject *__pyx_n_s_hdestimator_fast_embedding;
+static PyObject *__pyx_kp_s_hdestimator_fast_embedding_pyx;
 static PyObject *__pyx_n_s_id;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_itemsize;
@@ -2890,9 +2888,9 @@ static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_unq_symbols;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_get_median_number_of_spikes_per_bin(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_raw_symbols); /* proto */
-static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_symbols); /* proto */
-static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_spike_times, PyObject *__pyx_v_embedding, PyObject *__pyx_v_embedding_step_size); /* proto */
+static PyObject *__pyx_pf_11hdestimator_14fast_embedding_get_median_number_of_spikes_per_bin(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_raw_symbols); /* proto */
+static PyObject *__pyx_pf_11hdestimator_14fast_embedding_2count_symbols(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_symbols); /* proto */
+static PyObject *__pyx_pf_11hdestimator_14fast_embedding_4get_symbol_counts(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_spike_times, PyObject *__pyx_v_embedding, PyObject *__pyx_v_embedding_step_size); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -2981,7 +2979,7 @@ static PyObject *__pyx_codeobj__3;
 static PyObject *__pyx_codeobj__24;
 /* Late includes */
 
-/* "hdestimator/hde_fast_embedding.pyx":12
+/* "hdestimator/fast_embedding.pyx":12
  * ctypedef np.uint64_t DTYPE_t
  * 
  * def get_median_number_of_spikes_per_bin(raw_symbols):             # <<<<<<<<<<<<<<
@@ -2990,20 +2988,20 @@ static PyObject *__pyx_codeobj__24;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11hdestimator_18hde_fast_embedding_1get_median_number_of_spikes_per_bin(PyObject *__pyx_self, PyObject *__pyx_v_raw_symbols); /*proto*/
-static PyMethodDef __pyx_mdef_11hdestimator_18hde_fast_embedding_1get_median_number_of_spikes_per_bin = {"get_median_number_of_spikes_per_bin", (PyCFunction)__pyx_pw_11hdestimator_18hde_fast_embedding_1get_median_number_of_spikes_per_bin, METH_O, 0};
-static PyObject *__pyx_pw_11hdestimator_18hde_fast_embedding_1get_median_number_of_spikes_per_bin(PyObject *__pyx_self, PyObject *__pyx_v_raw_symbols) {
+static PyObject *__pyx_pw_11hdestimator_14fast_embedding_1get_median_number_of_spikes_per_bin(PyObject *__pyx_self, PyObject *__pyx_v_raw_symbols); /*proto*/
+static PyMethodDef __pyx_mdef_11hdestimator_14fast_embedding_1get_median_number_of_spikes_per_bin = {"get_median_number_of_spikes_per_bin", (PyCFunction)__pyx_pw_11hdestimator_14fast_embedding_1get_median_number_of_spikes_per_bin, METH_O, 0};
+static PyObject *__pyx_pw_11hdestimator_14fast_embedding_1get_median_number_of_spikes_per_bin(PyObject *__pyx_self, PyObject *__pyx_v_raw_symbols) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_median_number_of_spikes_per_bin (wrapper)", 0);
-  __pyx_r = __pyx_pf_11hdestimator_18hde_fast_embedding_get_median_number_of_spikes_per_bin(__pyx_self, ((PyObject *)__pyx_v_raw_symbols));
+  __pyx_r = __pyx_pf_11hdestimator_14fast_embedding_get_median_number_of_spikes_per_bin(__pyx_self, ((PyObject *)__pyx_v_raw_symbols));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_get_median_number_of_spikes_per_bin(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_raw_symbols) {
+static PyObject *__pyx_pf_11hdestimator_14fast_embedding_get_median_number_of_spikes_per_bin(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_raw_symbols) {
   PyObject *__pyx_r = NULL;
   __Pyx_TraceDeclarations
   __Pyx_RefNannyDeclarations
@@ -3018,7 +3016,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_get_median_number_o
   __Pyx_RefNannySetupContext("get_median_number_of_spikes_per_bin", 0);
   __Pyx_TraceCall("get_median_number_of_spikes_per_bin", __pyx_f[0], 12, 0, __PYX_ERR(0, 12, __pyx_L1_error));
 
-  /* "hdestimator/hde_fast_embedding.pyx":13
+  /* "hdestimator/fast_embedding.pyx":13
  * 
  * def get_median_number_of_spikes_per_bin(raw_symbols):
  *     return np.median(raw_symbols, axis=0)             # <<<<<<<<<<<<<<
@@ -3048,7 +3046,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_get_median_number_o
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":12
+  /* "hdestimator/fast_embedding.pyx":12
  * ctypedef np.uint64_t DTYPE_t
  * 
  * def get_median_number_of_spikes_per_bin(raw_symbols):             # <<<<<<<<<<<<<<
@@ -3062,7 +3060,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_get_median_number_o
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("hdestimator.hde_fast_embedding.get_median_number_of_spikes_per_bin", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("hdestimator.fast_embedding.get_median_number_of_spikes_per_bin", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3071,7 +3069,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_get_median_number_o
   return __pyx_r;
 }
 
-/* "hdestimator/hde_fast_embedding.pyx":17
+/* "hdestimator/fast_embedding.pyx":17
  * @cython.boundscheck(False)  # Deactivate bounds checking
  * @cython.wraparound(False)   # Deactivate negative indexing.
  * cdef np.ndarray[DTYPE_t, ndim=2] get_raw_symbols(np.ndarray[np.double_t, ndim= 1] spike_times,             # <<<<<<<<<<<<<<
@@ -3079,7 +3077,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_get_median_number_o
  *                                                  first_bin_size,
  */
 
-static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols(PyArrayObject *__pyx_v_spike_times, PyObject *__pyx_v_embedding, PyObject *__pyx_v_first_bin_size, PyObject *__pyx_v_embedding_step_size) {
+static PyArrayObject *__pyx_f_11hdestimator_14fast_embedding_get_raw_symbols(PyArrayObject *__pyx_v_spike_times, PyObject *__pyx_v_embedding, PyObject *__pyx_v_first_bin_size, PyObject *__pyx_v_embedding_step_size) {
   CYTHON_UNUSED PyObject *__pyx_v_past_range_T = NULL;
   PyObject *__pyx_v_number_of_bins_d = NULL;
   PyObject *__pyx_v_scaling_k = NULL;
@@ -3160,7 +3158,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   }
   __pyx_pybuffernd_spike_times.diminfo[0].strides = __pyx_pybuffernd_spike_times.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_spike_times.diminfo[0].shape = __pyx_pybuffernd_spike_times.rcbuffer->pybuffer.shape[0];
 
-  /* "hdestimator/hde_fast_embedding.pyx":21
+  /* "hdestimator/fast_embedding.pyx":21
  *                                                  first_bin_size,
  *                                                  embedding_step_size):
  *     past_range_T, number_of_bins_d, scaling_k = embedding             # <<<<<<<<<<<<<<
@@ -3225,7 +3223,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_v_scaling_k = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":26
+  /* "hdestimator/fast_embedding.pyx":26
  *     # ie the embedding and one additional bin of size embedding_step_size
  *     cdef np.ndarray[np.double_t, ndim= 1] \
  *         window_delimiters = np.array(emb.get_window_delimiters(number_of_bins_d,             # <<<<<<<<<<<<<<
@@ -3243,7 +3241,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":29
+  /* "hdestimator/fast_embedding.pyx":29
  *                                                                scaling_k,
  *                                                                first_bin_size,
  *                                                                embedding_step_size))             # <<<<<<<<<<<<<<
@@ -3318,7 +3316,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":26
+  /* "hdestimator/fast_embedding.pyx":26
  *     # ie the embedding and one additional bin of size embedding_step_size
  *     cdef np.ndarray[np.double_t, ndim= 1] \
  *         window_delimiters = np.array(emb.get_window_delimiters(number_of_bins_d,             # <<<<<<<<<<<<<<
@@ -3339,7 +3337,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_v_window_delimiters = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":30
+  /* "hdestimator/fast_embedding.pyx":30
  *                                                                first_bin_size,
  *                                                                embedding_step_size))
  *     cdef double window_length = window_delimiters[len(window_delimiters) - 1]             # <<<<<<<<<<<<<<
@@ -3350,7 +3348,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_t_11 = (__pyx_t_10 - 1);
   __pyx_v_window_length = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_window_delimiters.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_window_delimiters.diminfo[0].strides));
 
-  /* "hdestimator/hde_fast_embedding.pyx":31
+  /* "hdestimator/fast_embedding.pyx":31
  *                                                                embedding_step_size))
  *     cdef double window_length = window_delimiters[len(window_delimiters) - 1]
  *     cdef long num_spike_times = len(spike_times)             # <<<<<<<<<<<<<<
@@ -3360,7 +3358,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_t_10 = PyObject_Length(((PyObject *)__pyx_v_spike_times)); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 31, __pyx_L1_error)
   __pyx_v_num_spike_times = __pyx_t_10;
 
-  /* "hdestimator/hde_fast_embedding.pyx":32
+  /* "hdestimator/fast_embedding.pyx":32
  *     cdef double window_length = window_delimiters[len(window_delimiters) - 1]
  *     cdef long num_spike_times = len(spike_times)
  *     cdef double last_spike_time = spike_times[num_spike_times - 1]             # <<<<<<<<<<<<<<
@@ -3370,7 +3368,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_t_11 = (__pyx_v_num_spike_times - 1);
   __pyx_v_last_spike_time = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_spike_times.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_spike_times.diminfo[0].strides));
 
-  /* "hdestimator/hde_fast_embedding.pyx":34
+  /* "hdestimator/fast_embedding.pyx":34
  *     cdef double last_spike_time = spike_times[num_spike_times - 1]
  * 
  *     cdef long num_symbols = int((last_spike_time - window_length) / embedding_step_size)             # <<<<<<<<<<<<<<
@@ -3389,7 +3387,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_num_symbols = __pyx_t_12;
 
-  /* "hdestimator/hde_fast_embedding.pyx":36
+  /* "hdestimator/fast_embedding.pyx":36
  *     cdef long num_symbols = int((last_spike_time - window_length) / embedding_step_size)
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] raw_symbols = np.zeros(num_symbols * (number_of_bins_d+1),             # <<<<<<<<<<<<<<
@@ -3415,7 +3413,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_8);
   __pyx_t_8 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":37
+  /* "hdestimator/fast_embedding.pyx":37
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] raw_symbols = np.zeros(num_symbols * (number_of_bins_d+1),
  *                                                             dtype=DTYPE).reshape(num_symbols,             # <<<<<<<<<<<<<<
@@ -3429,7 +3427,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":36
+  /* "hdestimator/fast_embedding.pyx":36
  *     cdef long num_symbols = int((last_spike_time - window_length) / embedding_step_size)
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] raw_symbols = np.zeros(num_symbols * (number_of_bins_d+1),             # <<<<<<<<<<<<<<
@@ -3442,7 +3440,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":37
+  /* "hdestimator/fast_embedding.pyx":37
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] raw_symbols = np.zeros(num_symbols * (number_of_bins_d+1),
  *                                                             dtype=DTYPE).reshape(num_symbols,             # <<<<<<<<<<<<<<
@@ -3455,7 +3453,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_num_symbols); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "hdestimator/hde_fast_embedding.pyx":38
+  /* "hdestimator/fast_embedding.pyx":38
  *     cdef np.ndarray[DTYPE_t, ndim=2] raw_symbols = np.zeros(num_symbols * (number_of_bins_d+1),
  *                                                             dtype=DTYPE).reshape(num_symbols,
  *                                                                                  number_of_bins_d+1)             # <<<<<<<<<<<<<<
@@ -3514,7 +3512,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":37
+  /* "hdestimator/fast_embedding.pyx":37
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] raw_symbols = np.zeros(num_symbols * (number_of_bins_d+1),
  *                                                             dtype=DTYPE).reshape(num_symbols,             # <<<<<<<<<<<<<<
@@ -3525,7 +3523,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_t_13 = ((PyArrayObject *)__pyx_t_3);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_raw_symbols = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 36, __pyx_L1_error)
     } else {__pyx_pybuffernd_raw_symbols.diminfo[0].strides = __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_raw_symbols.diminfo[0].shape = __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_raw_symbols.diminfo[1].strides = __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_raw_symbols.diminfo[1].shape = __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.shape[1];
@@ -3535,19 +3533,19 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_v_raw_symbols = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":40
+  /* "hdestimator/fast_embedding.pyx":40
  *                                                                                  number_of_bins_d+1)
  * 
  *     cdef DTYPE_t[:,:] raw_symbols_view = raw_symbols             # <<<<<<<<<<<<<<
  * 
  *     cdef long symbol_num = 0
  */
-  __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(((PyObject *)__pyx_v_raw_symbols), PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(((PyObject *)__pyx_v_raw_symbols), PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 40, __pyx_L1_error)
   __pyx_v_raw_symbols_view = __pyx_t_14;
   __pyx_t_14.memview = NULL;
   __pyx_t_14.data = NULL;
 
-  /* "hdestimator/hde_fast_embedding.pyx":42
+  /* "hdestimator/fast_embedding.pyx":42
  *     cdef DTYPE_t[:,:] raw_symbols_view = raw_symbols
  * 
  *     cdef long symbol_num = 0             # <<<<<<<<<<<<<<
@@ -3556,7 +3554,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
  */
   __pyx_v_symbol_num = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":43
+  /* "hdestimator/fast_embedding.pyx":43
  * 
  *     cdef long symbol_num = 0
  *     cdef double time = 0             # <<<<<<<<<<<<<<
@@ -3565,7 +3563,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
  */
   __pyx_v_time = 0.0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":45
+  /* "hdestimator/fast_embedding.pyx":45
  *     cdef double time = 0
  * 
  *     cdef long spike_index_lo = 0             # <<<<<<<<<<<<<<
@@ -3574,7 +3572,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
  */
   __pyx_v_spike_index_lo = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":49
+  /* "hdestimator/fast_embedding.pyx":49
  * 
  *     cdef int embedding_bin_index
  *     cdef np.ndarray[DTYPE_t, ndim=1] spikes_in_window = np.zeros(number_of_bins_d+1, dtype=DTYPE)             # <<<<<<<<<<<<<<
@@ -3608,7 +3606,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_t_15 = ((PyArrayObject *)__pyx_t_6);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer, (PyObject*)__pyx_t_15, &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer, (PyObject*)__pyx_t_15, &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_spikes_in_window = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 49, __pyx_L1_error)
     } else {__pyx_pybuffernd_spikes_in_window.diminfo[0].strides = __pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_spikes_in_window.diminfo[0].shape = __pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer.shape[0];
@@ -3618,7 +3616,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_v_spikes_in_window = ((PyArrayObject *)__pyx_t_6);
   __pyx_t_6 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":51
+  /* "hdestimator/fast_embedding.pyx":51
  *     cdef np.ndarray[DTYPE_t, ndim=1] spikes_in_window = np.zeros(number_of_bins_d+1, dtype=DTYPE)
  * 
  *     for symbol_num in range(num_symbols):             # <<<<<<<<<<<<<<
@@ -3630,7 +3628,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
     __pyx_v_symbol_num = __pyx_t_17;
 
-    /* "hdestimator/hde_fast_embedding.pyx":52
+    /* "hdestimator/fast_embedding.pyx":52
  * 
  *     for symbol_num in range(num_symbols):
  *         while(spike_index_lo < num_spike_times and spike_times[spike_index_lo] < time):             # <<<<<<<<<<<<<<
@@ -3650,7 +3648,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
       __pyx_L9_bool_binop_done:;
       if (!__pyx_t_18) break;
 
-      /* "hdestimator/hde_fast_embedding.pyx":53
+      /* "hdestimator/fast_embedding.pyx":53
  *     for symbol_num in range(num_symbols):
  *         while(spike_index_lo < num_spike_times and spike_times[spike_index_lo] < time):
  *             spike_index_lo += 1             # <<<<<<<<<<<<<<
@@ -3660,7 +3658,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
       __pyx_v_spike_index_lo = (__pyx_v_spike_index_lo + 1);
     }
 
-    /* "hdestimator/hde_fast_embedding.pyx":54
+    /* "hdestimator/fast_embedding.pyx":54
  *         while(spike_index_lo < num_spike_times and spike_times[spike_index_lo] < time):
  *             spike_index_lo += 1
  *         spike_index_hi = spike_index_lo             # <<<<<<<<<<<<<<
@@ -3669,7 +3667,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
  */
     __pyx_v_spike_index_hi = __pyx_v_spike_index_lo;
 
-    /* "hdestimator/hde_fast_embedding.pyx":55
+    /* "hdestimator/fast_embedding.pyx":55
  *             spike_index_lo += 1
  *         spike_index_hi = spike_index_lo
  *         while(spike_index_hi < num_spike_times and             # <<<<<<<<<<<<<<
@@ -3684,7 +3682,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
         goto __pyx_L13_bool_binop_done;
       }
 
-      /* "hdestimator/hde_fast_embedding.pyx":56
+      /* "hdestimator/fast_embedding.pyx":56
  *         spike_index_hi = spike_index_lo
  *         while(spike_index_hi < num_spike_times and
  *               spike_times[spike_index_hi] < time + window_length):             # <<<<<<<<<<<<<<
@@ -3697,7 +3695,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
       __pyx_L13_bool_binop_done:;
       if (!__pyx_t_18) break;
 
-      /* "hdestimator/hde_fast_embedding.pyx":57
+      /* "hdestimator/fast_embedding.pyx":57
  *         while(spike_index_hi < num_spike_times and
  *               spike_times[spike_index_hi] < time + window_length):
  *             spike_index_hi += 1             # <<<<<<<<<<<<<<
@@ -3707,7 +3705,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
       __pyx_v_spike_index_hi = (__pyx_v_spike_index_hi + 1);
     }
 
-    /* "hdestimator/hde_fast_embedding.pyx":59
+    /* "hdestimator/fast_embedding.pyx":59
  *             spike_index_hi += 1
  * 
  *         for embedding_bin_index in range(number_of_bins_d + 1):             # <<<<<<<<<<<<<<
@@ -3722,7 +3720,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
     for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_21; __pyx_t_7+=1) {
       __pyx_v_embedding_bin_index = __pyx_t_7;
 
-      /* "hdestimator/hde_fast_embedding.pyx":60
+      /* "hdestimator/fast_embedding.pyx":60
  * 
  *         for embedding_bin_index in range(number_of_bins_d + 1):
  *             spikes_in_window[embedding_bin_index] = 0             # <<<<<<<<<<<<<<
@@ -3730,10 +3728,10 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
  *         embedding_bin_index = 0
  */
       __pyx_t_11 = __pyx_v_embedding_bin_index;
-      *__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *, __pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_spikes_in_window.diminfo[0].strides) = 0;
+      *__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *, __pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_spikes_in_window.diminfo[0].strides) = 0;
     }
 
-    /* "hdestimator/hde_fast_embedding.pyx":62
+    /* "hdestimator/fast_embedding.pyx":62
  *             spikes_in_window[embedding_bin_index] = 0
  * 
  *         embedding_bin_index = 0             # <<<<<<<<<<<<<<
@@ -3742,7 +3740,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
  */
     __pyx_v_embedding_bin_index = 0;
 
-    /* "hdestimator/hde_fast_embedding.pyx":63
+    /* "hdestimator/fast_embedding.pyx":63
  * 
  *         embedding_bin_index = 0
  *         for spike_index in range(spike_index_lo, spike_index_hi):             # <<<<<<<<<<<<<<
@@ -3754,7 +3752,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
     for (__pyx_t_22 = __pyx_v_spike_index_lo; __pyx_t_22 < __pyx_t_21; __pyx_t_22+=1) {
       __pyx_v_spike_index = __pyx_t_22;
 
-      /* "hdestimator/hde_fast_embedding.pyx":64
+      /* "hdestimator/fast_embedding.pyx":64
  *         embedding_bin_index = 0
  *         for spike_index in range(spike_index_lo, spike_index_hi):
  *             while(spike_times[spike_index] > time + window_delimiters[embedding_bin_index]):             # <<<<<<<<<<<<<<
@@ -3767,7 +3765,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
         __pyx_t_18 = (((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_spike_times.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_spike_times.diminfo[0].strides)) > (__pyx_v_time + (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_double_t *, __pyx_pybuffernd_window_delimiters.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_window_delimiters.diminfo[0].strides)))) != 0);
         if (!__pyx_t_18) break;
 
-        /* "hdestimator/hde_fast_embedding.pyx":65
+        /* "hdestimator/fast_embedding.pyx":65
  *         for spike_index in range(spike_index_lo, spike_index_hi):
  *             while(spike_times[spike_index] > time + window_delimiters[embedding_bin_index]):
  *                 embedding_bin_index += 1             # <<<<<<<<<<<<<<
@@ -3777,7 +3775,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
         __pyx_v_embedding_bin_index = (__pyx_v_embedding_bin_index + 1);
       }
 
-      /* "hdestimator/hde_fast_embedding.pyx":66
+      /* "hdestimator/fast_embedding.pyx":66
  *             while(spike_times[spike_index] > time + window_delimiters[embedding_bin_index]):
  *                 embedding_bin_index += 1
  *             spikes_in_window[embedding_bin_index] += 1             # <<<<<<<<<<<<<<
@@ -3785,10 +3783,10 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
  *         for embedding_bin_index in range(number_of_bins_d + 1):
  */
       __pyx_t_23 = __pyx_v_embedding_bin_index;
-      *__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *, __pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_spikes_in_window.diminfo[0].strides) += 1;
+      *__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *, __pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_spikes_in_window.diminfo[0].strides) += 1;
     }
 
-    /* "hdestimator/hde_fast_embedding.pyx":68
+    /* "hdestimator/fast_embedding.pyx":68
  *             spikes_in_window[embedding_bin_index] += 1
  * 
  *         for embedding_bin_index in range(number_of_bins_d + 1):             # <<<<<<<<<<<<<<
@@ -3803,7 +3801,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
     for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_21; __pyx_t_7+=1) {
       __pyx_v_embedding_bin_index = __pyx_t_7;
 
-      /* "hdestimator/hde_fast_embedding.pyx":69
+      /* "hdestimator/fast_embedding.pyx":69
  * 
  *         for embedding_bin_index in range(number_of_bins_d + 1):
  *             raw_symbols_view[symbol_num][embedding_bin_index] = spikes_in_window[embedding_bin_index]             # <<<<<<<<<<<<<<
@@ -3813,10 +3811,10 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
       __pyx_t_23 = __pyx_v_embedding_bin_index;
       __pyx_t_11 = __pyx_v_symbol_num;
       __pyx_t_24 = __pyx_v_embedding_bin_index;
-      *((__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_raw_symbols_view.data + __pyx_t_11 * __pyx_v_raw_symbols_view.strides[0]) ) + __pyx_t_24 * __pyx_v_raw_symbols_view.strides[1]) )) = (*__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *, __pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_spikes_in_window.diminfo[0].strides));
+      *((__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_raw_symbols_view.data + __pyx_t_11 * __pyx_v_raw_symbols_view.strides[0]) ) + __pyx_t_24 * __pyx_v_raw_symbols_view.strides[1]) )) = (*__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *, __pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_spikes_in_window.diminfo[0].strides));
     }
 
-    /* "hdestimator/hde_fast_embedding.pyx":71
+    /* "hdestimator/fast_embedding.pyx":71
  *             raw_symbols_view[symbol_num][embedding_bin_index] = spikes_in_window[embedding_bin_index]
  * 
  *         time += embedding_step_size             # <<<<<<<<<<<<<<
@@ -3833,7 +3831,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
     __pyx_v_time = __pyx_t_25;
   }
 
-  /* "hdestimator/hde_fast_embedding.pyx":73
+  /* "hdestimator/fast_embedding.pyx":73
  *         time += embedding_step_size
  * 
  *     return raw_symbols             # <<<<<<<<<<<<<<
@@ -3845,7 +3843,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   __pyx_r = ((PyArrayObject *)__pyx_v_raw_symbols);
   goto __pyx_L0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":17
+  /* "hdestimator/fast_embedding.pyx":17
  * @cython.boundscheck(False)  # Deactivate bounds checking
  * @cython.wraparound(False)   # Deactivate negative indexing.
  * cdef np.ndarray[DTYPE_t, ndim=2] get_raw_symbols(np.ndarray[np.double_t, ndim= 1] spike_times,             # <<<<<<<<<<<<<<
@@ -3871,7 +3869,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_spikes_in_window.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_window_delimiters.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("hdestimator.hde_fast_embedding.get_raw_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("hdestimator.fast_embedding.get_raw_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -3893,7 +3891,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
   return __pyx_r;
 }
 
-/* "hdestimator/hde_fast_embedding.pyx":77
+/* "hdestimator/fast_embedding.pyx":77
  * @cython.boundscheck(False)  # Deactivate bounds checking
  * @cython.wraparound(False)   # Deactivate negative indexing.
  * cdef np.ndarray[DTYPE_t, ndim=1] get_symbols(DTYPE_t[:,:] raw_symbols,             # <<<<<<<<<<<<<<
@@ -3901,9 +3899,9 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols
  *     cdef long num_symbols
  */
 
-static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__Pyx_memviewslice __pyx_v_raw_symbols, struct __pyx_opt_args_11hdestimator_18hde_fast_embedding_get_symbols *__pyx_optional_args) {
+static PyArrayObject *__pyx_f_11hdestimator_14fast_embedding_get_symbols(__Pyx_memviewslice __pyx_v_raw_symbols, struct __pyx_opt_args_11hdestimator_14fast_embedding_get_symbols *__pyx_optional_args) {
 
-  /* "hdestimator/hde_fast_embedding.pyx":78
+  /* "hdestimator/fast_embedding.pyx":78
  * @cython.wraparound(False)   # Deactivate negative indexing.
  * cdef np.ndarray[DTYPE_t, ndim=1] get_symbols(DTYPE_t[:,:] raw_symbols,
  *                                              mode=None):             # <<<<<<<<<<<<<<
@@ -3964,7 +3962,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   __pyx_pybuffernd_symbols.data = NULL;
   __pyx_pybuffernd_symbols.rcbuffer = &__pyx_pybuffer_symbols;
 
-  /* "hdestimator/hde_fast_embedding.pyx":81
+  /* "hdestimator/fast_embedding.pyx":81
  *     cdef long num_symbols
  *     cdef int symbol_length
  *     num_symbols, symbol_length = np.shape(raw_symbols) # symbol_length: number_of_bins_d + 1             # <<<<<<<<<<<<<<
@@ -3976,7 +3974,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_raw_symbols, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_raw_symbols, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -4047,7 +4045,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   __pyx_v_num_symbols = __pyx_t_6;
   __pyx_v_symbol_length = __pyx_t_7;
 
-  /* "hdestimator/hde_fast_embedding.pyx":83
+  /* "hdestimator/fast_embedding.pyx":83
  *     num_symbols, symbol_length = np.shape(raw_symbols) # symbol_length: number_of_bins_d + 1
  *     cdef np.ndarray[np.float64_t, ndim=1] median_number_of_spikes_per_bin
  *     if mode == 'median':             # <<<<<<<<<<<<<<
@@ -4057,7 +4055,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   __pyx_t_8 = (__Pyx_PyString_Equals(__pyx_v_mode, __pyx_n_s_median, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 83, __pyx_L1_error)
   if (__pyx_t_8) {
 
-    /* "hdestimator/hde_fast_embedding.pyx":84
+    /* "hdestimator/fast_embedding.pyx":84
  *     cdef np.ndarray[np.float64_t, ndim=1] median_number_of_spikes_per_bin
  *     if mode == 'median':
  *         median_number_of_spikes_per_bin = get_median_number_of_spikes_per_bin(raw_symbols)             # <<<<<<<<<<<<<<
@@ -4066,7 +4064,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
  */
     __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_get_median_number_of_spikes_per); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_raw_symbols, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_raw_symbols, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -4107,7 +4105,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
     __pyx_v_median_number_of_spikes_per_bin = ((PyArrayObject *)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "hdestimator/hde_fast_embedding.pyx":83
+    /* "hdestimator/fast_embedding.pyx":83
  *     num_symbols, symbol_length = np.shape(raw_symbols) # symbol_length: number_of_bins_d + 1
  *     cdef np.ndarray[np.float64_t, ndim=1] median_number_of_spikes_per_bin
  *     if mode == 'median':             # <<<<<<<<<<<<<<
@@ -4117,7 +4115,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
     goto __pyx_L5;
   }
 
-  /* "hdestimator/hde_fast_embedding.pyx":86
+  /* "hdestimator/fast_embedding.pyx":86
  *         median_number_of_spikes_per_bin = get_median_number_of_spikes_per_bin(raw_symbols)
  *     else:
  *         median_number_of_spikes_per_bin = np.zeros(symbol_length)             # <<<<<<<<<<<<<<
@@ -4173,7 +4171,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   }
   __pyx_L5:;
 
-  /* "hdestimator/hde_fast_embedding.pyx":89
+  /* "hdestimator/fast_embedding.pyx":89
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=1] raw_symbol
  *     cdef np.ndarray[DTYPE_t, ndim=1] symbols = np.zeros(num_symbols, dtype=DTYPE)             # <<<<<<<<<<<<<<
@@ -4207,7 +4205,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   __pyx_t_13 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_symbols.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_symbols.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_symbols = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_symbols.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 89, __pyx_L1_error)
     } else {__pyx_pybuffernd_symbols.diminfo[0].strides = __pyx_pybuffernd_symbols.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_symbols.diminfo[0].shape = __pyx_pybuffernd_symbols.rcbuffer->pybuffer.shape[0];
@@ -4217,7 +4215,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   __pyx_v_symbols = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":91
+  /* "hdestimator/fast_embedding.pyx":91
  *     cdef np.ndarray[DTYPE_t, ndim=1] symbols = np.zeros(num_symbols, dtype=DTYPE)
  *     cdef int symbol, i
  *     cdef int symbol_num = 0             # <<<<<<<<<<<<<<
@@ -4226,7 +4224,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
  */
   __pyx_v_symbol_num = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":93
+  /* "hdestimator/fast_embedding.pyx":93
  *     cdef int symbol_num = 0
  * 
  *     for symbol_num in range(num_symbols):             # <<<<<<<<<<<<<<
@@ -4238,7 +4236,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_14; __pyx_t_7+=1) {
     __pyx_v_symbol_num = __pyx_t_7;
 
-    /* "hdestimator/hde_fast_embedding.pyx":94
+    /* "hdestimator/fast_embedding.pyx":94
  * 
  *     for symbol_num in range(num_symbols):
  *         symbol = 0             # <<<<<<<<<<<<<<
@@ -4247,7 +4245,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
  */
     __pyx_v_symbol = 0;
 
-    /* "hdestimator/hde_fast_embedding.pyx":95
+    /* "hdestimator/fast_embedding.pyx":95
  *     for symbol_num in range(num_symbols):
  *         symbol = 0
  *         for i in range(symbol_length):             # <<<<<<<<<<<<<<
@@ -4259,7 +4257,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
     for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
       __pyx_v_i = __pyx_t_17;
 
-      /* "hdestimator/hde_fast_embedding.pyx":96
+      /* "hdestimator/fast_embedding.pyx":96
  *         symbol = 0
  *         for i in range(symbol_length):
  *             if raw_symbols[symbol_num][i] > median_number_of_spikes_per_bin[i]:             # <<<<<<<<<<<<<<
@@ -4269,10 +4267,10 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
       __pyx_t_18 = __pyx_v_symbol_num;
       __pyx_t_19 = __pyx_v_i;
       __pyx_t_20 = __pyx_v_i;
-      __pyx_t_8 = (((*((__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_raw_symbols.data + __pyx_t_18 * __pyx_v_raw_symbols.strides[0]) ) + __pyx_t_19 * __pyx_v_raw_symbols.strides[1]) ))) > (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_median_number_of_spikes_per_bin.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_median_number_of_spikes_per_bin.diminfo[0].strides))) != 0);
+      __pyx_t_8 = (((*((__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_raw_symbols.data + __pyx_t_18 * __pyx_v_raw_symbols.strides[0]) ) + __pyx_t_19 * __pyx_v_raw_symbols.strides[1]) ))) > (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_median_number_of_spikes_per_bin.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_median_number_of_spikes_per_bin.diminfo[0].strides))) != 0);
       if (__pyx_t_8) {
 
-        /* "hdestimator/hde_fast_embedding.pyx":97
+        /* "hdestimator/fast_embedding.pyx":97
  *         for i in range(symbol_length):
  *             if raw_symbols[symbol_num][i] > median_number_of_spikes_per_bin[i]:
  *                 symbol += 2 ** (symbol_length - i - 1)             # <<<<<<<<<<<<<<
@@ -4281,7 +4279,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
  */
         __pyx_v_symbol = (__pyx_v_symbol + __Pyx_pow_long(2, ((__pyx_v_symbol_length - __pyx_v_i) - 1)));
 
-        /* "hdestimator/hde_fast_embedding.pyx":96
+        /* "hdestimator/fast_embedding.pyx":96
  *         symbol = 0
  *         for i in range(symbol_length):
  *             if raw_symbols[symbol_num][i] > median_number_of_spikes_per_bin[i]:             # <<<<<<<<<<<<<<
@@ -4291,7 +4289,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
       }
     }
 
-    /* "hdestimator/hde_fast_embedding.pyx":99
+    /* "hdestimator/fast_embedding.pyx":99
  *                 symbol += 2 ** (symbol_length - i - 1)
  * 
  *         symbols[symbol_num] = symbol             # <<<<<<<<<<<<<<
@@ -4299,10 +4297,10 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
  *     return symbols
  */
     __pyx_t_20 = __pyx_v_symbol_num;
-    *__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *, __pyx_pybuffernd_symbols.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_symbols.diminfo[0].strides) = __pyx_v_symbol;
+    *__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *, __pyx_pybuffernd_symbols.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_symbols.diminfo[0].strides) = __pyx_v_symbol;
   }
 
-  /* "hdestimator/hde_fast_embedding.pyx":101
+  /* "hdestimator/fast_embedding.pyx":101
  *         symbols[symbol_num] = symbol
  * 
  *     return symbols             # <<<<<<<<<<<<<<
@@ -4314,7 +4312,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   __pyx_r = ((PyArrayObject *)__pyx_v_symbols);
   goto __pyx_L0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":77
+  /* "hdestimator/fast_embedding.pyx":77
  * @cython.boundscheck(False)  # Deactivate bounds checking
  * @cython.wraparound(False)   # Deactivate negative indexing.
  * cdef np.ndarray[DTYPE_t, ndim=1] get_symbols(DTYPE_t[:,:] raw_symbols,             # <<<<<<<<<<<<<<
@@ -4335,7 +4333,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_median_number_of_spikes_per_bin.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_symbols.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("hdestimator.hde_fast_embedding.get_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("hdestimator.fast_embedding.get_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4350,7 +4348,7 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
   return __pyx_r;
 }
 
-/* "hdestimator/hde_fast_embedding.pyx":103
+/* "hdestimator/fast_embedding.pyx":103
  *     return symbols
  * 
  * def count_symbols(DTYPE_t[:] symbols):             # <<<<<<<<<<<<<<
@@ -4359,9 +4357,9 @@ static PyArrayObject *__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__P
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11hdestimator_18hde_fast_embedding_3count_symbols(PyObject *__pyx_self, PyObject *__pyx_arg_symbols); /*proto*/
-static PyMethodDef __pyx_mdef_11hdestimator_18hde_fast_embedding_3count_symbols = {"count_symbols", (PyCFunction)__pyx_pw_11hdestimator_18hde_fast_embedding_3count_symbols, METH_O, 0};
-static PyObject *__pyx_pw_11hdestimator_18hde_fast_embedding_3count_symbols(PyObject *__pyx_self, PyObject *__pyx_arg_symbols) {
+static PyObject *__pyx_pw_11hdestimator_14fast_embedding_3count_symbols(PyObject *__pyx_self, PyObject *__pyx_arg_symbols); /*proto*/
+static PyMethodDef __pyx_mdef_11hdestimator_14fast_embedding_3count_symbols = {"count_symbols", (PyCFunction)__pyx_pw_11hdestimator_14fast_embedding_3count_symbols, METH_O, 0};
+static PyObject *__pyx_pw_11hdestimator_14fast_embedding_3count_symbols(PyObject *__pyx_self, PyObject *__pyx_arg_symbols) {
   __Pyx_memviewslice __pyx_v_symbols = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -4370,28 +4368,28 @@ static PyObject *__pyx_pw_11hdestimator_18hde_fast_embedding_3count_symbols(PyOb
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("count_symbols (wrapper)", 0);
   assert(__pyx_arg_symbols); {
-    __pyx_v_symbols = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(__pyx_arg_symbols, PyBUF_WRITABLE); if (unlikely(!__pyx_v_symbols.memview)) __PYX_ERR(0, 103, __pyx_L3_error)
+    __pyx_v_symbols = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(__pyx_arg_symbols, PyBUF_WRITABLE); if (unlikely(!__pyx_v_symbols.memview)) __PYX_ERR(0, 103, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("hdestimator.hde_fast_embedding.count_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("hdestimator.fast_embedding.count_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(__pyx_self, __pyx_v_symbols);
+  __pyx_r = __pyx_pf_11hdestimator_14fast_embedding_2count_symbols(__pyx_self, __pyx_v_symbols);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_symbols) {
+static PyObject *__pyx_pf_11hdestimator_14fast_embedding_2count_symbols(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_symbols) {
   PyArrayObject *__pyx_v_unq_symbols = 0;
   PyObject *__pyx_v_symbol_counts = 0;
-  __pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t __pyx_v_symbol;
+  __pyx_t_11hdestimator_14fast_embedding_DTYPE_t __pyx_v_symbol;
   long __pyx_v_num_symbols;
   long __pyx_v_symbols_index;
-  __pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t __pyx_v_symbol_num;
+  __pyx_t_11hdestimator_14fast_embedding_DTYPE_t __pyx_v_symbol_num;
   int __pyx_v_symbol_count;
   long __pyx_v_num_unq_symbols;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_unq_symbols;
@@ -4409,8 +4407,8 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   Py_ssize_t __pyx_t_8;
   long __pyx_t_9;
   long __pyx_t_10;
-  __pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t __pyx_t_11;
-  __pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t __pyx_t_12;
+  __pyx_t_11hdestimator_14fast_embedding_DTYPE_t __pyx_t_11;
+  __pyx_t_11hdestimator_14fast_embedding_DTYPE_t __pyx_t_12;
   int __pyx_t_13;
   int __pyx_t_14;
   int __pyx_t_15;
@@ -4426,7 +4424,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   __pyx_pybuffernd_unq_symbols.data = NULL;
   __pyx_pybuffernd_unq_symbols.rcbuffer = &__pyx_pybuffer_unq_symbols;
 
-  /* "hdestimator/hde_fast_embedding.pyx":104
+  /* "hdestimator/fast_embedding.pyx":104
  * 
  * def count_symbols(DTYPE_t[:] symbols):
  *     symbols = np.sort(symbols)             # <<<<<<<<<<<<<<
@@ -4438,7 +4436,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sort); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_symbols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_symbols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -4456,14 +4454,14 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_symbols, 1);
   __pyx_v_symbols = __pyx_t_5;
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "hdestimator/hde_fast_embedding.pyx":105
+  /* "hdestimator/fast_embedding.pyx":105
  * def count_symbols(DTYPE_t[:] symbols):
  *     symbols = np.sort(symbols)
  *     cdef np.ndarray[DTYPE_t, ndim=1] unq_symbols = np.unique(symbols)             # <<<<<<<<<<<<<<
@@ -4475,7 +4473,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_unique); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_symbols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_symbols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -4497,7 +4495,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_unq_symbols.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_unq_symbols.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_unq_symbols = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_unq_symbols.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 105, __pyx_L1_error)
     } else {__pyx_pybuffernd_unq_symbols.diminfo[0].strides = __pyx_pybuffernd_unq_symbols.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_unq_symbols.diminfo[0].shape = __pyx_pybuffernd_unq_symbols.rcbuffer->pybuffer.shape[0];
@@ -4507,7 +4505,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   __pyx_v_unq_symbols = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":107
+  /* "hdestimator/fast_embedding.pyx":107
  *     cdef np.ndarray[DTYPE_t, ndim=1] unq_symbols = np.unique(symbols)
  * 
  *     cdef dict symbol_counts = {}             # <<<<<<<<<<<<<<
@@ -4519,7 +4517,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   __pyx_v_symbol_counts = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":110
+  /* "hdestimator/fast_embedding.pyx":110
  * 
  *     cdef DTYPE_t symbol
  *     cdef long num_symbols = len(symbols)             # <<<<<<<<<<<<<<
@@ -4529,7 +4527,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   __pyx_t_7 = __Pyx_MemoryView_Len(__pyx_v_symbols); 
   __pyx_v_num_symbols = __pyx_t_7;
 
-  /* "hdestimator/hde_fast_embedding.pyx":111
+  /* "hdestimator/fast_embedding.pyx":111
  *     cdef DTYPE_t symbol
  *     cdef long num_symbols = len(symbols)
  *     cdef long symbols_index = 0             # <<<<<<<<<<<<<<
@@ -4538,7 +4536,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
  */
   __pyx_v_symbols_index = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":115
+  /* "hdestimator/fast_embedding.pyx":115
  *     cdef int symbol_count
  * 
  *     cdef long num_unq_symbols = len(unq_symbols)             # <<<<<<<<<<<<<<
@@ -4548,7 +4546,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   __pyx_t_8 = PyObject_Length(((PyObject *)__pyx_v_unq_symbols)); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(0, 115, __pyx_L1_error)
   __pyx_v_num_unq_symbols = __pyx_t_8;
 
-  /* "hdestimator/hde_fast_embedding.pyx":116
+  /* "hdestimator/fast_embedding.pyx":116
  * 
  *     cdef long num_unq_symbols = len(unq_symbols)
  *     for symbol_num in range(num_unq_symbols):             # <<<<<<<<<<<<<<
@@ -4560,7 +4558,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
     __pyx_v_symbol_num = __pyx_t_11;
 
-    /* "hdestimator/hde_fast_embedding.pyx":117
+    /* "hdestimator/fast_embedding.pyx":117
  *     cdef long num_unq_symbols = len(unq_symbols)
  *     for symbol_num in range(num_unq_symbols):
  *         symbol = unq_symbols[symbol_num]             # <<<<<<<<<<<<<<
@@ -4574,9 +4572,9 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
       __Pyx_RaiseBufferIndexError(__pyx_t_13);
       __PYX_ERR(0, 117, __pyx_L1_error)
     }
-    __pyx_v_symbol = (*__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *, __pyx_pybuffernd_unq_symbols.rcbuffer->pybuffer.buf, __pyx_t_12, __pyx_pybuffernd_unq_symbols.diminfo[0].strides));
+    __pyx_v_symbol = (*__Pyx_BufPtrStrided1d(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *, __pyx_pybuffernd_unq_symbols.rcbuffer->pybuffer.buf, __pyx_t_12, __pyx_pybuffernd_unq_symbols.diminfo[0].strides));
 
-    /* "hdestimator/hde_fast_embedding.pyx":119
+    /* "hdestimator/fast_embedding.pyx":119
  *         symbol = unq_symbols[symbol_num]
  * 
  *         symbol_count = 0             # <<<<<<<<<<<<<<
@@ -4585,7 +4583,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
  */
     __pyx_v_symbol_count = 0;
 
-    /* "hdestimator/hde_fast_embedding.pyx":120
+    /* "hdestimator/fast_embedding.pyx":120
  * 
  *         symbol_count = 0
  *         while(symbols_index < num_symbols and symbols[symbols_index] == symbol):             # <<<<<<<<<<<<<<
@@ -4609,12 +4607,12 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
         __Pyx_RaiseBufferIndexError(__pyx_t_13);
         __PYX_ERR(0, 120, __pyx_L1_error)
       }
-      __pyx_t_15 = (((*((__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *) ( /* dim=0 */ (__pyx_v_symbols.data + __pyx_t_16 * __pyx_v_symbols.strides[0]) ))) == __pyx_v_symbol) != 0);
+      __pyx_t_15 = (((*((__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *) ( /* dim=0 */ (__pyx_v_symbols.data + __pyx_t_16 * __pyx_v_symbols.strides[0]) ))) == __pyx_v_symbol) != 0);
       __pyx_t_14 = __pyx_t_15;
       __pyx_L7_bool_binop_done:;
       if (!__pyx_t_14) break;
 
-      /* "hdestimator/hde_fast_embedding.pyx":121
+      /* "hdestimator/fast_embedding.pyx":121
  *         symbol_count = 0
  *         while(symbols_index < num_symbols and symbols[symbols_index] == symbol):
  *             symbol_count += 1             # <<<<<<<<<<<<<<
@@ -4623,7 +4621,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
  */
       __pyx_v_symbol_count = (__pyx_v_symbol_count + 1);
 
-      /* "hdestimator/hde_fast_embedding.pyx":122
+      /* "hdestimator/fast_embedding.pyx":122
  *         while(symbols_index < num_symbols and symbols[symbols_index] == symbol):
  *             symbol_count += 1
  *             symbols_index += 1             # <<<<<<<<<<<<<<
@@ -4633,7 +4631,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
       __pyx_v_symbols_index = (__pyx_v_symbols_index + 1);
     }
 
-    /* "hdestimator/hde_fast_embedding.pyx":124
+    /* "hdestimator/fast_embedding.pyx":124
  *             symbols_index += 1
  * 
  *         symbol_counts[symbol] = symbol_count             # <<<<<<<<<<<<<<
@@ -4649,7 +4647,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "hdestimator/hde_fast_embedding.pyx":125
+  /* "hdestimator/fast_embedding.pyx":125
  * 
  *         symbol_counts[symbol] = symbol_count
  *     return symbol_counts             # <<<<<<<<<<<<<<
@@ -4661,7 +4659,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   __pyx_r = __pyx_v_symbol_counts;
   goto __pyx_L0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":103
+  /* "hdestimator/fast_embedding.pyx":103
  *     return symbols
  * 
  * def count_symbols(DTYPE_t[:] symbols):             # <<<<<<<<<<<<<<
@@ -4682,7 +4680,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_unq_symbols.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("hdestimator.hde_fast_embedding.count_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("hdestimator.fast_embedding.count_symbols", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4697,7 +4695,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
   return __pyx_r;
 }
 
-/* "hdestimator/hde_fast_embedding.pyx":128
+/* "hdestimator/fast_embedding.pyx":128
  * 
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):             # <<<<<<<<<<<<<<
@@ -4706,9 +4704,9 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_2count_symbols(CYTH
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_11hdestimator_18hde_fast_embedding_5get_symbol_counts(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_11hdestimator_18hde_fast_embedding_5get_symbol_counts = {"get_symbol_counts", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_11hdestimator_18hde_fast_embedding_5get_symbol_counts, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_11hdestimator_18hde_fast_embedding_5get_symbol_counts(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_11hdestimator_14fast_embedding_5get_symbol_counts(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_11hdestimator_14fast_embedding_5get_symbol_counts = {"get_symbol_counts", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_11hdestimator_14fast_embedding_5get_symbol_counts, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_11hdestimator_14fast_embedding_5get_symbol_counts(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_spike_times = 0;
   PyObject *__pyx_v_embedding = 0;
   PyObject *__pyx_v_embedding_step_size = 0;
@@ -4770,18 +4768,18 @@ static PyObject *__pyx_pw_11hdestimator_18hde_fast_embedding_5get_symbol_counts(
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("get_symbol_counts", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 128, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("hdestimator.hde_fast_embedding.get_symbol_counts", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("hdestimator.fast_embedding.get_symbol_counts", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(__pyx_self, __pyx_v_spike_times, __pyx_v_embedding, __pyx_v_embedding_step_size);
+  __pyx_r = __pyx_pf_11hdestimator_14fast_embedding_4get_symbol_counts(__pyx_self, __pyx_v_spike_times, __pyx_v_embedding, __pyx_v_embedding_step_size);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_spike_times, PyObject *__pyx_v_embedding, PyObject *__pyx_v_embedding_step_size) {
+static PyObject *__pyx_pf_11hdestimator_14fast_embedding_4get_symbol_counts(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_spike_times, PyObject *__pyx_v_embedding, PyObject *__pyx_v_embedding_step_size) {
   CYTHON_UNUSED PyObject *__pyx_v_past_range_T = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_number_of_bins_d = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_scaling_k = NULL;
@@ -4802,7 +4800,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
   PyObject *__pyx_t_4 = NULL;
   PyObject *(*__pyx_t_5)(PyObject *);
   __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  struct __pyx_opt_args_11hdestimator_18hde_fast_embedding_get_symbols __pyx_t_7;
+  struct __pyx_opt_args_11hdestimator_14fast_embedding_get_symbols __pyx_t_7;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4818,7 +4816,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
   __pyx_pybuffernd_symbols.data = NULL;
   __pyx_pybuffernd_symbols.rcbuffer = &__pyx_pybuffer_symbols;
 
-  /* "hdestimator/hde_fast_embedding.pyx":129
+  /* "hdestimator/fast_embedding.pyx":129
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):
  *     past_range_T, number_of_bins_d, scaling_k = embedding             # <<<<<<<<<<<<<<
@@ -4883,7 +4881,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
   __pyx_v_scaling_k = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":130
+  /* "hdestimator/fast_embedding.pyx":130
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):
  *     past_range_T, number_of_bins_d, scaling_k = embedding
  *     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)             # <<<<<<<<<<<<<<
@@ -4913,7 +4911,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
   __pyx_v_first_bin_size = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":132
+  /* "hdestimator/fast_embedding.pyx":132
  *     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=2] raw_symbols = get_raw_symbols(spike_times,             # <<<<<<<<<<<<<<
@@ -4922,18 +4920,18 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
  */
   if (!(likely(((__pyx_v_spike_times) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_spike_times, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 132, __pyx_L1_error)
 
-  /* "hdestimator/hde_fast_embedding.pyx":135
+  /* "hdestimator/fast_embedding.pyx":135
  *                                                                    embedding,
  *                                                                    first_bin_size,
  *                                                                    embedding_step_size)             # <<<<<<<<<<<<<<
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=1] symbols = get_symbols(raw_symbols,
  */
-  __pyx_t_3 = ((PyObject *)__pyx_f_11hdestimator_18hde_fast_embedding_get_raw_symbols(((PyArrayObject *)__pyx_v_spike_times), __pyx_v_embedding, __pyx_v_first_bin_size, __pyx_v_embedding_step_size)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_t_3 = ((PyObject *)__pyx_f_11hdestimator_14fast_embedding_get_raw_symbols(((PyArrayObject *)__pyx_v_spike_times), __pyx_v_embedding, __pyx_v_first_bin_size, __pyx_v_embedding_step_size)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_3), &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_3), &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_raw_symbols = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 132, __pyx_L1_error)
     } else {__pyx_pybuffernd_raw_symbols.diminfo[0].strides = __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_raw_symbols.diminfo[0].shape = __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_raw_symbols.diminfo[1].strides = __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_raw_symbols.diminfo[1].shape = __pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer.shape[1];
@@ -4942,24 +4940,24 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
   __pyx_v_raw_symbols = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":137
+  /* "hdestimator/fast_embedding.pyx":137
  *                                                                    embedding_step_size)
  * 
  *     cdef np.ndarray[DTYPE_t, ndim=1] symbols = get_symbols(raw_symbols,             # <<<<<<<<<<<<<<
  *                                                            mode='median')
  * 
  */
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(((PyObject *)__pyx_v_raw_symbols), PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(((PyObject *)__pyx_v_raw_symbols), PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 137, __pyx_L1_error)
   __pyx_t_7.__pyx_n = 1;
   __pyx_t_7.mode = __pyx_n_s_median;
-  __pyx_t_3 = ((PyObject *)__pyx_f_11hdestimator_18hde_fast_embedding_get_symbols(__pyx_t_6, &__pyx_t_7)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_t_3 = ((PyObject *)__pyx_f_11hdestimator_14fast_embedding_get_symbols(__pyx_t_6, &__pyx_t_7)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_symbols.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_3), &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_symbols.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_3), &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_symbols = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_symbols.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 137, __pyx_L1_error)
     } else {__pyx_pybuffernd_symbols.diminfo[0].strides = __pyx_pybuffernd_symbols.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_symbols.diminfo[0].shape = __pyx_pybuffernd_symbols.rcbuffer->pybuffer.shape[0];
@@ -4968,7 +4966,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
   __pyx_v_symbols = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":140
+  /* "hdestimator/fast_embedding.pyx":140
  *                                                            mode='median')
  * 
  *     symbol_counts = count_symbols(symbols)             # <<<<<<<<<<<<<<
@@ -4995,7 +4993,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
   __pyx_v_symbol_counts = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":142
+  /* "hdestimator/fast_embedding.pyx":142
  *     symbol_counts = count_symbols(symbols)
  * 
  *     return symbol_counts             # <<<<<<<<<<<<<<
@@ -5005,7 +5003,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
   __pyx_r = __pyx_v_symbol_counts;
   goto __pyx_L0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":128
+  /* "hdestimator/fast_embedding.pyx":128
  * 
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):             # <<<<<<<<<<<<<<
@@ -5027,7 +5025,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_raw_symbols.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_symbols.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("hdestimator.hde_fast_embedding.get_symbol_counts", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("hdestimator.fast_embedding.get_symbol_counts", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5047,7 +5045,7 @@ static PyObject *__pyx_pf_11hdestimator_18hde_fast_embedding_4get_symbol_counts(
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":731
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":731
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -5066,7 +5064,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew1", 0);
   __Pyx_TraceCall("PyArray_MultiIterNew1", __pyx_f[1], 731, 0, __PYX_ERR(1, 731, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":732
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":732
  * 
  * cdef inline object PyArray_MultiIterNew1(a):
  *     return PyArray_MultiIterNew(1, <void*>a)             # <<<<<<<<<<<<<<
@@ -5080,7 +5078,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":731
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":731
  * ctypedef npy_cdouble     complex_t
  * 
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -5100,7 +5098,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":734
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":734
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -5119,7 +5117,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew2", 0);
   __Pyx_TraceCall("PyArray_MultiIterNew2", __pyx_f[1], 734, 0, __PYX_ERR(1, 734, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":735
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":735
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)             # <<<<<<<<<<<<<<
@@ -5133,7 +5131,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":734
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":734
  *     return PyArray_MultiIterNew(1, <void*>a)
  * 
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -5153,7 +5151,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":737
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":737
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -5172,7 +5170,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew3", 0);
   __Pyx_TraceCall("PyArray_MultiIterNew3", __pyx_f[1], 737, 0, __PYX_ERR(1, 737, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":738
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":738
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)             # <<<<<<<<<<<<<<
@@ -5186,7 +5184,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":737
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":737
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  * 
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -5206,7 +5204,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":740
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":740
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -5225,7 +5223,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew4", 0);
   __Pyx_TraceCall("PyArray_MultiIterNew4", __pyx_f[1], 740, 0, __PYX_ERR(1, 740, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":741
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":741
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)             # <<<<<<<<<<<<<<
@@ -5239,7 +5237,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":740
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":740
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  * 
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -5259,7 +5257,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":743
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":743
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -5278,7 +5276,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew5", 0);
   __Pyx_TraceCall("PyArray_MultiIterNew5", __pyx_f[1], 743, 0, __PYX_ERR(1, 743, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":744
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":744
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)             # <<<<<<<<<<<<<<
@@ -5292,7 +5290,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":743
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":743
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  * 
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -5312,7 +5310,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":746
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":746
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):             # <<<<<<<<<<<<<<
@@ -5331,7 +5329,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   __Pyx_RefNannySetupContext("PyDataType_SHAPE", 0);
   __Pyx_TraceCall("PyDataType_SHAPE", __pyx_f[1], 746, 0, __PYX_ERR(1, 746, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":747
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":747
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):             # <<<<<<<<<<<<<<
@@ -5341,7 +5339,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   __pyx_t_1 = (PyDataType_HASSUBARRAY(__pyx_v_d) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":748
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":748
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):
  *         return <tuple>d.subarray.shape             # <<<<<<<<<<<<<<
@@ -5353,7 +5351,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
     __pyx_r = ((PyObject*)__pyx_v_d->subarray->shape);
     goto __pyx_L0;
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":747
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":747
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):
  *     if PyDataType_HASSUBARRAY(d):             # <<<<<<<<<<<<<<
@@ -5362,7 +5360,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
  */
   }
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":750
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":750
  *         return <tuple>d.subarray.shape
  *     else:
  *         return ()             # <<<<<<<<<<<<<<
@@ -5376,7 +5374,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
     goto __pyx_L0;
   }
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":746
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":746
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  * 
  * cdef inline tuple PyDataType_SHAPE(dtype d):             # <<<<<<<<<<<<<<
@@ -5395,7 +5393,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyDataType_SHAPE(PyArray_Descr *__
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":925
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":925
  *     int _import_umath() except -1
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -5413,7 +5411,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannySetupContext("set_array_base", 0);
   __Pyx_TraceCall("set_array_base", __pyx_f[1], 925, 0, __PYX_ERR(1, 925, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":926
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":926
  * 
  * cdef inline void set_array_base(ndarray arr, object base):
  *     Py_INCREF(base) # important to do this before stealing the reference below!             # <<<<<<<<<<<<<<
@@ -5422,7 +5420,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   Py_INCREF(__pyx_v_base);
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":927
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":927
  * cdef inline void set_array_base(ndarray arr, object base):
  *     Py_INCREF(base) # important to do this before stealing the reference below!
  *     PyArray_SetBaseObject(arr, base)             # <<<<<<<<<<<<<<
@@ -5431,7 +5429,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   __pyx_t_1 = PyArray_SetBaseObject(__pyx_v_arr, __pyx_v_base); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(1, 927, __pyx_L1_error)
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":925
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":925
  *     int _import_umath() except -1
  * 
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -5448,7 +5446,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":929
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":929
  *     PyArray_SetBaseObject(arr, base)
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -5468,7 +5466,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __Pyx_RefNannySetupContext("get_array_base", 0);
   __Pyx_TraceCall("get_array_base", __pyx_f[1], 929, 0, __PYX_ERR(1, 929, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":930
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":930
  * 
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)             # <<<<<<<<<<<<<<
@@ -5477,7 +5475,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
  */
   __pyx_v_base = PyArray_BASE(__pyx_v_arr);
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":931
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":931
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)
  *     if base is NULL:             # <<<<<<<<<<<<<<
@@ -5487,7 +5485,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_t_1 = ((__pyx_v_base == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":932
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":932
  *     base = PyArray_BASE(arr)
  *     if base is NULL:
  *         return None             # <<<<<<<<<<<<<<
@@ -5498,7 +5496,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":931
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":931
  * cdef inline object get_array_base(ndarray arr):
  *     base = PyArray_BASE(arr)
  *     if base is NULL:             # <<<<<<<<<<<<<<
@@ -5507,7 +5505,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
  */
   }
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":933
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":933
  *     if base is NULL:
  *         return None
  *     return <object>base             # <<<<<<<<<<<<<<
@@ -5519,7 +5517,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_r = ((PyObject *)__pyx_v_base);
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":929
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":929
  *     PyArray_SetBaseObject(arr, base)
  * 
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -5538,7 +5536,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":937
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":937
  * # Versions of the import_* functions which are more suitable for
  * # Cython code.
  * cdef inline int import_array() except -1:             # <<<<<<<<<<<<<<
@@ -5564,7 +5562,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
   __Pyx_RefNannySetupContext("import_array", 0);
   __Pyx_TraceCall("import_array", __pyx_f[1], 937, 0, __PYX_ERR(1, 937, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":938
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":938
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -5580,7 +5578,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":939
+      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":939
  * cdef inline int import_array() except -1:
  *     try:
  *         __pyx_import_array()             # <<<<<<<<<<<<<<
@@ -5589,7 +5587,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  */
       __pyx_t_4 = _import_array(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 939, __pyx_L3_error)
 
-      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":938
+      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":938
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -5603,7 +5601,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":940
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":940
  *     try:
  *         __pyx_import_array()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -5618,7 +5616,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":941
+      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":941
  *         __pyx_import_array()
  *     except Exception:
  *         raise ImportError("numpy.core.multiarray failed to import")             # <<<<<<<<<<<<<<
@@ -5634,7 +5632,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":938
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":938
  * # Cython code.
  * cdef inline int import_array() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -5649,7 +5647,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":937
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":937
  * # Versions of the import_* functions which are more suitable for
  * # Cython code.
  * cdef inline int import_array() except -1:             # <<<<<<<<<<<<<<
@@ -5673,7 +5671,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":943
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":943
  *         raise ImportError("numpy.core.multiarray failed to import")
  * 
  * cdef inline int import_umath() except -1:             # <<<<<<<<<<<<<<
@@ -5699,7 +5697,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
   __Pyx_RefNannySetupContext("import_umath", 0);
   __Pyx_TraceCall("import_umath", __pyx_f[1], 943, 0, __PYX_ERR(1, 943, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":944
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":944
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -5715,7 +5713,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":945
+      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":945
  * cdef inline int import_umath() except -1:
  *     try:
  *         _import_umath()             # <<<<<<<<<<<<<<
@@ -5724,7 +5722,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  */
       __pyx_t_4 = _import_umath(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 945, __pyx_L3_error)
 
-      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":944
+      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":944
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -5738,7 +5736,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":946
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":946
  *     try:
  *         _import_umath()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -5753,7 +5751,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":947
+      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":947
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -5769,7 +5767,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":944
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":944
  * 
  * cdef inline int import_umath() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -5784,7 +5782,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":943
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":943
  *         raise ImportError("numpy.core.multiarray failed to import")
  * 
  * cdef inline int import_umath() except -1:             # <<<<<<<<<<<<<<
@@ -5808,7 +5806,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":949
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":949
  *         raise ImportError("numpy.core.umath failed to import")
  * 
  * cdef inline int import_ufunc() except -1:             # <<<<<<<<<<<<<<
@@ -5834,7 +5832,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
   __Pyx_RefNannySetupContext("import_ufunc", 0);
   __Pyx_TraceCall("import_ufunc", __pyx_f[1], 949, 0, __PYX_ERR(1, 949, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":950
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":950
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -5850,7 +5848,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     __Pyx_XGOTREF(__pyx_t_3);
     /*try:*/ {
 
-      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":951
+      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":951
  * cdef inline int import_ufunc() except -1:
  *     try:
  *         _import_umath()             # <<<<<<<<<<<<<<
@@ -5859,7 +5857,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  */
       __pyx_t_4 = _import_umath(); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(1, 951, __pyx_L3_error)
 
-      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":950
+      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":950
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -5873,7 +5871,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":952
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":952
  *     try:
  *         _import_umath()
  *     except Exception:             # <<<<<<<<<<<<<<
@@ -5888,7 +5886,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_GOTREF(__pyx_t_7);
 
-      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":953
+      /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":953
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -5904,7 +5902,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":950
+    /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":950
  * 
  * cdef inline int import_ufunc() except -1:
  *     try:             # <<<<<<<<<<<<<<
@@ -5919,7 +5917,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
     __pyx_L8_try_end:;
   }
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":949
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":949
  *         raise ImportError("numpy.core.umath failed to import")
  * 
  * cdef inline int import_ufunc() except -1:             # <<<<<<<<<<<<<<
@@ -5943,7 +5941,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":963
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":963
  * 
  * 
  * cdef inline bint is_timedelta64_object(object obj):             # <<<<<<<<<<<<<<
@@ -5961,7 +5959,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_timedelta64_object(PyObject *__pyx_v_
   __Pyx_RefNannySetupContext("is_timedelta64_object", 0);
   __Pyx_TraceCall("is_timedelta64_object", __pyx_f[1], 963, 0, __PYX_ERR(1, 963, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":975
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":975
  *     bool
  *     """
  *     return PyObject_TypeCheck(obj, &PyTimedeltaArrType_Type)             # <<<<<<<<<<<<<<
@@ -5971,7 +5969,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_timedelta64_object(PyObject *__pyx_v_
   __pyx_r = PyObject_TypeCheck(__pyx_v_obj, (&PyTimedeltaArrType_Type));
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":963
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":963
  * 
  * 
  * cdef inline bint is_timedelta64_object(object obj):             # <<<<<<<<<<<<<<
@@ -5989,7 +5987,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_timedelta64_object(PyObject *__pyx_v_
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":978
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":978
  * 
  * 
  * cdef inline bint is_datetime64_object(object obj):             # <<<<<<<<<<<<<<
@@ -6007,7 +6005,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_datetime64_object(PyObject *__pyx_v_o
   __Pyx_RefNannySetupContext("is_datetime64_object", 0);
   __Pyx_TraceCall("is_datetime64_object", __pyx_f[1], 978, 0, __PYX_ERR(1, 978, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":990
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":990
  *     bool
  *     """
  *     return PyObject_TypeCheck(obj, &PyDatetimeArrType_Type)             # <<<<<<<<<<<<<<
@@ -6017,7 +6015,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_datetime64_object(PyObject *__pyx_v_o
   __pyx_r = PyObject_TypeCheck(__pyx_v_obj, (&PyDatetimeArrType_Type));
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":978
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":978
  * 
  * 
  * cdef inline bint is_datetime64_object(object obj):             # <<<<<<<<<<<<<<
@@ -6035,7 +6033,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_is_datetime64_object(PyObject *__pyx_v_o
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":993
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":993
  * 
  * 
  * cdef inline npy_datetime get_datetime64_value(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -6051,7 +6049,7 @@ static CYTHON_INLINE npy_datetime __pyx_f_5numpy_get_datetime64_value(PyObject *
   int __pyx_clineno = 0;
   __Pyx_TraceCall("get_datetime64_value", __pyx_f[1], 993, 1, __PYX_ERR(1, 993, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1000
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1000
  *     also needed.  That can be found using `get_datetime64_unit`.
  *     """
  *     return (<PyDatetimeScalarObject*>obj).obval             # <<<<<<<<<<<<<<
@@ -6061,7 +6059,7 @@ static CYTHON_INLINE npy_datetime __pyx_f_5numpy_get_datetime64_value(PyObject *
   __pyx_r = ((PyDatetimeScalarObject *)__pyx_v_obj)->obval;
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":993
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":993
  * 
  * 
  * cdef inline npy_datetime get_datetime64_value(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -6078,7 +6076,7 @@ static CYTHON_INLINE npy_datetime __pyx_f_5numpy_get_datetime64_value(PyObject *
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1003
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1003
  * 
  * 
  * cdef inline npy_timedelta get_timedelta64_value(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -6094,7 +6092,7 @@ static CYTHON_INLINE npy_timedelta __pyx_f_5numpy_get_timedelta64_value(PyObject
   int __pyx_clineno = 0;
   __Pyx_TraceCall("get_timedelta64_value", __pyx_f[1], 1003, 1, __PYX_ERR(1, 1003, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1007
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1007
  *     returns the int64 value underlying scalar numpy timedelta64 object
  *     """
  *     return (<PyTimedeltaScalarObject*>obj).obval             # <<<<<<<<<<<<<<
@@ -6104,7 +6102,7 @@ static CYTHON_INLINE npy_timedelta __pyx_f_5numpy_get_timedelta64_value(PyObject
   __pyx_r = ((PyTimedeltaScalarObject *)__pyx_v_obj)->obval;
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1003
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1003
  * 
  * 
  * cdef inline npy_timedelta get_timedelta64_value(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -6121,7 +6119,7 @@ static CYTHON_INLINE npy_timedelta __pyx_f_5numpy_get_timedelta64_value(PyObject
   return __pyx_r;
 }
 
-/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1010
+/* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1010
  * 
  * 
  * cdef inline NPY_DATETIMEUNIT get_datetime64_unit(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -6137,7 +6135,7 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
   int __pyx_clineno = 0;
   __Pyx_TraceCall("get_datetime64_unit", __pyx_f[1], 1010, 1, __PYX_ERR(1, 1010, __pyx_L1_error));
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1014
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1014
  *     returns the unit part of the dtype for a numpy datetime64 object.
  *     """
  *     return <NPY_DATETIMEUNIT>(<PyDatetimeScalarObject*>obj).obmeta.base             # <<<<<<<<<<<<<<
@@ -6145,7 +6143,7 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
   __pyx_r = ((NPY_DATETIMEUNIT)((PyDatetimeScalarObject *)__pyx_v_obj)->obmeta.base);
   goto __pyx_L0;
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1010
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":1010
  * 
  * 
  * cdef inline NPY_DATETIMEUNIT get_datetime64_unit(object obj) nogil:             # <<<<<<<<<<<<<<
@@ -19729,7 +19727,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "hdestimator.hde_fast_embedding.array", /*tp_name*/
+  "hdestimator.fast_embedding.array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -19851,7 +19849,7 @@ static PyMethodDef __pyx_methods_Enum[] = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "hdestimator.hde_fast_embedding.Enum", /*tp_name*/
+  "hdestimator.fast_embedding.Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -20115,7 +20113,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "hdestimator.hde_fast_embedding.memoryview", /*tp_name*/
+  "hdestimator.fast_embedding.memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -20256,7 +20254,7 @@ static struct PyGetSetDef __pyx_getsets__memoryviewslice[] = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "hdestimator.hde_fast_embedding._memoryviewslice", /*tp_name*/
+  "hdestimator.fast_embedding._memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -20341,17 +20339,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_hde_fast_embedding(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_fast_embedding(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_hde_fast_embedding},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_fast_embedding},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "hde_fast_embedding",
+    "fast_embedding",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -20437,9 +20435,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_get_window_delimiters, __pyx_k_get_window_delimiters, sizeof(__pyx_k_get_window_delimiters), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
-  {&__pyx_n_s_hde_embedding, __pyx_k_hde_embedding, sizeof(__pyx_k_hde_embedding), 0, 0, 1, 1},
-  {&__pyx_n_s_hdestimator_hde_fast_embedding, __pyx_k_hdestimator_hde_fast_embedding, sizeof(__pyx_k_hdestimator_hde_fast_embedding), 0, 0, 1, 1},
-  {&__pyx_kp_s_hdestimator_hde_fast_embedding_p, __pyx_k_hdestimator_hde_fast_embedding_p, sizeof(__pyx_k_hdestimator_hde_fast_embedding_p), 0, 0, 1, 0},
+  {&__pyx_n_s_hdestimator_fast_embedding, __pyx_k_hdestimator_fast_embedding, sizeof(__pyx_k_hdestimator_fast_embedding), 0, 0, 1, 1},
+  {&__pyx_kp_s_hdestimator_fast_embedding_pyx, __pyx_k_hdestimator_fast_embedding_pyx, sizeof(__pyx_k_hdestimator_fast_embedding_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_itemsize, __pyx_k_itemsize, sizeof(__pyx_k_itemsize), 0, 0, 1, 1},
@@ -20531,7 +20528,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":941
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":941
  *         __pyx_import_array()
  *     except Exception:
  *         raise ImportError("numpy.core.multiarray failed to import")             # <<<<<<<<<<<<<<
@@ -20542,7 +20539,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-qfhkqky3/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":947
+  /* "../../../../../../../private/var/folders/8l/9ml_32hn0c33m82fb5hp8tg80000gp/T/pip-build-env-sast2j7j/overlay/lib/python3.11/site-packages/numpy/__init__.pxd":947
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
@@ -20748,7 +20745,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__25);
   __Pyx_GIVEREF(__pyx_tuple__25);
 
-  /* "hdestimator/hde_fast_embedding.pyx":12
+  /* "hdestimator/fast_embedding.pyx":12
  * ctypedef np.uint64_t DTYPE_t
  * 
  * def get_median_number_of_spikes_per_bin(raw_symbols):             # <<<<<<<<<<<<<<
@@ -20758,9 +20755,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__26 = PyTuple_Pack(1, __pyx_n_s_raw_symbols); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hdestimator_hde_fast_embedding_p, __pyx_n_s_get_median_number_of_spikes_per, 12, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hdestimator_fast_embedding_pyx, __pyx_n_s_get_median_number_of_spikes_per, 12, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 12, __pyx_L1_error)
 
-  /* "hdestimator/hde_fast_embedding.pyx":103
+  /* "hdestimator/fast_embedding.pyx":103
  *     return symbols
  * 
  * def count_symbols(DTYPE_t[:] symbols):             # <<<<<<<<<<<<<<
@@ -20770,9 +20767,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__27 = PyTuple_Pack(10, __pyx_n_s_symbols, __pyx_n_s_symbols, __pyx_n_s_unq_symbols, __pyx_n_s_symbol_counts, __pyx_n_s_symbol, __pyx_n_s_num_symbols, __pyx_n_s_symbols_index, __pyx_n_s_symbol_num, __pyx_n_s_symbol_count, __pyx_n_s_num_unq_symbols); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hdestimator_hde_fast_embedding_p, __pyx_n_s_count_symbols, 103, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hdestimator_fast_embedding_pyx, __pyx_n_s_count_symbols, 103, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 103, __pyx_L1_error)
 
-  /* "hdestimator/hde_fast_embedding.pyx":128
+  /* "hdestimator/fast_embedding.pyx":128
  * 
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):             # <<<<<<<<<<<<<<
@@ -20782,7 +20779,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__28 = PyTuple_Pack(10, __pyx_n_s_spike_times, __pyx_n_s_embedding, __pyx_n_s_embedding_step_size, __pyx_n_s_past_range_T, __pyx_n_s_number_of_bins_d, __pyx_n_s_scaling_k, __pyx_n_s_first_bin_size, __pyx_n_s_raw_symbols, __pyx_n_s_symbols, __pyx_n_s_symbol_counts); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
-  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(3, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hdestimator_hde_fast_embedding_p, __pyx_n_s_get_symbol_counts, 128, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(3, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hdestimator_fast_embedding_pyx, __pyx_n_s_get_symbol_counts, 128, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 128, __pyx_L1_error)
 
   /* "View.MemoryView":287
  *         return self.name
@@ -21049,11 +21046,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC inithde_fast_embedding(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC inithde_fast_embedding(void)
+__Pyx_PyMODINIT_FUNC initfast_embedding(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC initfast_embedding(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_hde_fast_embedding(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_hde_fast_embedding(void)
+__Pyx_PyMODINIT_FUNC PyInit_fast_embedding(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_fast_embedding(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -21120,7 +21117,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_hde_fast_embedding(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_fast_embedding(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -21135,7 +21132,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_hde_fast_embedding(PyObject *__pyx
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'hde_fast_embedding' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'fast_embedding' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -21150,7 +21147,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_hde_fast_embedding(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_fast_embedding(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -21187,7 +21184,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("hde_fast_embedding", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("fast_embedding", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -21205,14 +21202,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_hdestimator__hde_fast_embedding) {
+  if (__pyx_module_is_main_hdestimator__fast_embedding) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name_2, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "hdestimator.hde_fast_embedding")) {
-      if (unlikely(PyDict_SetItemString(modules, "hdestimator.hde_fast_embedding", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "hdestimator.fast_embedding")) {
+      if (unlikely(PyDict_SetItemString(modules, "hdestimator.fast_embedding", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -21232,13 +21229,13 @@ if (!__Pyx_RefNanny) {
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  __Pyx_TraceCall("__Pyx_PyMODINIT_FUNC PyInit_hde_fast_embedding(void)", __pyx_f[0], 1, 0, __PYX_ERR(0, 1, __pyx_L1_error));
+  __Pyx_TraceCall("__Pyx_PyMODINIT_FUNC PyInit_fast_embedding(void)", __pyx_f[0], 1, 0, __PYX_ERR(0, 1, __pyx_L1_error));
 
-  /* "hdestimator/hde_fast_embedding.pyx":3
+  /* "hdestimator/fast_embedding.pyx":3
  * # cython: profile=True
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
- * import hde_embedding as emb
+ * import embedding as emb
  * from sys import stderr, exit
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
@@ -21246,21 +21243,21 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":4
+  /* "hdestimator/fast_embedding.pyx":4
  * 
  * import numpy as np
- * import hde_embedding as emb             # <<<<<<<<<<<<<<
+ * import embedding as emb             # <<<<<<<<<<<<<<
  * from sys import stderr, exit
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_hde_embedding, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_embedding, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_emb, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":5
+  /* "hdestimator/fast_embedding.pyx":5
  * import numpy as np
- * import hde_embedding as emb
+ * import embedding as emb
  * from sys import stderr, exit             # <<<<<<<<<<<<<<
  * 
  * cimport cython
@@ -21286,7 +21283,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":9
+  /* "hdestimator/fast_embedding.pyx":9
  * cimport cython
  * cimport numpy as np
  * DTYPE = np.uint64             # <<<<<<<<<<<<<<
@@ -21301,43 +21298,43 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":12
+  /* "hdestimator/fast_embedding.pyx":12
  * ctypedef np.uint64_t DTYPE_t
  * 
  * def get_median_number_of_spikes_per_bin(raw_symbols):             # <<<<<<<<<<<<<<
  *     return np.median(raw_symbols, axis=0)
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11hdestimator_18hde_fast_embedding_1get_median_number_of_spikes_per_bin, NULL, __pyx_n_s_hdestimator_hde_fast_embedding); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11hdestimator_14fast_embedding_1get_median_number_of_spikes_per_bin, NULL, __pyx_n_s_hdestimator_fast_embedding); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_median_number_of_spikes_per, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":103
+  /* "hdestimator/fast_embedding.pyx":103
  *     return symbols
  * 
  * def count_symbols(DTYPE_t[:] symbols):             # <<<<<<<<<<<<<<
  *     symbols = np.sort(symbols)
  *     cdef np.ndarray[DTYPE_t, ndim=1] unq_symbols = np.unique(symbols)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11hdestimator_18hde_fast_embedding_3count_symbols, NULL, __pyx_n_s_hdestimator_hde_fast_embedding); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11hdestimator_14fast_embedding_3count_symbols, NULL, __pyx_n_s_hdestimator_fast_embedding); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_count_symbols, __pyx_t_1) < 0) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":128
+  /* "hdestimator/fast_embedding.pyx":128
  * 
  * 
  * def get_symbol_counts(spike_times, embedding, embedding_step_size):             # <<<<<<<<<<<<<<
  *     past_range_T, number_of_bins_d, scaling_k = embedding
  *     first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11hdestimator_18hde_fast_embedding_5get_symbol_counts, NULL, __pyx_n_s_hdestimator_hde_fast_embedding); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11hdestimator_14fast_embedding_5get_symbol_counts, NULL, __pyx_n_s_hdestimator_fast_embedding); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_symbol_counts, __pyx_t_1) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "hdestimator/hde_fast_embedding.pyx":1
+  /* "hdestimator/fast_embedding.pyx":1
  * # cython: profile=True             # <<<<<<<<<<<<<<
  * 
  * import numpy as np
@@ -21509,11 +21506,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init hdestimator.hde_fast_embedding", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init hdestimator.fast_embedding", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init hdestimator.hde_fast_embedding");
+    PyErr_SetString(PyExc_ImportError, "init hdestimator.fast_embedding");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -24816,7 +24813,7 @@ no_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
     int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
@@ -24827,7 +24824,7 @@ no_fail:
     }
     retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
                                                  PyBUF_RECORDS_RO | writable_flag, 1,
-                                                 &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, stack,
+                                                 &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
         goto __pyx_fail;
@@ -24861,7 +24858,7 @@ __pyx_fail:
     }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
     int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
@@ -24872,7 +24869,7 @@ __pyx_fail:
     }
     retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
                                                  PyBUF_RECORDS_RO | writable_flag, 2,
-                                                 &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t, stack,
+                                                 &__Pyx_TypeInfo_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
         goto __pyx_fail;
@@ -24884,14 +24881,14 @@ __pyx_fail:
 }
 
 /* MemviewDtypeToObject */
-  static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(const char *itemp) {
-    return (PyObject *) __Pyx_PyInt_From_npy_uint64(*(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *) itemp);
+  static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(const char *itemp) {
+    return (PyObject *) __Pyx_PyInt_From_npy_uint64(*(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *) itemp);
 }
-static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t(const char *itemp, PyObject *obj) {
-    __pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t value = __Pyx_PyInt_As_npy_uint64(obj);
+static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_11hdestimator_14fast_embedding_DTYPE_t(const char *itemp, PyObject *obj) {
+    __pyx_t_11hdestimator_14fast_embedding_DTYPE_t value = __Pyx_PyInt_As_npy_uint64(obj);
     if ((value == ((npy_uint64)-1)) && PyErr_Occurred())
         return 0;
-    *(__pyx_t_11hdestimator_18hde_fast_embedding_DTYPE_t *) itemp = value;
+    *(__pyx_t_11hdestimator_14fast_embedding_DTYPE_t *) itemp = value;
     return 1;
 }
 

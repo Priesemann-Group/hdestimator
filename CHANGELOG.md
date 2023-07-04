@@ -1,6 +1,8 @@
 
 ### 23-07-04
-- had to rename `src` folder to `hdestimator` to get sane python import statements.
+- refactoring:
+    - had to rename `src` folder to `hdestimator` to get sane python import statements.
+    - removed the `hde_` prefix from filenames in above folder.
 
 ### 23-07-04
 - working on usage as a python module (in addition to the command line)

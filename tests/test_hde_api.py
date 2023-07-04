@@ -1,6 +1,6 @@
 from estimate import parse_arguments
-from .. hdestimator import hde_utils as utl
-from .. hdestimator import hde_api as hapi
+from ..hdestimator import utils as utl
+from ..hdestimator import api as hapi
 
 from sys import path
 from os.path import realpath, dirname

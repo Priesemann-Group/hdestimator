@@ -2,7 +2,7 @@ from sys import exit, stderr
 import numpy as np
 import mpmath as mp
 from scipy.optimize import newton, minimize
-from . import hde_utils as utl
+from . import utils as utl
 
 
 def d_xi(beta, K):

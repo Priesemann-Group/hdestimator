@@ -33,8 +33,7 @@ setup(
     author='',
     author_email='',
     description='The history dependence estimator tool',
-    ext_modules=cythonize(["hdestimator/hde_fast_embedding.pyx"],
-                          # "hde_fast_utils.pyx"],
+    ext_modules=cythonize(["hdestimator/fast_embedding.pyx"],
                           annotate=False),
     include_dirs=[numpy.get_include()]
 )

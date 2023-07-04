@@ -1,7 +1,7 @@
 # cython: profile=True
 
 import numpy as np
-import hde_embedding as emb
+import embedding as emb
 from sys import stderr, exit
 
 cimport cython
@@ -41,13 +41,13 @@ cdef np.ndarray[DTYPE_t, ndim=2] get_raw_symbols(np.ndarray[np.double_t, ndim= 1
 
     cdef long symbol_num = 0
     cdef double time = 0
-    
+
     cdef long spike_index_lo = 0
     cdef long spike_index_hi, spike_index
-    
+
     cdef int embedding_bin_index
     cdef np.ndarray[DTYPE_t, ndim=1] spikes_in_window = np.zeros(number_of_bins_d+1, dtype=DTYPE)
-    
+
     for symbol_num in range(num_symbols):
         while(spike_index_lo < num_spike_times and spike_times[spike_index_lo] < time):
             spike_index_lo += 1
@@ -58,8 +58,8 @@ cdef np.ndarray[DTYPE_t, ndim=2] get_raw_symbols(np.ndarray[np.double_t, ndim= 1
 
         for embedding_bin_index in range(number_of_bins_d + 1):
             spikes_in_window[embedding_bin_index] = 0
-            
-        embedding_bin_index = 0        
+
+        embedding_bin_index = 0
         for spike_index in range(spike_index_lo, spike_index_hi):
             while(spike_times[spike_index] > time + window_delimiters[embedding_bin_index]):
                 embedding_bin_index += 1
@@ -69,7 +69,7 @@ cdef np.ndarray[DTYPE_t, ndim=2] get_raw_symbols(np.ndarray[np.double_t, ndim= 1
             raw_symbols_view[symbol_num][embedding_bin_index] = spikes_in_window[embedding_bin_index]
 
         time += embedding_step_size
-        
+
     return raw_symbols
 
 @cython.boundscheck(False)  # Deactivate bounds checking
@@ -89,7 +89,7 @@ cdef np.ndarray[DTYPE_t, ndim=1] get_symbols(DTYPE_t[:,:] raw_symbols,
     cdef np.ndarray[DTYPE_t, ndim=1] symbols = np.zeros(num_symbols, dtype=DTYPE)
     cdef int symbol, i
     cdef int symbol_num = 0
-    
+
     for symbol_num in range(num_symbols):
         symbol = 0
         for i in range(symbol_length):
@@ -111,16 +111,16 @@ def count_symbols(DTYPE_t[:] symbols):
     cdef long symbols_index = 0
     cdef DTYPE_t symbol_num
     cdef int symbol_count
-    
+
     cdef long num_unq_symbols = len(unq_symbols)
     for symbol_num in range(num_unq_symbols):
         symbol = unq_symbols[symbol_num]
-        
+
         symbol_count = 0
         while(symbols_index < num_symbols and symbols[symbols_index] == symbol):
             symbol_count += 1
             symbols_index += 1
-        
+
         symbol_counts[symbol] = symbol_count
     return symbol_counts
 

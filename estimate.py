@@ -8,8 +8,8 @@ import numpy as np
 ESTIMATOR_DIR = dirname(realpath(__file__))
 path.insert(1, '{}'.format(ESTIMATOR_DIR))
 
-from hdestimator import hde_utils as utl
-from hdestimator import hde_visualization as vsl
+from hdestimator import utils as utl
+from hdestimator import visualization as vsl
 
 __version__ = "unknown"
 from hdestimator._version import __version__

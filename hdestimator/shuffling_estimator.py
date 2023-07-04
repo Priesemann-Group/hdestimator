@@ -1,7 +1,7 @@
 import numpy as np
 from collections import Counter
-from . import hde_utils as utl
-from . import hde_embedding as emb
+from . import utils as utl
+from . import embedding as emb
 
 def get_P_X_uncond(number_of_symbols):
     """
