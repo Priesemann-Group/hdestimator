@@ -94,7 +94,7 @@ cdef np.ndarray[DTYPE_t, ndim=1] get_symbols(DTYPE_t[:,:] raw_symbols,
         symbol = 0
         for i in range(symbol_length):
             if raw_symbols[symbol_num][i] > median_number_of_spikes_per_bin[i]:
-                symbol += 2 ** (symbol_length - i - 1)
+                symbol += int(2 ** (symbol_length - i - 1))
 
         symbols[symbol_num] = symbol
 
