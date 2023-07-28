@@ -1,10 +1,11 @@
-from estimate import parse_arguments
-from ..hdestimator import utils as utl
-from ..hdestimator import api as hapi
-
 from sys import path
 from os.path import realpath, dirname
 path.insert(1, dirname(realpath(__file__)))
+
+from estimate import parse_arguments
+from hdestimator import utils as utl
+from hdestimator import api as hapi
+
 import expected_output as exp
 
 import numpy as np
@@ -99,7 +100,9 @@ class TestGetHistoryDependenceForEmbeddingSet():
             assert T in exp.max_Rs_bbc
             assert np.isclose(max_Rs[T], exp.max_Rs_bbc[T])
         assert np.isclose(max_R, exp.R_tot_bbc)
-        assert (max_R_T, number_of_bins_d, scaling_k) == exp.embedding
+        assert np.all(
+            np.isclose((max_R_T, number_of_bins_d, scaling_k), exp.embedding, atol=1e-8)
+        )
 
     def test_shuffling(self):
         embeddings_that_maximise_R, max_Rs \
@@ -120,7 +123,10 @@ class TestGetHistoryDependenceForEmbeddingSet():
             assert T in exp.max_Rs_shuffling
             assert np.isclose(max_Rs[T], exp.max_Rs_shuffling[T], atol=1e-3)
         assert np.isclose(max_R, exp.R_tot_shuffling, atol=1e-3)
-        assert (max_R_T, number_of_bins_d, scaling_k) == exp.embedding
+        assert np.all(
+            np.isclose((max_R_T, number_of_bins_d, scaling_k), exp.embedding, atol=1e-8)
+        )
+
 
 
 class TestGetCIForEmbedding():

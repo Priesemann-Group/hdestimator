@@ -5,6 +5,7 @@ log = logging.getLogger("hdestimator")
 
 from . import utils as utl
 from . import embedding as emb
+# from . import embedding_numba as emb_nb
 from . import bbc_estimator as bbc
 from . import shuffling_estimator as sh
 
@@ -210,7 +211,7 @@ def wrapper(
     res["AIS_tot"] = R_tot * H_spiking
     res["opt_scaling_k"] = scaling_k
     res["opt_number_of_bins_d"] = number_of_bins_d
-    res["opt_first_bin_size"] = emb.get_fist_bin_size_for_embedding(R_tot_embedding)
+    res["opt_first_bin_size"] = emb.get_first_bin_size_for_embedding(R_tot_embedding)
     # some useful additions by paul
     res["max_Rs"] = np.array(Rs)
     res["max_R_Ts"] = np.array(Ts)
@@ -243,6 +244,7 @@ def get_history_dependence(estimation_method,
     if past_symbol_counts == None:
         past_symbol_counts = utl.get_past_symbol_counts(symbol_counts)
 
+
     alphabet_size_past = 2 ** int(number_of_bins_d) # K for past activity
     alphabet_size = alphabet_size_past * 2          # K
 
@@ -264,7 +266,8 @@ def get_history_dependence(estimation_method,
 
 
 ## below are functions for estimates on spike trains
-
+debug_var1 = None
+debug_var2 = None
 def get_history_dependence_for_single_embedding(spike_times,
                                                 recording_length,
                                                 estimation_method,
@@ -286,6 +289,9 @@ def get_history_dependence_for_single_embedding(spike_times,
     except TypeError:
         spikes_are_flat = True
 
+    log.debug(f"Getting symbol counts... {spikes_are_flat=}")
+    log.debug(spike_times[0])
+
     if spikes_are_flat:
         symbol_counts = emb.get_symbol_counts(spike_times, embedding, embedding_step_size)
     else:
@@ -295,6 +301,9 @@ def get_history_dependence_for_single_embedding(spike_times,
                 for spt in spike_times
             ]
         )
+
+    global debug_var1
+    global debug_var2
 
     if estimation_method == 'bbc':
         history_dependence, bbc_term = get_history_dependence(estimation_method,
@@ -310,10 +319,18 @@ def get_history_dependence_for_single_embedding(spike_times,
             return None
 
     elif estimation_method == 'shuffling':
-        history_dependence = get_history_dependence(estimation_method,
+        try:
+            history_dependence = get_history_dependence(estimation_method,
                                                     symbol_counts,
                                                     number_of_bins_d,
                                                     **kwargs)
+        except:
+            log.info(f"Symbol counts: {symbol_counts}")
+            debug_var2 = estimation_method, symbol_counts, number_of_bins_d, kwargs
+            raise
+
+    debug_var1 = estimation_method, symbol_counts, number_of_bins_d, kwargs
+
 
     return history_dependence
 
@@ -340,6 +357,7 @@ def get_history_dependence_for_embedding_set(spike_times,
 
     max_Rs = {}
     embeddings_that_maximise_R = {}
+
 
     for embedding in emb.get_embeddings(embedding_past_range_set,
                                         embedding_number_of_bins_set,

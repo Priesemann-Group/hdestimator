@@ -1,8 +1,9 @@
 # Byte-compiled / optimized python files
-src/__pycache__/
+__pycache__
 src/build/
 *.py[cod]
 *.so
+*.egg-info/
 
 # Annotations (python profiling)
 src/*.html

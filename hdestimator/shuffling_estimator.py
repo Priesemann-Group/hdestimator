@@ -3,6 +3,10 @@ from collections import Counter
 from . import utils as utl
 from . import embedding as emb
 
+import logging
+log = logging.getLogger("hdestimator")
+
+
 def get_P_X_uncond(number_of_symbols):
     """
     Compute P(X), the probability of the current activity using

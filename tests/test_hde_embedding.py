@@ -1,10 +1,12 @@
-from estimate import parse_arguments
-from ..hdestimator import utils as utl
-from ..hdestimator import embedding as emb
-
 from sys import path
 from os.path import realpath, dirname
 path.insert(1, dirname(realpath(__file__)))
+
+from estimate import parse_arguments
+from hdestimator import utils as utl
+from hdestimator import embedding as emb
+
+
 import expected_output as exp
 
 from pathlib import Path
@@ -61,7 +63,8 @@ def test_get_embeddings():
                                     estimator_env.settings["embedding_number_of_bins_set"],
                                     estimator_env.settings["embedding_scaling_exponent_set"])
     assert len(embeddings) == exp.num_embeddings
-    assert exp.embedding in embeddings
+    assert np.any([np.all(np.isclose(exp.embedding, e)) for e in embeddings])
+
 
 
 class TestGetSymbolCounts():

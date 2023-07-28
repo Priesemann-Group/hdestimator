@@ -1,9 +1,10 @@
-from estimate import parse_arguments
-from ..hdestimator import utils as utl
-
 from sys import path
 from os.path import realpath, dirname
 path.insert(1, dirname(realpath(__file__)))
+
+from estimate import parse_arguments
+from hdestimator import utils as utl
+
 import expected_output as exp
 
 from pathlib import Path

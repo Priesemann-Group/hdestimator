@@ -13,6 +13,7 @@ from sys import stderr
 import hashlib
 from collections import Counter
 from . import api as hapi # ps: this is a circular import. we should avoid this. the only func we use is get_history_dependence
+
 from . import embedding as emb
 
 #
@@ -47,7 +48,7 @@ def save_history_dependence_for_embeddings(f, spike_times, estimation_method,
     for embedding in embeddings:
         past_range_T = embedding[0]
         number_of_bins_d = embedding[1]
-        first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
+        first_bin_size = emb.get_first_bin_size_for_embedding(embedding)
 
         symbol_counts = load_from_analysis_file(f,
                                                 "symbol_counts",
@@ -790,7 +791,7 @@ def get_symbols_array(spike_times, embedding, embedding_step_size):
     """
 
     past_range_T, number_of_bins_d, scaling_k = embedding
-    first_bin_size = emb.get_fist_bin_size_for_embedding(embedding)
+    first_bin_size = emb.get_first_bin_size_for_embedding(embedding)
 
     raw_symbols = emb.get_raw_symbols(spike_times,
                                       embedding,
@@ -804,11 +805,9 @@ def get_symbols_array(spike_times, embedding, embedding_step_size):
     symbols_array = np.zeros(len(raw_symbols))
 
     for symbol_index, raw_symbol in enumerate(raw_symbols):
-        symbol_array = [int(raw_symbol[i] > median_number_of_spikes_per_bin[i])
-                        for i in range(number_of_bins_d + 1)]
-
-        symbol = emb.symbol_array_to_binary(symbol_array, number_of_bins_d + 1)
-
+        # both are arrays, the comparison is element-wise, giving a bool array
+        symbol_array = raw_symbol > median_number_of_spikes_per_bin
+        symbol = emb.symbol_array_to_binary(symbol_array)
         symbols_array[symbol_index] = symbol
 
     return symbols_array
@@ -1441,7 +1440,7 @@ def get_histdep_data(f,
         if T in max_Rs_bbc:
             number_of_bins_d = embedding_maximising_R_at_T_bbc[T][0]
             scaling_k = embedding_maximising_R_at_T_bbc[T][1]
-            first_bin_size = emb.get_fist_bin_size_for_embedding((T,
+            first_bin_size = emb.get_first_bin_size_for_embedding((T,
                                                                   number_of_bins_d,
                                                                   scaling_k))
 
@@ -1474,7 +1473,7 @@ def get_histdep_data(f,
         if T in max_Rs_shuffling:
             number_of_bins_d = embedding_maximising_R_at_T_shuffling[T][0]
             scaling_k = embedding_maximising_R_at_T_shuffling[T][1]
-            first_bin_size = emb.get_fist_bin_size_for_embedding((T,
+            first_bin_size = emb.get_first_bin_size_for_embedding((T,
                                                                   number_of_bins_d,
                                                                   scaling_k))
             histdep_data["max_R_shuffling"] \
@@ -1827,28 +1826,39 @@ def prepare_spike_times(spikes):
     input_spikes = spikes
 
     # start by checking if the provided data is nested
-    is_nested = True
+    is_flat = False
     try:
         len(input_spikes[0])
     except:
-        is_nested = False
+        is_flat = True
 
-    if not is_nested:
+    log.debug(f"preparing spike times of type {type(input_spikes)}, {is_flat=}")
+
+    if is_flat:
         first_spike = np.nanmin(input_spikes)
-        # sort returns a copy, so we are good.
-        return np.sort(input_spikes - first_spike)
+        # sort returns a copy, so we are good. float64 to comply with double type expected by cython
+        res = np.array([np.sort(input_spikes - first_spike)], dtype=np.float64)
+        is_ragged = False
 
     else:
-        output_spikes = []
+        output_trains = []
         # we have to iterate and process each part separately
         for train in input_spikes:
             first_spike = np.nanmin(train)
-            output_spikes.append(np.sort(train - first_spike))
+            output_trains.append(np.sort(train - first_spike).astype(np.float64))
 
         # this list likely contains lists of varying size.
-        # thus, create the array of dtype object to avoid the deprication warning
-        return np.array(output_spikes, dtype=object)
+        # in this case, create the array of dtype object to avoid the deprication warning
+        if len(output_trains) > 1:
+            res = np.array(output_trains, dtype=object)
+            is_ragged = True
+        else:
+            res = np.array(output_trains, dtype = np.float64)
+            is_ragged = False
 
+    log.debug(f"prepared spike train: length={len(res)} dtype={res.dtype}")
+    log.debug(f"length varies" if is_ragged else f"with shape {res.shape}")
+    return res
 
 
 def get_spike_times_from_file(file_names,
