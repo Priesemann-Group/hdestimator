@@ -5,6 +5,7 @@ log = logging.getLogger("hdestimator")
 
 from . import utils as utl
 from . import embedding as emb
+
 # from . import embedding_numba as emb_nb
 from . import bbc_estimator as bbc
 from . import shuffling_estimator as sh
@@ -33,7 +34,6 @@ def wrapper(
     results : dict
     """
 
-
     # avoid accidentally modifying the provided settings dict, make a copy
     if settings is None:
         settings = dict()
@@ -57,16 +57,21 @@ def wrapper(
         )
     if settings["persistent"] is True:
         raise NotImplementedError(
-            "Here, we do no support saving of intermediate results yet. " +
-            "Set `persistent=False`."
+            "Here, we do no support saving of intermediate results yet. "
+            + "Set `persistent=False`."
         )
 
     # to be nice, throw a warning when the user provides a key that we do not use
     wrapper_keys = [
-        "persistent", "estimation_method", "embedding_past_range_set",
-        "embedding_step_size", "embedding_number_of_bins_set",
-        "embedding_scaling_exponent_set", "block_length_l",
-        "number_of_bootstraps_R_max", "number_of_bootstraps_R_tot",
+        "persistent",
+        "estimation_method",
+        "embedding_past_range_set",
+        "embedding_step_size",
+        "embedding_number_of_bins_set",
+        "embedding_scaling_exponent_set",
+        "block_length_l",
+        "number_of_bootstraps_R_max",
+        "number_of_bootstraps_R_tot",
     ]
     ignored_keys = [key for key in user_settings.keys() if key not in wrapper_keys]
     if len(ignored_keys) > 0:
@@ -80,7 +85,7 @@ def wrapper(
     np.random.seed(seed)
 
     # create a copy of the provided spikes that matches our required format:
-    # spike_times is an array of arrays
+    # ensure spike_times is an array of arrays
     spike_times = utl.prepare_spike_times(spike_times)
 
     # pre-calculate some basics we will need:
@@ -109,15 +114,13 @@ def wrapper(
     # get predictability for all embeddings, i.e. R as a function of T_D
     log.debug("Calculating history dependence for all embeddings...")
     embeddings_that_maximise_R, max_Rs = get_history_dependence_for_embedding_set(
-        # this needs updating!
-        # spike_times = spike_times,
-        spike_times = spike_times,
-        recording_length = recording_length,
-        estimation_method              = settings["estimation_method"],
-        embedding_past_range_set       = settings["embedding_past_range_set"],
-        embedding_number_of_bins_set   = settings["embedding_number_of_bins_set"],
-        embedding_scaling_exponent_set = settings["embedding_scaling_exponent_set"],
-        embedding_step_size            = settings["embedding_step_size"]
+        spike_times=spike_times,
+        recording_length=recording_length,
+        estimation_method=settings["estimation_method"],
+        embedding_past_range_set=settings["embedding_past_range_set"],
+        embedding_number_of_bins_set=settings["embedding_number_of_bins_set"],
+        embedding_scaling_exponent_set=settings["embedding_scaling_exponent_set"],
+        embedding_step_size=settings["embedding_step_size"],
     )
 
     # get the maximum history dependence and its embedding-tuple
@@ -130,12 +133,12 @@ def wrapper(
     # get the uncertainty of max_R to adapt the threshold for T_D
     log.debug("Bootstrapping to estimate uncertainty of max_R...")
     R_max_replicas = utl.get_bootstrap_history_dependence(
-        spike_times = spike_times,
-        embedding   = max_R_embedding,
-        embedding_step_size  = settings["embedding_step_size"],
-        estimation_method    = settings["estimation_method"],
-        number_of_bootstraps = settings["number_of_bootstraps_R_max"],
-        block_length_l       = settings["block_length_l"],
+        spike_times=spike_times,
+        embedding=max_R_embedding,
+        embedding_step_size=settings["embedding_step_size"],
+        estimation_method=settings["estimation_method"],
+        number_of_bootstraps=settings["number_of_bootstraps_R_max"],
+        block_length_l=settings["block_length_l"],
     )
 
     # reudce the threshold
@@ -153,7 +156,6 @@ def wrapper(
             T_D = T
             break
 
-
     # this gives R_tot, i.e. the (R at T_D)
     if not settings["return_averaged_R"]:
         R_tot = max_Rs[T_D]
@@ -167,15 +169,12 @@ def wrapper(
             if R < R_tot_thresh:
                 break
 
-        R_tot =  np.average([R for R, T in zip(Rs, Ts) if T >= T_D and T < T_max])
+        R_tot = np.average([R for R, T in zip(Rs, Ts) if T >= T_D and T < T_max])
 
     # get the timescale of R_tot
     tau_R = utl._get_information_timescale_tau_R(
-        max_Rs=max_Rs,
-        R_tot=R_tot,
-        T_0=settings["timescale_minimum_past_range"]
+        max_Rs=max_Rs, R_tot=R_tot, T_0=settings["timescale_minimum_past_range"]
     )
-
 
     # create the embedding-tuple for R_tot
     number_of_bins_d, scaling_k = embeddings_that_maximise_R[T_D]
@@ -185,12 +184,12 @@ def wrapper(
     # start by getting the bootstrap replicates.
     log.debug("Bootstrapping to estimate uncertainty of R_tot...")
     R_tot_replicas = utl.get_bootstrap_history_dependence(
-        spike_times = spike_times,
-        embedding   = R_tot_embedding,
-        embedding_step_size  = settings["embedding_step_size"],
-        estimation_method    = settings["estimation_method"],
-        number_of_bootstraps = settings["number_of_bootstraps_R_tot"],
-        block_length_l       = settings["block_length_l"],
+        spike_times=spike_times,
+        embedding=R_tot_embedding,
+        embedding_step_size=settings["embedding_step_size"],
+        estimation_method=settings["estimation_method"],
+        number_of_bootstraps=settings["number_of_bootstraps_R_tot"],
+        block_length_l=settings["block_length_l"],
     )
 
     # prepare a dictionary to return the results (similar to a row in the statistics.csv)
@@ -219,14 +218,16 @@ def wrapper(
     return res
 
 
-def get_history_dependence(estimation_method,
-                           symbol_counts,
-                           number_of_bins_d,
-                           past_symbol_counts=None,
-                           bbc_tolerance=None,
-                           H_uncond=None,
-                           return_ais=False,
-                           **kwargs):
+def get_history_dependence(
+    estimation_method,
+    symbol_counts,
+    number_of_bins_d,
+    past_symbol_counts=None,
+    bbc_tolerance=None,
+    H_uncond=None,
+    return_ais=False,
+    **kwargs,
+):
     """
     Get history dependence for binary random variable that takes
     into account outcomes with dimension d into the past, and dim 1
@@ -245,35 +246,36 @@ def get_history_dependence(estimation_method,
     if past_symbol_counts == None:
         past_symbol_counts = utl.get_past_symbol_counts(symbol_counts)
 
-
-    alphabet_size_past = 2 ** int(number_of_bins_d) # K for past activity
-    alphabet_size = alphabet_size_past * 2          # K
+    alphabet_size_past = 2 ** int(number_of_bins_d)  # K for past activity
+    alphabet_size = alphabet_size_past * 2  # K
 
     if estimation_method == "bbc":
-        return bbc.bbc_estimator(symbol_counts,
-                                 past_symbol_counts,
-                                 alphabet_size,
-                                 alphabet_size_past,
-                                 H_uncond,
-                                 bbc_tolerance=bbc_tolerance,
-                                 return_ais=return_ais)
+        return bbc.bbc_estimator(
+            symbol_counts,
+            past_symbol_counts,
+            alphabet_size,
+            alphabet_size_past,
+            H_uncond,
+            bbc_tolerance=bbc_tolerance,
+            return_ais=return_ais,
+        )
 
     elif estimation_method == "shuffling":
-        return sh.shuffling_estimator(symbol_counts,
-                                      number_of_bins_d,
-                                      H_uncond,
-                                      return_ais=return_ais)
-
+        return sh.shuffling_estimator(
+            symbol_counts, number_of_bins_d, H_uncond, return_ais=return_ais
+        )
 
 
 ## below are functions for estimates on spike trains
-def get_history_dependence_for_single_embedding(spike_times,
-                                                recording_length,
-                                                estimation_method,
-                                                embedding,
-                                                embedding_step_size,
-                                                bbc_tolerance=None,
-                                                **kwargs):
+def get_history_dependence_for_single_embedding(
+    spike_times,
+    recording_length,
+    estimation_method,
+    embedding,
+    embedding_step_size,
+    bbc_tolerance=None,
+    **kwargs,
+):
     """
     Apply embedding to spike_times to obtain symbol counts.
     Get history dependence from symbol counts.
@@ -300,12 +302,14 @@ def get_history_dependence_for_single_embedding(spike_times,
             ]
         )
 
-    if estimation_method == 'bbc':
-        history_dependence, bbc_term = get_history_dependence(estimation_method,
-                                                              symbol_counts,
-                                                              number_of_bins_d,
-                                                              bbc_tolerance=None,
-                                                              **kwargs)
+    if estimation_method == "bbc":
+        history_dependence, bbc_term = get_history_dependence(
+            estimation_method,
+            symbol_counts,
+            number_of_bins_d,
+            bbc_tolerance=None,
+            **kwargs,
+        )
 
         if bbc_tolerance == None:
             return history_dependence, bbc_term
@@ -313,25 +317,26 @@ def get_history_dependence_for_single_embedding(spike_times,
         if bbc_term >= bbc_tolerance:
             return None
 
-    elif estimation_method == 'shuffling':
-        history_dependence = get_history_dependence(estimation_method,
-                                                symbol_counts,
-                                                number_of_bins_d,
-                                                **kwargs)
-
+    elif estimation_method == "shuffling":
+        history_dependence = get_history_dependence(
+            estimation_method, symbol_counts, number_of_bins_d, **kwargs
+        )
 
     return history_dependence
 
-def get_history_dependence_for_embedding_set(spike_times,
-                                             recording_length,
-                                             estimation_method,
-                                             embedding_past_range_set,
-                                             embedding_number_of_bins_set,
-                                             embedding_scaling_exponent_set,
-                                             embedding_step_size,
-                                             bbc_tolerance=None,
-                                             dependent_var="T",
-                                             **kwargs):
+
+def get_history_dependence_for_embedding_set(
+    spike_times,
+    recording_length,
+    estimation_method,
+    embedding_past_range_set,
+    embedding_number_of_bins_set,
+    embedding_scaling_exponent_set,
+    embedding_step_size,
+    bbc_tolerance=None,
+    dependent_var="T",
+    **kwargs,
+):
     """
     Apply embeddings to spike_times to obtain symbol counts.
     For each T (or d), get history dependence R for the embedding for which
@@ -346,47 +351,55 @@ def get_history_dependence_for_embedding_set(spike_times,
     max_Rs = {}
     embeddings_that_maximise_R = {}
 
-
-    for embedding in emb.get_embeddings(embedding_past_range_set,
-                                        embedding_number_of_bins_set,
-                                        embedding_scaling_exponent_set):
+    for embedding in emb.get_embeddings(
+        embedding_past_range_set,
+        embedding_number_of_bins_set,
+        embedding_scaling_exponent_set,
+    ):
         past_range_T, number_of_bins_d, scaling_k = embedding
 
-        history_dependence = get_history_dependence_for_single_embedding(spike_times,
-                                                                         recording_length,
-                                                                         estimation_method,
-                                                                         embedding,
-                                                                         embedding_step_size,
-                                                                         bbc_tolerance=bbc_tolerance,
-                                                                         **kwargs)
+        history_dependence = get_history_dependence_for_single_embedding(
+            spike_times,
+            recording_length,
+            estimation_method,
+            embedding,
+            embedding_step_size,
+            bbc_tolerance=bbc_tolerance,
+            **kwargs,
+        )
         if history_dependence == None:
             continue
 
         if dependent_var == "T":
-            if not past_range_T in embeddings_that_maximise_R \
-               or history_dependence > max_Rs[past_range_T]:
+            if (
+                not past_range_T in embeddings_that_maximise_R
+                or history_dependence > max_Rs[past_range_T]
+            ):
                 max_Rs[past_range_T] = history_dependence
-                embeddings_that_maximise_R[past_range_T] = (number_of_bins_d,
-                                                                    scaling_k)
+                embeddings_that_maximise_R[past_range_T] = (number_of_bins_d, scaling_k)
         elif dependent_var == "d":
-            if not number_of_bins_d in embeddings_that_maximise_R \
-               or history_dependence > max_Rs[number_of_bins_d]:
+            if (
+                not number_of_bins_d in embeddings_that_maximise_R
+                or history_dependence > max_Rs[number_of_bins_d]
+            ):
                 max_Rs[number_of_bins_d] = history_dependence
-                embeddings_that_maximise_R[number_of_bins_d] = (past_range_T,
-                                                                        scaling_k)
+                embeddings_that_maximise_R[number_of_bins_d] = (past_range_T, scaling_k)
 
     return embeddings_that_maximise_R, max_Rs
 
-def get_CI_for_embedding(history_dependence,
-                         spike_times,
-                         estimation_method,
-                         embedding,
-                         embedding_step_size,
-                         number_of_bootstraps,
-                         block_length_l=None,
-                         bootstrap_CI_use_sd=True,
-                         bootstrap_CI_percentile_lo=2.5,
-                         bootstrap_CI_percentile_hi=97.5):
+
+def get_CI_for_embedding(
+    history_dependence,
+    spike_times,
+    estimation_method,
+    embedding,
+    embedding_step_size,
+    number_of_bootstraps,
+    block_length_l=None,
+    bootstrap_CI_use_sd=True,
+    bootstrap_CI_percentile_lo=2.5,
+    bootstrap_CI_percentile_hi=97.5,
+):
     """
     Compute confidence intervals for the history dependence estimate
     based on either the standard deviation or percentiles of
@@ -401,16 +414,19 @@ def get_CI_for_embedding(history_dependence,
         firing_rate = utl.get_binned_firing_rate(spike_times, embedding_step_size)
         block_length_l = max(1, int(1 / (firing_rate * embedding_step_size)))
 
-    bs_history_dependence \
-            = utl.get_bootstrap_history_dependence([spike_times],
-                                                   embedding,
-                                                   embedding_step_size,
-                                                   estimation_method,
-                                                   number_of_bootstraps,
-                                                   block_length_l)
+    bs_history_dependence = utl.get_bootstrap_history_dependence(
+        [spike_times],
+        embedding,
+        embedding_step_size,
+        estimation_method,
+        number_of_bootstraps,
+        block_length_l,
+    )
 
-    return utl.get_CI_bounds(history_dependence,
-                             bs_history_dependence,
-                             bootstrap_CI_use_sd=bootstrap_CI_use_sd,
-                             bootstrap_CI_percentile_lo=bootstrap_CI_percentile_lo,
-                             bootstrap_CI_percentile_hi=bootstrap_CI_percentile_hi)
+    return utl.get_CI_bounds(
+        history_dependence,
+        bs_history_dependence,
+        bootstrap_CI_use_sd=bootstrap_CI_use_sd,
+        bootstrap_CI_percentile_lo=bootstrap_CI_percentile_lo,
+        bootstrap_CI_percentile_hi=bootstrap_CI_percentile_hi,
+    )
