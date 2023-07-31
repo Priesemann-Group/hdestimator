@@ -1,8 +1,6 @@
 # ------------------------------------------------------------------------------ #
-# @Author:        F. Paul Spitzner
-# @Email:         paul.spitzner@ds.mpg.de
 # @Created:       2023-07-27 15:08:56
-# @Last Modified: 2023-07-28 14:50:28
+# @Last Modified: 2023-07-31 11:41:19
 # ------------------------------------------------------------------------------ #
 # Reworked embeddings to use numba, if available. this saves a lot of redundant
 # code, and cython.
