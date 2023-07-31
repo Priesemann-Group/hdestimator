@@ -1,8 +1,6 @@
 # ------------------------------------------------------------------------------ #
-# @Author:        F. Paul Spitzner
-# @Email:         paul.spitzner@ds.mpg.de
 # @Created:       2023-07-31 10:52:29
-# @Last Modified: 2023-07-31 12:13:03
+# @Last Modified: 2023-07-31 17:22:12
 # ------------------------------------------------------------------------------ #
 # all things that do disk io are here:
 # - the hdf5 or dict for the analysis details (`f`)
@@ -126,7 +124,7 @@ def get_spike_times_from_file(file_names, hdf5_datasets=None):
 
 def get_or_create_analysis_dir(spike_times, spike_times_file_names, root_analysis_dir):
     """
-    Search for existing folder containing associated analysis.
+    Search for existing folder in our default location, containing associated analysis.
     """
 
     from .utils import get_hash
@@ -319,11 +317,20 @@ def get_or_create_data_directory_in_file(
     else:
         root_dir = "embeddings"
 
+    try:
+        f.keys()
+    except AttributeError:
+        log.debug(
+            "get_or_create_data_directory_in_file was called with non-inialized file. " +
+            "Using non-persistent storage."
+        )
+        f = get_analysis_file(persistent_analysis=False)
+
     if not root_dir in f.keys():
         if get_only:
             return None
         else:
-            f.create_group(root_dir)
+            _create_group(f, root_dir)
 
     data_dir = f[root_dir]
 
@@ -345,7 +352,7 @@ def get_or_create_data_directory_in_file(
             if get_only:
                 return None
             else:
-                data_dir = data_dir.create_group(bin_size_label)
+                data_dir = _create_group(data_dir, bin_size_label)
         return data_dir
     else:
         past_range_T = embedding[0]
@@ -362,7 +369,7 @@ def get_or_create_data_directory_in_file(
                 if get_only:
                     return None
                 else:
-                    data_dir = data_dir.create_group(parameter_label)
+                    data_dir = _create_group(data_dir, parameter_label)
 
         if data_label == "symbol_counts":
             return data_dir
@@ -371,26 +378,46 @@ def get_or_create_data_directory_in_file(
                 if get_only:
                     return None
                 else:
-                    data_dir.create_group(estimation_method)
+                    _create_group(data_dir, estimation_method)
             return data_dir[estimation_method]
 
 
-def get_analysis_file(persistent_analysis, analysis_dir):
+# thin wrappers to work with dicts or hdf5 files
+def _create_dataset(dir, key, data):
+    if isinstance(dir, dict):
+        dir[key] = data
+    else:
+        if not isinstance(key, str):
+            # hdf5 does not like int keys. stay aware of this when loading back!
+            key = str(key)
+        try:
+            dir.create_dataset(key, data=data, compression="gzip")
+        except TypeError:
+            # some datasets do not support compression
+            dir.create_dataset(key, data=data)
+    return dir[key]
+
+
+def _create_group(d, key):
+    if isinstance(d, dict):
+        d[key] = dict()
+    else:
+        d.create_group(key)
+    return d[key]
+
+
+def get_analysis_file(persistent_analysis, analysis_dir=None):
     """
     Get the hdf5 file to store the analysis in (either
     temporarily or persistently.)
     """
 
     analysis_file_name = "analysis_data.h5"
+    if analysis_dir is None:
+        assert persistent_analysis is False
 
     if not persistent_analysis:
-        if check_h5py_version(h5py.__version__, "2.9.0"):
-            return h5py.File(io.BytesIO(), "a")
-        else:
-            tf = tempfile.NamedTemporaryFile(suffix=".h5", prefix="analysis_")
-            return h5py.File(tf.name, "a")
-            # future idea: use dict instead of h5py
-            # return dict()
+        return dict()
 
     analysis_file = h5py.File("{}/{}".format(analysis_dir, analysis_file_name), "a")
 
@@ -407,11 +434,21 @@ def load_from_analysis_file(f, data_label, **data):
     if data_dir == None or data_label not in data_dir:
         return None
     elif data_label == "symbol_counts":
-        symbol_counts = data_dir[data_label][()]
-        if type(symbol_counts) == bytes:
-            return Counter(literal_eval(symbol_counts.decode("utf-8")))
-        else:
-            return Counter(literal_eval(symbol_counts))
+        try:
+            symbol_counts = data_dir[data_label][()]
+            # convert back from 2-col np array to Counter
+            res = Counter()
+            for idx in range(len(symbol_counts)):
+                k = symbol_counts[idx, 0]
+                v = symbol_counts[idx, 1]
+                res[k] = v
+            return res
+        except:
+            # try to keep compatibility with the old format (dict as str)
+            if type(symbol_counts) == bytes:
+                return Counter(literal_eval(symbol_counts.decode("utf-8")))
+            else:
+                return Counter(literal_eval(symbol_counts))
     else:
         return data_dir[data_label][()]
 
@@ -436,41 +473,51 @@ def save_to_analysis_file(f, data_label, estimation_method=None, **data):
         "recording_length_sd",
     ]:
         if not data_label in data_dir:
-            data_dir.create_dataset(data_label, data=data[data_label])
+            _create_dataset(data_dir, data_label, data=data[data_label])
 
     # we might want to update the auto mutual information
     # so if already stored, delete it first
     elif data_label == "auto_MI":
         if not data_label in data_dir:
-            data_dir.create_dataset(data_label, data=data[data_label])
+            _create_dataset(data_dir, data_label, data=data[data_label])
         else:
             del data_dir[data_label]
-            data_dir.create_dataset(data_label, data=data[data_label])
+            _create_dataset(data_dir, data_label, data=data[data_label])
 
     elif data_label == "symbol_counts":
         if not data_label in data_dir:
-            data_dir.create_dataset(data_label, data=str(dict(data[data_label])))
+            # the Counter is essentially a dict. and we should have
+            # only integers for keys and values! -> save as a 2-column np array
+            ctr = data[data_label]
+            keys, values = zip(*ctr.items())
+            keys = np.array(keys, dtype=np.int64)
+            values = np.array(values, dtype=np.int64)
+            _create_dataset(
+                data_dir, data_label, data=np.array([keys, values], dtype=np.int64).T
+            )
+
 
     elif data_label == "history_dependence":
         if not data_label in data_dir:
-            data_dir.create_dataset(data_label, data=data[data_label])
+            _create_dataset(data_dir, data_label, data=data[data_label])
         if estimation_method == "bbc" and not "bbc_term" in data_dir:
-            data_dir.create_dataset("bbc_term", data=data["bbc_term"])
+            _create_dataset(data_dir, "bbc_term", data=data["bbc_term"])
         if not "first_bin_size" in data_dir:
-            data_dir.create_dataset("first_bin_size", data=data["first_bin_size"])
+            _create_dataset(data_dir, "first_bin_size", data=data["first_bin_size"])
 
     # bs: bootstrap, pt: permutation test
     # each value is stored, so that addition re-draws can be made and
     # the median/ CIs re-computed
     elif data_label in ["bs_history_dependence", "pt_history_dependence"]:
         if not data_label in data_dir:
-            data_dir.create_dataset(data_label, data=data[data_label])
+            _create_dataset(data_dir, data_label, data=data[data_label])
         else:
+            # this _should_ work for dicts ands hdf5 files.
             new_and_old_data_joint = np.hstack(
                 (data_dir[data_label][()], data[data_label])
             )
             del data_dir[data_label]
-            data_dir.create_dataset(data_label, data=new_and_old_data_joint)
+            _create_dataset(data_dir, data_label, data=new_and_old_data_joint)
 
 
 def check_h5py_version(version, required_version):
@@ -498,6 +545,7 @@ def check_h5py_version(version, required_version):
 # ------------------------------------------------------------------------------ #
 # csv
 # ------------------------------------------------------------------------------ #
+
 
 def create_CSV_files(
     f,

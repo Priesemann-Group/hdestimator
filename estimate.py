@@ -43,6 +43,8 @@ def do_main_analysis(spike_times, spike_times_optimization, spike_times_validati
                                                    spike_times, **settings)
         utl.compute_CIs(analysis_file, spike_times, target_R='R_max', **settings)
 
+    return analysis_file
+
 def compute_CIs(spike_times, analysis_file, settings):
     """
     Compute bootstrap replications of the history-dependence estimate
