@@ -2,7 +2,7 @@
 # @Author:        F. Paul Spitzner
 # @Email:         paul.spitzner@ds.mpg.de
 # @Created:       2023-07-27 15:08:56
-# @Last Modified: 2023-07-28 14:29:34
+# @Last Modified: 2023-07-28 14:50:28
 # ------------------------------------------------------------------------------ #
 # Reworked embeddings to use numba, if available. this saves a lot of redundant
 # code, and cython.
@@ -59,9 +59,191 @@ def get_symbol_counts(spike_times, embedding, embedding_step_size):
         spike_times, embedding, first_bin_size, embedding_step_size
     )
 
-    symbol_counts = count_symbols(raw_symbols)
+    symbol_counts = count_raw_symbols(raw_symbols)
 
     return Counter(symbol_counts)
+
+
+def get_first_bin_size_for_embedding(embedding):
+    """
+    Get size of first bin for the embedding, based on the parameters
+    T, d and k.
+    """
+
+    past_range_T, number_of_bins_d, scaling_k = embedding
+    return newton(
+        lambda first_bin_size: get_past_range(number_of_bins_d, first_bin_size, scaling_k)
+        - past_range_T,
+        0.005,
+        tol=1e-03,
+        maxiter=100,
+    )
+
+
+@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model="numpy")
+def get_raw_symbols(
+    spike_times,
+    embedding,
+    first_bin_size,
+    embedding_step_size,
+):
+    """
+    Get the raw symbols (in which the number of spikes per bin are counted,
+    ie not necessarily binary quantity), as obtained by applying the
+    embedding.
+
+    # Parameters
+    spike_times: array of float
+    """
+
+    past_range_T, number_of_bins_d, scaling_k = embedding
+
+    # the window is the embedding plus the response,
+    # ie the embedding and one additional bin of size embedding_step_size
+    window_delimiters = get_window_delimiters(
+        number_of_bins_d, scaling_k, first_bin_size, embedding_step_size
+    )
+    window_length = window_delimiters[-1]
+    num_spike_times = len(spike_times)
+    last_spike_time = spike_times[-1]
+
+    num_symbols = int((last_spike_time - window_length) / embedding_step_size)
+    raw_symbols = np.empty((num_symbols, number_of_bins_d + 1), dtype=np.int64)
+
+    time = 0
+    spike_index_lo = 0
+
+    # prealloc
+    embedding_bin_index = 0
+    spike_index_hi = 0
+    spikes_in_window = np.zeros(number_of_bins_d + 1, dtype=np.int64)
+
+    for sdx in range(num_symbols):
+
+        while spike_index_lo < num_spike_times and spike_times[spike_index_lo] < time:
+            spike_index_lo += 1
+
+        spike_index_hi = spike_index_lo
+        while (
+            spike_index_hi < num_spike_times
+            and spike_times[spike_index_hi] < time + window_length
+        ):
+            spike_index_hi += 1
+
+        spikes_in_window[:] = 0
+        embedding_bin_index = 0
+        for spike_index in range(spike_index_lo, spike_index_hi):
+            while (
+                spike_times[spike_index] > time + window_delimiters[embedding_bin_index]
+            ):
+                embedding_bin_index += 1
+            spikes_in_window[embedding_bin_index] += 1
+
+        raw_symbols[sdx] = spikes_in_window
+
+        time += embedding_step_size
+
+    return raw_symbols
+
+
+@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model="numpy")
+def count_raw_symbols(raw_symbols):
+    """
+    Count occurences of precalculated raw symbols.
+
+    # Parameters
+    raw_symbols : 2d array of type int,
+        shape (num_symbols, num_bins)
+
+    # Returns
+    symbol_counts : dict
+        symbols -> counts
+    """
+
+    # number_of_bins here is number_of_bins_d + 1,
+    # as it here includes not only the bins of the embedding but also the response
+
+    num_symbols, num_bins = raw_symbols.shape
+    bins = np.arange(0, num_bins)
+
+    median_num_spikes_per_bin = get_median_number_of_spikes_per_bin(raw_symbols)
+    assert len(median_num_spikes_per_bin) == num_bins
+
+    symbol_counts = dict()
+
+    # log.debug(f"{median_num_spikes_per_bin=}")
+    # log.debug(f"{num_bins=}")
+
+    for raw_symbol in raw_symbols:
+        # both are np arrays, so the comparison is elementwise
+        symbol_array = raw_symbol > median_num_spikes_per_bin
+
+        # symbol = symbol_array_to_binary(symbol_array)
+        symbol = np.sum(
+            np.power(2, num_bins - bins - 1) * symbol_array[bins],
+            dtype=np.int64,
+        )
+
+        if symbol in symbol_counts:
+            symbol_counts[symbol] += 1
+        else:
+            symbol_counts[symbol] = 1
+
+    return symbol_counts
+
+
+@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model="numpy")
+def get_past_range(number_of_bins_d, first_bin_size, scaling_k):
+    """
+    Get the past range T of the embedding, based on the parameters d, tau_1 and k.
+    """
+    i = np.arange(1, number_of_bins_d + 1)
+    return np.sum(first_bin_size * 10 ** ((number_of_bins_d - i) * scaling_k))
+
+
+@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model="numpy")
+def get_window_delimiters(
+    number_of_bins_d, scaling_k, first_bin_size, embedding_step_size
+):
+    """
+    Get delimiters of the window, used to describe the embedding. The
+    window includes both the past embedding and the response.
+
+    The delimiters are times, relative to the first bin, that separate
+    two consequent bins.
+    """
+
+    i = np.arange(1, number_of_bins_d + 1)
+    bin_sizes = first_bin_size * np.power(10, ((number_of_bins_d - i) * scaling_k))
+
+    window_delimiters = np.cumsum(bin_sizes)
+
+    # Append the last element + embedding_step_size to get the final window_delimiters
+    window_delimiters = np.append(
+        window_delimiters, window_delimiters[-1] + embedding_step_size
+    )
+
+    return window_delimiters
+
+
+@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model="numpy")
+def get_median_number_of_spikes_per_bin(raw_symbols):
+    """
+    Given raw symbols (in which the number of spikes per bin are counted,
+    ie not necessarily binary quantity), get the median number of spikes
+    for each bin, among all symbols obtained by the embedding.
+
+    this is the same as np.median(raw_symbols, axis=0), but numba does not like
+    the axis argument.
+    """
+
+    # return np.median(raw_symbols, axis=0) # numba....
+    num_bins = len(raw_symbols[0])
+    median_num_spikes_per_bin = np.zeros(num_bins, dtype=np.int64)
+    for i in range(num_bins):
+        median_num_spikes_per_bin[i] = np.median(raw_symbols[:, i])
+
+    return median_num_spikes_per_bin
 
 
 def get_set_of_scalings(
@@ -133,99 +315,14 @@ def get_embeddings(
     return embeddings
 
 
-def get_first_bin_size_for_embedding(embedding):
-    """
-    Get size of first bin for the embedding, based on the parameters
-    T, d and k.
-    """
-
-    past_range_T, number_of_bins_d, scaling_k = embedding
-    return newton(
-        lambda first_bin_size: get_past_range(number_of_bins_d, first_bin_size, scaling_k)
-        - past_range_T,
-        0.005,
-        tol=1e-03,
-        maxiter=100,
-    )
-
-
-@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model='numpy')
-def get_past_range(number_of_bins_d, first_bin_size, scaling_k):
-    """
-    Get the past range T of the embedding, based on the parameters d, tau_1 and k.
-    """
-    i = np.arange(1, number_of_bins_d + 1)
-    return np.sum(first_bin_size * 10 ** ((number_of_bins_d - i) * scaling_k))
-
-
-@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model='numpy')
-def get_window_delimiters(
-    number_of_bins_d, scaling_k, first_bin_size, embedding_step_size
-):
-    """
-    Get delimiters of the window, used to describe the embedding. The
-    window includes both the past embedding and the response.
-
-    The delimiters are times, relative to the first bin, that separate
-    two consequent bins.
-    """
-
-    # bin_sizes = [
-    #     first_bin_size * 10 ** ((number_of_bins_d - i) * scaling_k)
-    #     for i in range(1, number_of_bins_d + 1)
-    # ]
-    # window_delimiters = [
-    #     np.sum(np.array([bin_sizes[j] for j in range(i)]))
-    #     for i in range(1, number_of_bins_d + 1)
-    # ]
-    # window_delimiters.append(
-    #     window_delimiters[number_of_bins_d - 1] + embedding_step_size
-    # )
-
-    i = np.arange(1, number_of_bins_d + 1)
-    bin_sizes = first_bin_size * np.power(10, ((number_of_bins_d - i) * scaling_k))
-
-    window_delimiters = np.cumsum(bin_sizes)
-
-    # Append the last element + embedding_step_size to get the final window_delimiters
-    window_delimiters = np.append(
-        window_delimiters,
-        window_delimiters[-1] + embedding_step_size
-    )
-
-    return window_delimiters
-
-
-@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model='numpy')
-def get_median_number_of_spikes_per_bin(raw_symbols):
-    """
-    Given raw symbols (in which the number of spikes per bin are counted,
-    ie not necessarily binary quantity), get the median number of spikes
-    for each bin, among all symbols obtained by the embedding.
-
-    this is the same as np.median(raw_symbols, axis=0), but numba does not like
-    the axis argument.
-    """
-
-    # return np.median(raw_symbols, axis=0) # numba....
-    num_bins = len(raw_symbols[0])
-    median_num_spikes_per_bin = np.zeros(num_bins, dtype=np.int64)
-    for i in range(num_bins):
-        median_num_spikes_per_bin[i] = np.median(raw_symbols[:, i])
-
-    return median_num_spikes_per_bin
-
-
-@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model='numpy')
+@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model="numpy")
 def symbol_binary_to_array(symbol_binary, number_of_bins_d):
     """
     Given a binary representation of a symbol (cf symbol_array_to_binary),
     convert it back into its array-representation.
     """
 
-    # assert 2 ** number_of_bins_d > symbol_binary
-
-    spikes_in_window = np.zeros(number_of_bins_d)
+    spikes_in_window = np.zeros(number_of_bins_d, dtype=np.int64)
     for i in range(0, number_of_bins_d):
         b = np.power(2, (number_of_bins_d - 1 - i))
         if b <= symbol_binary:
@@ -234,7 +331,7 @@ def symbol_binary_to_array(symbol_binary, number_of_bins_d):
     return spikes_in_window
 
 
-@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model='numpy')
+@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model="numpy")
 def symbol_array_to_binary(spikes_in_window: np.ndarray) -> int:
     """
     Given an array of 1s and 0s, representing spikes and the absence
@@ -247,105 +344,3 @@ def symbol_array_to_binary(spikes_in_window: np.ndarray) -> int:
     i = np.arange(0, num_bins)
     res = np.sum(np.power(2, num_bins - i - 1) * spikes_in_window[i], dtype=np.int64)
     return res
-
-
-@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model='numpy')
-def get_raw_symbols(
-    spike_times,
-    embedding,
-    first_bin_size,
-    embedding_step_size,
-):
-    """
-    Get the raw symbols (in which the number of spikes per bin are counted,
-    ie not necessarily binary quantity), as obtained by applying the
-    embedding.
-
-    # Parameters
-    spike_times: array of float
-    """
-
-    past_range_T, number_of_bins_d, scaling_k = embedding
-
-    # the window is the embedding plus the response,
-    # ie the embedding and one additional bin of size embedding_step_size
-    window_delimiters = get_window_delimiters(
-        number_of_bins_d, scaling_k, first_bin_size, embedding_step_size
-    )
-    window_length = window_delimiters[-1]
-    num_spike_times = len(spike_times)
-    last_spike_time = spike_times[-1]
-
-    num_symbols = int((last_spike_time - window_length) / embedding_step_size)
-
-    # init the array with -1 of right length. in the end there should be no -1s left.
-    raw_symbols = np.ones((num_symbols, number_of_bins_d + 1), dtype=np.int64) * -1
-
-    time = 0
-    spike_index_lo = 0
-
-    for sdx in range(num_symbols):
-        while spike_index_lo < num_spike_times and spike_times[spike_index_lo] < time:
-            spike_index_lo += 1
-        spike_index_hi = spike_index_lo
-        while (
-            spike_index_hi < num_spike_times
-            and spike_times[spike_index_hi] < time + window_length
-        ):
-            spike_index_hi += 1
-
-        spikes_in_window = np.zeros(number_of_bins_d + 1, dtype=np.int64)
-
-        embedding_bin_index = 0
-        for spike_index in range(spike_index_lo, spike_index_hi):
-            while (
-                spike_times[spike_index] > time + window_delimiters[embedding_bin_index]
-            ):
-                embedding_bin_index += 1
-            spikes_in_window[embedding_bin_index] += 1
-
-        raw_symbols[sdx] = spikes_in_window
-
-        time += embedding_step_size
-
-    return raw_symbols
-
-
-@jit(nopython=True, parallel=False, fastmath=True, cache=True, error_model='numpy')
-def count_symbols(raw_symbols):
-    """
-    Count occurences of precalculated raw symbols.
-
-    # Parameters
-    raw_symbols : 2d array of type int,
-        shape (num_symbols, num_bins)
-
-    # Returns
-    symbol_counts : dict
-        symbols -> counts
-    """
-
-    # number_of_bins here is number_of_bins_d + 1,
-    # as it here includes not only the bins of the embedding but also the response
-    # num_bins = len(raw_symbols[0])
-
-    median_num_spikes_per_bin = get_median_number_of_spikes_per_bin(raw_symbols)
-    assert len(median_num_spikes_per_bin) == len(raw_symbols[0])
-
-    symbol_counts = dict()
-
-    # log.debug(f"{median_num_spikes_per_bin=}")
-    # log.debug(f"{num_bins=}")
-
-    for raw_symbol in raw_symbols:
-        # both are np arrays, so the comparison is elementwise
-        symbol_array = raw_symbol > median_num_spikes_per_bin
-
-        symbol = symbol_array_to_binary(symbol_array)
-
-        if symbol in symbol_counts:
-            symbol_counts[symbol] += 1
-        else:
-            symbol_counts[symbol] = 1
-
-    return symbol_counts
