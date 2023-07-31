@@ -218,6 +218,7 @@ def wrapper(
 
     return res
 
+
 def get_history_dependence(estimation_method,
                            symbol_counts,
                            number_of_bins_d,
@@ -266,8 +267,6 @@ def get_history_dependence(estimation_method,
 
 
 ## below are functions for estimates on spike trains
-debug_var1 = None
-debug_var2 = None
 def get_history_dependence_for_single_embedding(spike_times,
                                                 recording_length,
                                                 estimation_method,
@@ -290,7 +289,6 @@ def get_history_dependence_for_single_embedding(spike_times,
         spikes_are_flat = True
 
     log.debug(f"Getting symbol counts... {spikes_are_flat=}")
-    log.debug(spike_times[0])
 
     if spikes_are_flat:
         symbol_counts = emb.get_symbol_counts(spike_times, embedding, embedding_step_size)
@@ -301,9 +299,6 @@ def get_history_dependence_for_single_embedding(spike_times,
                 for spt in spike_times
             ]
         )
-
-    global debug_var1
-    global debug_var2
 
     if estimation_method == 'bbc':
         history_dependence, bbc_term = get_history_dependence(estimation_method,
@@ -319,17 +314,10 @@ def get_history_dependence_for_single_embedding(spike_times,
             return None
 
     elif estimation_method == 'shuffling':
-        try:
-            history_dependence = get_history_dependence(estimation_method,
-                                                    symbol_counts,
-                                                    number_of_bins_d,
-                                                    **kwargs)
-        except:
-            log.info(f"Symbol counts: {symbol_counts}")
-            debug_var2 = estimation_method, symbol_counts, number_of_bins_d, kwargs
-            raise
-
-    debug_var1 = estimation_method, symbol_counts, number_of_bins_d, kwargs
+        history_dependence = get_history_dependence(estimation_method,
+                                                symbol_counts,
+                                                number_of_bins_d,
+                                                **kwargs)
 
 
     return history_dependence
