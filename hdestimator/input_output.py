@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------ #
 # @Created:       2023-07-31 10:52:29
-# @Last Modified: 2023-07-31 17:22:12
+# @Last Modified: 2023-07-31 17:25:56
 # ------------------------------------------------------------------------------ #
 # all things that do disk io are here:
 # - the hdf5 or dict for the analysis details (`f`)
@@ -279,133 +279,6 @@ def load_settings_from_file(file_name):
 # ------------------------------------------------------------------------------ #
 
 
-def get_or_create_data_directory_in_file(
-    f,
-    data_label,
-    embedding_step_size=None,
-    embedding=None,
-    estimation_method=None,
-    auto_MI_bin_size=None,
-    get_only=False,
-    cross_val=None,
-    **kwargs,
-):
-    """
-    Search for directory in hdf5, optionally create it if nonexistent
-    and return it.
-
-    # Parameters
-    f: hdf5 file, or dict
-        if a dict is passed, directories are created as dictionaries.
-        (i.e. relevant when not saving peristently)
-    """
-
-    from .utils import find_existing_parameter
-
-    if data_label in [
-        "firing_rate",
-        "firing_rate_sd",
-        "H_spiking",
-        "recording_length",
-        "recording_length_sd",
-    ]:
-        root_dir = "other"
-    elif data_label == "auto_MI":
-        root_dir = "auto_MI"
-    elif not cross_val == None:
-        root_dir = "{}_embeddings".format(cross_val)
-    else:
-        root_dir = "embeddings"
-
-    try:
-        f.keys()
-    except AttributeError:
-        log.debug(
-            "get_or_create_data_directory_in_file was called with non-inialized file. " +
-            "Using non-persistent storage."
-        )
-        f = get_analysis_file(persistent_analysis=False)
-
-    if not root_dir in f.keys():
-        if get_only:
-            return None
-        else:
-            _create_group(f, root_dir)
-
-    data_dir = f[root_dir]
-
-    if data_label in [
-        "firing_rate",
-        "firing_rate_sd",
-        "H_spiking",
-        "recording_length",
-        "recording_length_sd",
-    ]:
-        return data_dir
-    elif data_label == "auto_MI":
-        bin_size_label, found = find_existing_parameter(
-            auto_MI_bin_size, [key for key in data_dir.keys()]
-        )
-        if found:
-            data_dir = data_dir[bin_size_label]
-        else:
-            if get_only:
-                return None
-            else:
-                data_dir = _create_group(data_dir, bin_size_label)
-        return data_dir
-    else:
-        past_range_T = embedding[0]
-        number_of_bins_d = embedding[1]
-        scaling_k = embedding[2]
-        for parameter in [embedding_step_size, past_range_T, number_of_bins_d, scaling_k]:
-            parameter_label, found = find_existing_parameter(
-                parameter, [key for key in data_dir.keys()]
-            )
-
-            if found:
-                data_dir = data_dir[parameter_label]
-            else:
-                if get_only:
-                    return None
-                else:
-                    data_dir = _create_group(data_dir, parameter_label)
-
-        if data_label == "symbol_counts":
-            return data_dir
-        else:
-            if not estimation_method in data_dir:
-                if get_only:
-                    return None
-                else:
-                    _create_group(data_dir, estimation_method)
-            return data_dir[estimation_method]
-
-
-# thin wrappers to work with dicts or hdf5 files
-def _create_dataset(dir, key, data):
-    if isinstance(dir, dict):
-        dir[key] = data
-    else:
-        if not isinstance(key, str):
-            # hdf5 does not like int keys. stay aware of this when loading back!
-            key = str(key)
-        try:
-            dir.create_dataset(key, data=data, compression="gzip")
-        except TypeError:
-            # some datasets do not support compression
-            dir.create_dataset(key, data=data)
-    return dir[key]
-
-
-def _create_group(d, key):
-    if isinstance(d, dict):
-        d[key] = dict()
-    else:
-        d.create_group(key)
-    return d[key]
-
-
 def get_analysis_file(persistent_analysis, analysis_dir=None):
     """
     Get the hdf5 file to store the analysis in (either
@@ -496,7 +369,6 @@ def save_to_analysis_file(f, data_label, estimation_method=None, **data):
                 data_dir, data_label, data=np.array([keys, values], dtype=np.int64).T
             )
 
-
     elif data_label == "history_dependence":
         if not data_label in data_dir:
             _create_dataset(data_dir, data_label, data=data[data_label])
@@ -518,6 +390,133 @@ def save_to_analysis_file(f, data_label, estimation_method=None, **data):
             )
             del data_dir[data_label]
             _create_dataset(data_dir, data_label, data=new_and_old_data_joint)
+
+
+def get_or_create_data_directory_in_file(
+    f,
+    data_label,
+    embedding_step_size=None,
+    embedding=None,
+    estimation_method=None,
+    auto_MI_bin_size=None,
+    get_only=False,
+    cross_val=None,
+    **kwargs,
+):
+    """
+    Search for directory in hdf5, optionally create it if nonexistent
+    and return it.
+
+    # Parameters
+    f: hdf5 file, or dict
+        if a dict is passed, directories are created as dictionaries.
+        (i.e. relevant when not saving peristently)
+    """
+
+    from .utils import find_existing_parameter
+
+    if data_label in [
+        "firing_rate",
+        "firing_rate_sd",
+        "H_spiking",
+        "recording_length",
+        "recording_length_sd",
+    ]:
+        root_dir = "other"
+    elif data_label == "auto_MI":
+        root_dir = "auto_MI"
+    elif not cross_val == None:
+        root_dir = "{}_embeddings".format(cross_val)
+    else:
+        root_dir = "embeddings"
+
+    try:
+        f.keys()
+    except AttributeError:
+        log.debug(
+            "get_or_create_data_directory_in_file was called with non-inialized file. "
+            + "Using non-persistent storage."
+        )
+        f = get_analysis_file(persistent_analysis=False)
+
+    if not root_dir in f.keys():
+        if get_only:
+            return None
+        else:
+            _create_group(f, root_dir)
+
+    data_dir = f[root_dir]
+
+    if data_label in [
+        "firing_rate",
+        "firing_rate_sd",
+        "H_spiking",
+        "recording_length",
+        "recording_length_sd",
+    ]:
+        return data_dir
+    elif data_label == "auto_MI":
+        bin_size_label, found = find_existing_parameter(
+            auto_MI_bin_size, [key for key in data_dir.keys()]
+        )
+        if found:
+            data_dir = data_dir[bin_size_label]
+        else:
+            if get_only:
+                return None
+            else:
+                data_dir = _create_group(data_dir, bin_size_label)
+        return data_dir
+    else:
+        past_range_T = embedding[0]
+        number_of_bins_d = embedding[1]
+        scaling_k = embedding[2]
+        for parameter in [embedding_step_size, past_range_T, number_of_bins_d, scaling_k]:
+            parameter_label, found = find_existing_parameter(
+                parameter, [key for key in data_dir.keys()]
+            )
+
+            if found:
+                data_dir = data_dir[parameter_label]
+            else:
+                if get_only:
+                    return None
+                else:
+                    data_dir = _create_group(data_dir, parameter_label)
+
+        if data_label == "symbol_counts":
+            return data_dir
+        else:
+            if not estimation_method in data_dir:
+                if get_only:
+                    return None
+                else:
+                    _create_group(data_dir, estimation_method)
+            return data_dir[estimation_method]
+
+
+# thin wrappers to work with dicts or hdf5 files
+def _create_dataset(dir, key, data):
+    if isinstance(dir, dict):
+        dir[key] = data
+    else:
+        if not isinstance(key, str):
+            # hdf5 does not like int keys. stay aware of this when loading back!
+            key = str(key)
+        try:
+            dir.create_dataset(key, data=data, compression="gzip")
+        except TypeError:
+            # some datasets do not support compression
+            dir.create_dataset(key, data=data)
+    return dir[key]
+
+
+def _create_group(d, key):
+    if isinstance(d, dict):
+        d[key] = dict()
+    else:
+        d.create_group(key)
+    return d[key]
 
 
 def check_h5py_version(version, required_version):
