@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------ #
 # @Created:       2023-06-21 17:15:21
-# @Last Modified: 2023-07-31 12:25:15
+# @Last Modified: 2023-07-31 15:27:02
 # ------------------------------------------------------------------------------ #
 # One central idea is that analysis need precomputed data.
 # Often we want to store this persistently, in a hdf5 file. This file is then
@@ -59,7 +59,7 @@ def get_default_settings():
             # 'number_of_permutations' : 100,
             'auto_MI_bin_size_set' : [0.005, 0.01, 0.025, 0.05, 0.25, 0.5],
             'auto_MI_max_delay' : 5,
-            'label' : '""',
+            'label' : '',
             'ANALYSIS_DIR' : "./analysis",
             'persistent_analysis' : True,
             # 'verbose_output' : False,
@@ -71,7 +71,7 @@ def get_default_settings():
                                 'xtick.labelsize': 8,
                                 'ytick.labelsize': 8,
                                 'savefig.format': 'pdf'},
-            'plot_color' : "'#4da2e2'"}
+            'plot_color' : "#4da2e2"}
 
     return settings
 

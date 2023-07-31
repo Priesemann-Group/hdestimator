@@ -229,9 +229,14 @@ def create_default_settings_file(ESTIMATOR_DIR="."):
                             "    '{}' : {}\n".format(s, settings[setting_name][s])
                         )
             else:
-                settings_file.write(
-                    "{} : {}\n".format(setting_name, settings[setting_name])
-                )
+                if isinstance(settings[setting_name], str):
+                    settings_file.write(
+                        "{} : '{}'\n".format(setting_name, settings[setting_name])
+                    )
+                else:
+                    settings_file.write(
+                        "{} : {}\n".format(setting_name, settings[setting_name])
+                    )
     settings_file.close()
 
 
@@ -241,8 +246,34 @@ def load_settings_from_file(file_name):
     this is just a thin wrapper to load them.
     """
 
+    # we need to fix some none-conformities that some of our past code relies on
+    def fix_val(v):
+        if isinstance(v, str):
+            # yamls wants `null`, we have `None` ...
+            if v.lower() == "none":
+                return None
+            # strip redundant quotes
+            elif v.startswith("'") and v.endswith("'"):
+                return v[1:-1]
+            elif v.startswith('"') and v.endswith('"'):
+                return v[1:-1]
+            else:
+                return v
+        else:
+            return v
+
+    def fix_dict(d):
+        for k, v in d.items():
+            if isinstance(v, dict):
+                d[k] = fix_dict(v)
+            else:
+                d[k] = fix_val(v)
+        return d
+
     with open(file_name, "r") as file:
-        return yaml.safe_load(file)
+        res = yaml.load(file, Loader=yaml.SafeLoader)
+        res = fix_dict(res)
+        return res
 
 
 # ------------------------------------------------------------------------------ #

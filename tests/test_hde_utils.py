@@ -52,6 +52,13 @@ def test_find_existing_analysis():
 
     assert existing_analysis_found
 
+def test_default_settings_consistency():
+
+    default_settings_disk = utl.load_settings_from_file("settings/default.yaml")
+    default_settings_code = utl.get_default_settings()
+
+    assert default_settings_disk == default_settings_code
+
 def test_create_default_settings():
     utl.create_default_settings_file(ESTIMATOR_DIR="tests/")
     settings_file_path = Path("tests/settings/default.yaml")
