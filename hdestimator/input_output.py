@@ -670,7 +670,7 @@ def load_from_CSV_file(csv_file, data_label):
         elif data_label == "label":
             data += [datum]
         else:
-            data += [np.float("nan")]
+            data += [np.nan]
 
     if len(data) == 1:
         return data[0]
@@ -710,4 +710,4 @@ def get_data_index_from_CSV_header(header, data_label):
     for index, label in enumerate(labels):
         if label == data_label:
             return index
-    return np.float("nan")
+    return np.nan

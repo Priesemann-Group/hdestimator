@@ -110,7 +110,7 @@ def get_beta_MAP(mk, K, N):
 
     if d_log_rho(10**1, mk, K, N) > 0:
         print("Warning: No ML parameter was found.", file=stderr, flush=True)
-        beta_MAP = np.float('nan')
+        beta_MAP = np.nan
     else:
         try:
             # first guess computed via posterior of Dirichlet process
@@ -120,7 +120,7 @@ def get_beta_MAP(mk, K, N):
                               tol=5e-08, maxiter=500)
         except:
             print("Warning: No ML parameter was found. (Exception caught.)", file=stderr, flush=True)
-            beta_MAP = np.float('nan')
+            beta_MAP = np.nan
     return beta_MAP
 
 def alpha_ML(mk, K1, N):
@@ -154,11 +154,11 @@ def get_integration_bounds(mk, K, N):
 
     beta_MAP = get_beta_MAP(mk, K, N)
     if np.isnan(beta_MAP):
-        intbounds = np.float('nan')
+        intbounds = np.nan
     else:
         std       = np.sqrt(- d2_log_rho_xi(beta_MAP, mk, K, N) ** (-1))
-        intbounds = [np.float(np.amax([10 ** (-50), beta_MAP - 8 * std])),
-                     np.float(beta_MAP + 8 * std)]
+        intbounds = [np.float64(np.amax([10 ** (-50), beta_MAP - 8 * std])),
+                     np.float64(beta_MAP + 8 * std)]
 
     return intbounds
 
@@ -324,9 +324,9 @@ def bbc_estimator(symbol_counts,
 
 
     if return_ais:
-        ret_val = np.float(I_nsb)
+        ret_val = np.float64(I_nsb)
     else:
-        ret_val = np.float(R_nsb)
+        ret_val = np.float64(R_nsb)
 
     if not bbc_tolerance == None:
         if bayesian_bias_criterion(R_nsb, R_plugin, bbc_tolerance):
@@ -334,5 +334,5 @@ def bbc_estimator(symbol_counts,
         else:
             return None
     else:
-        return ret_val, np.float(get_bbc_term(R_nsb,
+        return ret_val, np.float64(get_bbc_term(R_nsb,
                                               R_plugin))
