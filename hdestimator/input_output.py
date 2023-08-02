@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------ #
 # @Created:       2023-07-31 10:52:29
-# @Last Modified: 2023-07-31 17:25:56
+# @Last Modified: 2023-08-02 18:51:35
 # ------------------------------------------------------------------------------ #
 # all things that do disk io are here:
 # - the hdf5 or dict for the analysis details (`f`)
@@ -12,6 +12,7 @@ import logging
 log = logging.getLogger("hdestimator")
 
 import numpy as np
+import pandas as pd
 import h5py
 import tempfile
 import yaml
@@ -29,6 +30,7 @@ from ast import literal_eval
 #     get_default_settings,
 #     find_existing_parameter,
 # )
+
 
 
 # ------------------------------------------------------------------------------ #
@@ -285,13 +287,13 @@ def get_analysis_file(persistent_analysis, analysis_dir=None):
     temporarily or persistently.)
     """
 
-    analysis_file_name = "analysis_data.h5"
     if analysis_dir is None:
         assert persistent_analysis is False
 
     if not persistent_analysis:
         return dict()
 
+    analysis_file_name = "analysis_data.h5"
     analysis_file = h5py.File("{}/{}".format(analysis_dir, analysis_file_name), "a")
 
     return analysis_file
@@ -323,6 +325,8 @@ def load_from_analysis_file(f, data_label, **data):
             else:
                 return Counter(literal_eval(symbol_counts))
     else:
+        # hdf5 always converts lists to np arrays, where [()] works
+        # this is not the case for dicts, where we might save lists and [()] raises.
         return data_dir[data_label][()]
 
 
@@ -331,7 +335,7 @@ def save_to_analysis_file(f, data_label, estimation_method=None, **data):
     Sava data to hdf5 file, overwrite or expand as necessary.
 
     # Parameters
-    f : an open hdf5 file
+    f : an open hdf5 file, or dict.
     """
 
     data_dir = get_or_create_data_directory_in_file(
@@ -498,15 +502,21 @@ def get_or_create_data_directory_in_file(
 # thin wrappers to work with dicts or hdf5 files
 def _create_dataset(dir, key, data):
     if isinstance(dir, dict):
-        dir[key] = data
+        # workaround: hdf5 automatically converts lists to arrays which allows
+        # to retreive with data[()]. match this for dicts here, or add fixes elsewhere
+        if isinstance(data, list):
+            dir[key] = np.array(data)
+        else:
+            dir[key] = data
     else:
+        # hdf5
         if not isinstance(key, str):
             # hdf5 does not like int keys. stay aware of this when loading back!
             key = str(key)
         try:
             dir.create_dataset(key, data=data, compression="gzip")
         except TypeError:
-            # some datasets do not support compression
+            # some datatypes like scalars do not support compression
             dir.create_dataset(key, data=data)
     return dir[key]
 

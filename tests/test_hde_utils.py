@@ -85,7 +85,8 @@ def test_argument_parser():
     assert task == "full-analysis"
     assert np.isclose(spike_times, estimator_env.spike_times).all()
     assert utl.get_hash(spike_times) == utl.get_hash(estimator_env.spike_times)
-    assert type(analysis_file) == h5py.File
+    assert isinstance(analysis_file, (dict, h5py.File))
+
     for f in [csv_stats_file,
               csv_histdep_data_file,
               csv_auto_MI_data_file]:

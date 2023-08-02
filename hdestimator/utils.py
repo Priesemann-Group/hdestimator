@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------ #
 # @Created:       2023-06-21 17:15:21
-# @Last Modified: 2023-07-31 15:27:02
+# @Last Modified: 2023-08-02 18:39:03
 # ------------------------------------------------------------------------------ #
 # One central idea is that analysis need precomputed data.
 # Often we want to store this persistently, in a hdf5 file. This file is then
@@ -166,14 +166,12 @@ def get_embeddings_that_maximise_R(f,
 
     embedding_step_size_label = get_parameter_label(embedding_step_size)
 
-    for past_range_T_label in f["{}/{}".format(root_dir, embedding_step_size_label)].keys():
-        for number_of_bins_d_label in f["{}/{}/{}".format(root_dir,
-                                                          embedding_step_size_label,
-                                                          past_range_T_label)].keys():
-            for scaling_k_label in f["{}/{}/{}/{}".format(root_dir,
-                                                          embedding_step_size_label,
-                                                          past_range_T_label,
-                                                          number_of_bins_d_label)].keys():
+
+    g = f[root_dir][embedding_step_size_label]
+    for past_range_T_label in g.keys():
+        for number_of_bins_d_label in g[past_range_T_label].keys():
+            for scaling_k_label in g[past_range_T_label][number_of_bins_d_label].keys():
+
                 past_range_T = float(past_range_T_label)
                 number_of_bins_d = int(float(number_of_bins_d_label))
                 scaling_k = float(scaling_k_label)

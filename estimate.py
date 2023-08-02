@@ -483,8 +483,12 @@ def main(arguments):
               csv_stats_file,
               csv_histdep_data_file,
               csv_auto_MI_data_file]:
-        if not f == None:
+        try:
             f.close()
+        except AttributeError:
+            # now using dicts for non-persistent to replace files, thus closing will fail
+            pass
+
 
     return EXIT_SUCCESS
 
