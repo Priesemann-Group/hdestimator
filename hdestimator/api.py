@@ -28,10 +28,32 @@ def wrapper(
     settings : dict
         a dictionary of supported settings. Unspecified keys will be populated from
         our defaults. Below a list of common keys (with their defaults):
-        - ...
+        - TODO
 
     # Returns
-    results : dict
+    results : dict with (at least) the following keys:
+        R_tot : float, total predictability
+        R_tot_sd : float or None, standard deviation of R_tot, if calculated
+        AIS_tot : float, active information storage (H*R_tot)
+        T_D : float, temporal depth. The T where R_tot occurs
+        tau_R : float, information timescale.
+
+        T_vals : array, past range, i.e. T values where embeddings and R were calculated
+        R_at_T_vals : array, maximum predictability found at T_vals
+        number_of_bins_at_T_vals : array, number of bins that produce the max R at T
+        scalings_at_T_vals : array, scaling k that produces the max R at T
+
+        opt_first_bin_size : float
+        opt_number_of_bins : float
+        opt_scaling : float
+
+        firing_rate : float
+        firing_rate_sd : float
+        recording_length : float
+        recording_length_sd : float
+        H_spiking : float
+
+        settings : dict, starting from defaults + user input, what was used ultimately
     """
 
     # avoid accidentally modifying the provided settings dict, make a copy
@@ -43,6 +65,7 @@ def wrapper(
     settings = utl.get_default_settings()
     # overwrite some defaults, with more sensible ones for the python wrapper
     settings["persistent"] = False
+    settings["ANALYSIS_DIR"] = None
 
     for key in user_settings.keys():
         if key not in settings.keys():
@@ -72,6 +95,7 @@ def wrapper(
         "block_length_l",
         "number_of_bootstraps_R_max",
         "number_of_bootstraps_R_tot",
+        "timescale_minimum_past_range",
     ]
     ignored_keys = [key for key in user_settings.keys() if key not in wrapper_keys]
     if len(ignored_keys) > 0:
@@ -111,9 +135,11 @@ def wrapper(
         # (in the reponse, ignoring the past activity)
         settings["block_length_l"] = max(1, int(1 / (firing_rate * ess)))
 
-    # get predictability for all embeddings, i.e. R as a function of T_D
-    log.debug("Calculating history dependence for all embeddings...")
-    embeddings_that_maximise_R, max_Rs = get_history_dependence_for_embedding_set(
+    # embeddings that maximise R
+    # get predictability for all embeddings, i.e. R as a function of T_D.
+    # think of embeddings as tuples of (T_D, number_of_bins_d, scaling_k)
+    log.debug("Calculating history dependence for embedding set...")
+    embeddings, R_of_T = get_history_dependence_for_embedding_set(
         spike_times=spike_times,
         recording_length=recording_length,
         estimation_method=settings["estimation_method"],
@@ -122,19 +148,22 @@ def wrapper(
         embedding_scaling_exponent_set=settings["embedding_scaling_exponent_set"],
         embedding_step_size=settings["embedding_step_size"],
     )
+    # results are dicts, mapping T_D -> (num_bins, scaling) and T_D -> R, respectively
+    log.debug(f"{embeddings=}")
+    log.debug(f"{R_of_T=}")
 
-    # get the maximum history dependence and its embedding-tuple
-    max_R, max_R_T = utl.get_max_R_T(max_Rs)
-    number_of_bins_d, scaling_k = embeddings_that_maximise_R[max_R_T]
-    max_R_embedding = (max_R_T, number_of_bins_d, scaling_k)
+    # get the maximum history dependence and the temporal depth at which it occurs
+    T_for_R_max = utl.get_min_key_for_max_value(R_of_T)
+    R_max = R_of_T[T_for_R_max]
+    R_max_embedding = (T_for_R_max, ) + embeddings[T_for_R_max] # merging tuples
 
-    # TODO:rng seed
-
-    # get the uncertainty of max_R to adapt the threshold for T_D
-    log.debug("Bootstrapping to estimate uncertainty of max_R...")
+    # the final R_tot is not R_max. by default, we average over a region around R_max
+    # to be robust against fluctations in the tail.
+    # get the uncertainty of R_max to adapt the threshold for the final R and T
+    log.debug("Bootstrapping to estimate uncertainty of R_max...")
     R_max_replicas = utl.get_bootstrap_history_dependence(
         spike_times=spike_times,
-        embedding=max_R_embedding,
+        embedding=R_max_embedding,
         embedding_step_size=settings["embedding_step_size"],
         estimation_method=settings["estimation_method"],
         number_of_bootstraps=settings["number_of_bootstraps_R_max"],
@@ -142,55 +171,57 @@ def wrapper(
     )
 
     # reudce the threshold
-    max_R_sd = np.std(R_max_replicas)
-    R_tot_thresh = max_R - max_R_sd
+    R_max_sd = np.std(R_max_replicas)
+    R_tot_thresh = R_max - R_max_sd
 
-    # find the temporal depth T_D: the past range for the optimal embedding
+    # temporal depth T_D is simply how we call the T for R_tot.
     # in most cases, this will just be the peak position.
     log.debug("Finding temporal depth...")
-    Ts = sorted([key for key in max_Rs.keys()])
-    Rs = [max_Rs[T] for T in Ts]
-    T_D = min(Ts)
+    Ts = sorted([key for key in R_of_T.keys()])
+    Rs = [R_of_T[T] for T in Ts]
+    T_for_R_tot = min(Ts)
     for R, T in zip(Rs, Ts):
         if R >= R_tot_thresh:
-            T_D = T
+            T_for_R_tot = T
             break
 
-    # this gives R_tot, i.e. the (R at T_D)
     if not settings["return_averaged_R"]:
-        R_tot = max_Rs[T_D]
+        R_tot = R_of_T[T_for_R_tot]
     else:
-        # but the esimtate gets more robust if we use an average over the T after T_D
-        T_max = T_D
+        # but the esimtate gets more robust if we use an average over a few T
+        T_max = T_for_R_tot
         for R, T in zip(Rs, Ts):
-            if T < T_D:
+            if T < T_for_R_tot:
                 continue
             T_max = T
             if R < R_tot_thresh:
                 break
 
-        R_tot = np.average([R for R, T in zip(Rs, Ts) if T >= T_D and T < T_max])
+        R_tot = np.average([R for R, T in zip(Rs, Ts) if T >= T_for_R_tot and T < T_max])
 
-    # get the timescale of R_tot
+    # from R_tot we can get the information timescale (similar to autocorrelation time)
     tau_R = utl._get_information_timescale_tau_R(
-        max_Rs=max_Rs, R_tot=R_tot, T_0=settings["timescale_minimum_past_range"]
+        max_Rs=R_of_T, R_tot=R_tot, T_0=settings["timescale_minimum_past_range"]
     )
 
-    # create the embedding-tuple for R_tot
-    number_of_bins_d, scaling_k = embeddings_that_maximise_R[T_D]
-    R_tot_embedding = (T_D, number_of_bins_d, scaling_k)
+    # create the embedding-tuple for R_tot, to return and for bootstrapping
+    R_tot_embedding = (T_for_R_tot, ) + embeddings[T_for_R_tot]
 
-    # next, get a confidence interval for R_tot
-    # start by getting the bootstrap replicates.
-    log.debug("Bootstrapping to estimate uncertainty of R_tot...")
-    R_tot_replicas = utl.get_bootstrap_history_dependence(
-        spike_times=spike_times,
-        embedding=R_tot_embedding,
-        embedding_step_size=settings["embedding_step_size"],
-        estimation_method=settings["estimation_method"],
-        number_of_bootstraps=settings["number_of_bootstraps_R_tot"],
-        block_length_l=settings["block_length_l"],
-    )
+    if settings["number_of_bootstraps_R_tot"] > 1:
+        # start by getting the bootstrap replicates.
+        # log.debug("Bootstrapping to estimate uncertainty of R_tot...")
+        R_tot_replicas = utl.get_bootstrap_history_dependence(
+            spike_times=spike_times,
+            embedding=R_tot_embedding,
+            embedding_step_size=settings["embedding_step_size"],
+            estimation_method=settings["estimation_method"],
+            number_of_bootstraps=settings["number_of_bootstraps_R_tot"],
+            block_length_l=settings["block_length_l"],
+        )
+
+        R_tot_sd = np.std(R_tot_replicas)
+    else:
+        R_tot_sd = None
 
     # prepare a dictionary to return the results (similar to a row in the statistics.csv)
     # this is only a subset of what the file-based version yields.
@@ -202,18 +233,24 @@ def wrapper(
     res["recording_length"] = recording_length
     res["recording_length_sd"] = recording_length_sd
     res["H_spiking"] = H_spiking
+    # main results
     # the below stats depend on the estimation method, but we only accept one method
-    # at a time, so we do not add another label to the variable.
-    res["T_D"] = T_D
-    res["tau_R"] = tau_R
+    # at a time (e.g. `bbc`), so we do not add another index to the variable label
     res["R_tot"] = R_tot
+    res["R_tot_sd"] = R_tot_sd
     res["AIS_tot"] = R_tot * H_spiking
-    res["opt_scaling_k"] = scaling_k
-    res["opt_number_of_bins_d"] = number_of_bins_d
+    res["T_D"] = T_for_R_tot
+    res["tau_R"] = tau_R
     res["opt_first_bin_size"] = emb.get_first_bin_size_for_embedding(R_tot_embedding)
-    # some useful additions by paul
-    res["max_Rs"] = np.array(Rs)
-    res["max_R_Ts"] = np.array(Ts)
+    res["opt_number_of_bins"] = R_tot_embedding[0]
+    res["opt_scaling"] = R_tot_embedding[1]
+    # some useful additions, so we can recreate the plots
+    res["T_vals"] = np.array(Ts)
+    res["R_at_T_vals"] = np.array(Rs)
+    res["number_of_bins_at_T_vals"] = np.array([embeddings[T][0] for T in Ts])
+    res["scalings_at_T_vals"] = np.array([embeddings[T][1] for T in Ts])
+    # keep track of the settings used to produce the results
+    res["settings"] = settings.copy()
 
     return res
 
@@ -290,7 +327,7 @@ def get_history_dependence_for_single_embedding(
     except TypeError:
         spikes_are_flat = True
 
-    log.debug(f"Getting symbol counts... {spikes_are_flat=}")
+    # log.debug(f"Getting symbol counts... {spikes_are_flat=}")
 
     if spikes_are_flat:
         symbol_counts = emb.get_symbol_counts(spike_times, embedding, embedding_step_size)
@@ -341,6 +378,12 @@ def get_history_dependence_for_embedding_set(
     Apply embeddings to spike_times to obtain symbol counts.
     For each T (or d), get history dependence R for the embedding for which
     R is maximised.
+
+    # Returns
+    embeddings_that_maximise_R : dict
+    max_Rs : dict
+        both dicts have the same keys. either the past_range `T` or
+        the number_of_bins `d`, depending on your choice of `dependent_var` (default `T`)
     """
 
     assert dependent_var in ["T", "d"]
