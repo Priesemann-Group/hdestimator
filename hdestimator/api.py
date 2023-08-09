@@ -43,10 +43,6 @@ def wrapper(
         number_of_bins_at_T_vals : array, number of bins that produce the max R at T
         scalings_at_T_vals : array, scaling k that produces the max R at T
 
-        opt_first_bin_size : float
-        opt_number_of_bins : float
-        opt_scaling : float
-
         firing_rate : float
         firing_rate_sd : float
         recording_length : float
@@ -157,8 +153,10 @@ def wrapper(
     R_max = R_of_T[T_for_R_max]
     R_max_embedding = (T_for_R_max, ) + embeddings[T_for_R_max] # merging tuples
 
-    # the final R_tot is not R_max. by default, we average over a region around R_max
-    # to be robust against fluctations in the tail.
+    # the final R_tot is not R_max. usually R saturates after a certain T. This
+    # defines R_tot and T_D.
+    # by default, we average over a region after that point to be robust against
+    # fluctations in the tail.
     # get the uncertainty of R_max to adapt the threshold for the final R and T
     log.debug("Bootstrapping to estimate uncertainty of R_max...")
     R_max_replicas = utl.get_bootstrap_history_dependence(
@@ -174,7 +172,7 @@ def wrapper(
     R_max_sd = np.std(R_max_replicas)
     R_tot_thresh = R_max - R_max_sd
 
-    # temporal depth T_D is simply how we call the T for R_tot.
+    # temporal depth T_D is simply how we call the T where R staturates (R_tot).
     # in most cases, this will just be the peak position.
     log.debug("Finding temporal depth...")
     Ts = sorted([key for key in R_of_T.keys()])
@@ -241,9 +239,7 @@ def wrapper(
     res["AIS_tot"] = R_tot * H_spiking
     res["T_D"] = T_for_R_tot
     res["tau_R"] = tau_R
-    res["opt_first_bin_size"] = emb.get_first_bin_size_for_embedding(R_tot_embedding)
-    res["opt_number_of_bins"] = R_tot_embedding[0]
-    res["opt_scaling"] = R_tot_embedding[1]
+
     # some useful additions, so we can recreate the plots
     res["T_vals"] = np.array(Ts)
     res["R_at_T_vals"] = np.array(Rs)

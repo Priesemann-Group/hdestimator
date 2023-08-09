@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------ #
 # @Created:       2023-06-21 17:15:21
-# @Last Modified: 2023-08-02 18:39:03
+# @Last Modified: 2023-08-09 12:26:54
 # ------------------------------------------------------------------------------ #
 # One central idea is that analysis need precomputed data.
 # Often we want to store this persistently, in a hdf5 file. This file is then
@@ -35,8 +35,118 @@ def get_default_settings():
     """
     Returns our default settings as a dictionary.
 
-    # Note:
-    Hardcoded here, do not change the yaml file for default settings on disk, manually!
+    # Notes
+    - Hardcoded here, do not change the yaml file for default settings on disk, manually!
+    - Not all settings are used by the python api wrapper function.
+
+
+    # Keys (with defaults)
+    - embedding_step_size : float, 0.005
+        Step size delta t (in seconds) with which the window is slid through the data.
+
+    - embedding_past_range_set : list, [0.005, ... 5.0]
+        Set of values for T, the past range (in seconds) to be used for embeddings.
+        Should be an array of floating-point values.
+
+    - embedding_number_of_bins_set : list, [1, 2, 3, 4, 5]
+        Set of values for d, the number of bins in the embedding.
+        Should be an array of integer values.
+
+    - embedding_scaling_exponent_set : dict, defaults below
+        Set of values for kappa, the scaling exponent for the bins in the embedding.
+        Should be either an array of floating-point values or a python-dictionary with the
+        three entries
+        - 'number_of_scalings' : 10
+        - 'min_first_bin_size' : 0.005
+        - 'min_step_for_scaling' : 0.01
+
+    - estimation_method : str, "shuffling"
+        The method to be used to estimate the history dependence,
+        one of 'bbc', 'shuffling' or 'all'.
+
+    - bbc_tolerance : float, 0.05
+        The tolerance for the Bayesian Bias Criterion. Influences which embeddings are
+        discarded from the analysis.
+
+    - cross_validated_optimization : bool, False
+        Use cross validation for the embedding optimization: optimize on the first
+        half of the data only, provide the estimate on the second one, to avoid overfitting.
+
+    - return_averaged_R : bool, True
+        Return R_tot as the average over R(T) for T in [T_D, T_max],
+        instead of R_tot = R(T_D). If set to True, the setting for
+        number_of_bootstraps_R_tot (see below) is ignored and set to 0.
+
+    - timescale_minimum_past_range : float, 0.01
+        Minimum past range T_0 (in seconds) to take into consideration for the
+        estimation of the information timescale tau_R.
+
+    - number_of_bootstraps_R_max : int, 250
+        The number of bootstrap re-shuffles that should be used to determine the optimal
+        embedding. (Bootstrap the estimates of R_max to determine R_tot.)
+        These are computed during the 'history-dependence' task because they are essential
+        to obtain R_tot.
+
+    - number_of_bootstraps_R_tot : int, 250
+        The number of bootstrap re-shuffles that should be used to estimate the confidence
+        interval of the optimal embedding. (Bootstrap the estimates of R_tot = R(T_D) to
+        obtain a confidence interval for R_tot.).
+        These are computed during the 'confidence-intervals' task.
+        The setting return_averaged_R (see above) needs to be set to False for this setting
+        to take effect.
+
+    - number_of_bootstraps_nonessential : int, 0
+        The number of bootstrap re-shuffles that should be used to estimate the confidence
+        intervals for embeddings other than the optimal one. (Bootstrap the estimates of
+        R(T) for all other T.)
+        (These are not necessary for the main analysis and therefore default to 0.)
+
+    - block_length_l : int or None (default)
+        The number of symbols that should be drawn in each block for bootstrap resampling
+        If it is set to None (recommended), the length is automatically chosen, based
+        on heuristics
+
+    - bootstrap_CI_use_sd : bool, True
+        Most of the time we observed normally-distributed bootstrap replications,
+        so it is sufficient (and more efficient) to compute confidence intervals
+        based on the standard deviation
+
+    - bootstrap_CI_percentile_lo : float, 2.5
+        The lower percentile and upper percentiles for the confidence interval.
+        This has no effect if bootstrap_CI_use_sd is set to True
+
+    - bootstrap_CI_percentile_hi : float, 97.5
+        The lower percentile and upper percentiles for the confidence interval.
+        This has no effect if bootstrap_CI_use_sd is set to True
+
+    - auto_MI_bin_size_set : list, [0.005, 0.01, 0.025, 0.05, 0.25, 0.5]
+        Set of values for the sizes of the bins (in seconds). Should be an array of
+        floating-point values.
+
+    - auto_MI_max_delay : int, 5
+        The maximum delay (in seconds) between the past bin and the response.
+
+    - label : str, ""
+        A label for the analysis that appears both in the output image and the CSV file.
+
+    - ANALYSIS_DIR : str, "./analysis"
+        A parent directory for persistent storage, under which a directory is created per
+        analysis of a spiking times file.
+
+    - persistent_analysis : bool, True
+        If set to True, save the analysis to file; and if furthermore an existing analysis
+        is found, read it from file.
+
+    - plot_AIS : bool, False
+        Plot the active information storage (AIS) instead of history dependence
+        (This does not affect the CSV files, both measures are always included there.)
+
+    - plot_settings : dict
+        A python-dictionary containing the settings to be used for the rcParams.update
+        function of the matplotlib.pyplot plotting framework.
+
+    - plot_color : '#4da2e2'
+        The color to be used for the output image.
     """
     settings = {'embedding_step_size' : 0.005,
             'embedding_past_range_set' : [float("{:.5f}".format(np.exp(x))) for x in np.arange(np.log(0.005), np.log(5.001), 0.05 * np.log(10))],
