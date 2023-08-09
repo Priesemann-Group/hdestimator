@@ -1,6 +1,4 @@
 from setuptools import setup, find_packages
-from Cython.Build import cythonize
-import numpy
 
 try:
     import sys
@@ -22,7 +20,7 @@ setup(
         'scipy',
         'mpmath',
         'matplotlib',
-        'cython',
+        'numba',
     ],
     packages=find_packages(),
     include_package_data=True,
@@ -33,7 +31,4 @@ setup(
     author='',
     author_email='',
     description='The history dependence estimator tool',
-    ext_modules=cythonize(["hdestimator/fast_embedding.pyx"],
-                          annotate=False),
-    include_dirs=[numpy.get_include()]
 )
