@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------------------ #
 # @Created:       2023-07-31 10:52:29
-# @Last Modified: 2023-08-02 18:51:35
+# @Last Modified: 2023-08-09 12:13:05
 # ------------------------------------------------------------------------------ #
 # all things that do disk io are here:
 # - the hdf5 or dict for the analysis details (`f`)
@@ -325,9 +325,14 @@ def load_from_analysis_file(f, data_label, **data):
             else:
                 return Counter(literal_eval(symbol_counts))
     else:
-        # hdf5 always converts lists to np arrays, where [()] works
-        # this is not the case for dicts, where we might save lists and [()] raises.
-        return data_dir[data_label][()]
+        # hdf5 always converts lists to np arrays, where [()] works.
+        # this is not the case for dicts, where we might save lists or floats
+        # and [()] raises a TypeError.
+        try:
+            return data_dir[data_label][()]
+        except TypeError:
+            log.debug(f"{data_label} in {f} is no np array")
+            return data_dir[data_label]
 
 
 def save_to_analysis_file(f, data_label, estimation_method=None, **data):
